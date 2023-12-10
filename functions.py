@@ -226,17 +226,43 @@ def Sequence(file_name):
 # Generates the pdb file based on a sequence (text file input)
 # Inputs: sequence file (e.g. sequence.txt), monomer file (e.g. monomers.dat), output file (e.g. my_pdb_file.pdb)
 
-def GenerateFile(sequence_file, monomer_file, out_file):
+def GenerateFile(sequence_file='seq.txt', monomer_file='monomers.dat', out_file='outfile', explicitbonds = False, remove_duplicates=True, debug=True):
+    
     global atom_counter
     global res_counter
     global links
-    atom_counter = 0
-    res_counter = 0
-    links = []
+    global monomer_bonds
+    global filtered_list
+    global removeduplicates
+    global debugging
+    
+    
+    atom_counter, res_counter = 0,0
+    monomer_bonds,filtered_list, links = [],[], []
+    
+    # The bonds (x,y) are equal to (y,x)
+    
+    removeduplicates = remove_duplicates
+    
+    # Show information as print commands
+    
+    debugging = debug
+    
     for item in Sequence(sequence_file):
-        print(item)
+        if debugging == True:
+            print(item)
+        else:
+            pass
         monomers = InitializeMonomers(monomer_file)
+        if explicitbonds == True:
+            ExplicitBonds(eval(item))
+        else:
+            pass
         AddMonomer(eval(item), out_file, res_counter, atom_counter)
+        
+    # After iterating through all monomers bonds are written to the file, lines are getting sorted and file gets closed with PDB closing statement   
+    
+    WriteExplicitBonds(out_file)
     Bonds(links, out_file)
     Sorting(out_file)
     CloseFile(f'{out_file}-copy', atom_counter)
@@ -258,3 +284,36 @@ def InvertAminoAcid(monomer):
     monomer_inverted['link'][1] = temp[0]
     monomer_inverted['inverted'] = True
     return monomer_inverted
+
+
+def ExplicitBonds(monomer):
+    
+    global filtered_list
+    
+    seen_pairs = set()
+    for x in range(atom_counter,atom_counter+monomer['atoms']):
+        for y in range(len(monomer[x-atom_counter+1][5])):
+            monomer_bonds.append((x+1, monomer[x-atom_counter+1][5][y]+atom_counter))
+            
+    if removeduplicates == True:
+        # This function eliminates duplicates
+        seen_pairs = set()
+        filtered_list = []       
+        for pair in monomer_bonds:
+            reversed_pair = (pair[1], pair[0])
+            if reversed_pair not in seen_pairs:
+                seen_pairs.add(pair)
+                filtered_list.append(pair)
+    else:
+        filtered_list = monomer_bonds
+
+        
+def WriteExplicitBonds(out_file):
+    # Writing to the outfile
+    for item in filtered_list:
+        if debugging == True:
+            print(item)
+        else:
+            pass
+        with open(f"{out_file}.pdb", "a") as file:
+            file.write("{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format("", "CONECT", item[0], item[1], "", "", "", "", "", "", "", "", "", ""))
