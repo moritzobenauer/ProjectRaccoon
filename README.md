@@ -27,6 +27,11 @@ to add the new monomer unit to your library. Please enter the name of the new re
 
 ### Creating PDB Files from Sequence
 
+| Residue Name | Resolution   | Inverted | Repeats |
+| :---         | :---         | :---     | :---    |
+| String       | {AA, UA, CG} | {0,1}    | Integer |
+
+
 <img style="display: inline-block" src="/screenshots/raccoon_main.png" width="400" height="400">
 
 
