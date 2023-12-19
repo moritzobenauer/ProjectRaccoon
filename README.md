@@ -26,6 +26,14 @@ to add the new monomer unit to your library. Please enter the name of the new re
 
 ### Creating PDB Files from Sequence
 
+| Parameter | Default       |   Description |
+| :---      | :---          | :---          |
+| -s        | seq.txt       | Filename with extension for the sequence.                            |
+| -o        | out           | Filename without extension for the resulting pdb file.               |
+| -m        | monomers.dat  | Filename with extension for the monomer library.                     |
+| -e        | False         | Write all explicit bonds. It can be useful for nonstandard residues. |
+| -r        | True          | Remove duplicate bonds. Bond a --> b is equivalent to b --> a.       |
+
 ### Check PDB Files & Export XYZ Files
 
 ## Limitations
