@@ -2,6 +2,7 @@
 <img style="display: flex" src="/screenshots/raccoon_logo_round.png" width="100" height="100">
 <h1 style="float: right">Project RACCOON</h1> 
 </div>
+
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
 
 ## General Purpose & Scope
@@ -27,9 +28,11 @@ to add the new monomer unit to your library. Please enter the name of the new re
 
 ### Creating PDB Files from Sequence
 
-> HIS:AA:0:10
-  PHE:AA:0:10
-  HIS:AA:0:10
+```
+HIS:AA:0:10
+PHE:AA:0:10
+HIS:AA:0:10
+```
 
 | Residue Name | Resolution   | Inverted | Repeats |
 | :---         | :---         | :---     | :---    |
