@@ -43,7 +43,8 @@ The program is started with the following command.
 ```
 python raccoon.py -s seq.txt -o resultingfile -m monomers.dat
 ```
-To create the PDB file, select the first item that appears in the selection. The PDB file is then generated automatically according to the selected parameters.
+To create the PDB file, select the first item that appears in the selection. The PDB file is then generated automatically according to the selected parameters. For visualization or other purposes, creating an XYZ file from the PDB file may be desired. This XYZ file no longer contains any binding information. For this purpose, the option *Convert PDB to XYZ file* can be selected in the menu. A corresponding XYZ file with the same file name as the PDB file is created.
+
 <img style="display: inline-block" src="/screenshots/raccoon_main.png" width="400" height="400">
 
 
@@ -55,7 +56,9 @@ To create the PDB file, select the first item that appears in the selection. The
 | -e        | False         | Write all explicit bonds. It can be useful for nonstandard residues. |
 | -r        | True          | Remove duplicate bonds. Bond a --> b is equivalent to b --> a.       |
 
-### Check PDB Files & Export XYZ Files
+### Check PDB Files
+
+The successful creation of the PDB file can then be checked. The *Check PDB* file option is selected for this purpose. If the PDB file appears in tabular form in the terminal, it is correct and will be read correctly by all standard programs. Individual atoms or beads may be arranged too close to each other. In the worst case, this can lead to problems with energy minimization or simulations. To check that no two atoms or beads are too close to each other, the *Check Minimal Distance* option can be selected. The output contains the smallest distance between two atoms or beads.
 
 ## Limitations
 
