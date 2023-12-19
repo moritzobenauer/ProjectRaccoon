@@ -27,18 +27,23 @@ to add the new monomer unit to your library. Please enter the name of the new re
 
 
 ### Creating PDB Files from Sequence
-
+The basis for creating a PDB file is a seq.txt file containing the block sequence. The monomers are specified line by line with their name and resolution (this may be necessary if the same block is present in the library file with a different resolution). In addition, whether it is an inverted building block (this occurs with C2 symmetrical polymer peptide conjugates) and the number of repeating units must be specified. In this way, classical polymers with a fixed number of repeating units of a monomer can also be represented quickly.
 ```
 HIS:AA:0:10
 PHE:AA:0:10
 HIS:AA:0:10
 ```
+The example shown here corresponds to a polypeptide in which ten histidine units are followed by ten phenylalanines and then ten histidines again. All monomers are shown in atomistic resolution and are not inverted.
 
 | Residue Name | Resolution   | Inverted | Repeats |
 | :---         | :---         | :---     | :---    |
 | String       | {AA, UA, CG} | {0,1}    | Integer |
 
-
+The program is started with the following command.
+```
+python raccoon.py -s seq.txt -o resultingfile -m monomers.dat
+```
+To create the PDB file, select the first item that appears in the selection. The PDB file is then generated automatically according to the selected parameters.
 <img style="display: inline-block" src="/screenshots/raccoon_main.png" width="400" height="400">
 
 
