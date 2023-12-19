@@ -10,7 +10,7 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 
 ### Importing new Monomers
 
-![Screenshot 1.](/screenshots/import1.png)
+![Screenshot 1.](/screenshots/import1.png | width=100)
 
 ## Limitations
 
