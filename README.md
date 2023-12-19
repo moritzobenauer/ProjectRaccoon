@@ -27,6 +27,9 @@ to add the new monomer unit to your library. Please enter the name of the new re
 
 ### Creating PDB Files from Sequence
 
+<img style="display: inline-block" src="/screenshots/raccoon_main.png" width="600" height="400">
+
+
 | Parameter | Default       |   Description |
 | :---      | :---          | :---          |
 | -s        | seq.txt       | Filename with extension for the sequence.                            |
