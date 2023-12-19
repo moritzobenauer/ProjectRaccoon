@@ -10,7 +10,9 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 
 ### Importing new Monomers
 
-<img src="/screenshots/import1.png" width="400" height="300">
+<img src="/screenshots/import1.png" width="800" height="600">
+<img src="/screenshots/import2.png" width="800" height="600">
+
 
 ## Limitations
 
