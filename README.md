@@ -1,6 +1,6 @@
 # Project RACCOON
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
-<img style="display: inline-block" src="/screenshots/raccoon-logo-round" width="300" height="300">
+<img style="display: inline-block" src="/screenshots/raccoon_logo_round" width="100" height="100">
 
 
 ## General Purpose & Scope
