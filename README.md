@@ -66,6 +66,13 @@ To create the PDB file, select the first item that appears in the selection. The
 ### Check PDB Files
 
 The successful creation of the PDB file can then be checked. The *Check PDB* file option is selected for this purpose. If the PDB file appears in tabular form in the terminal, it is correct and will be read correctly by all standard programs. Individual atoms or beads may be arranged too close to each other. In the worst case, this can lead to problems with energy minimization or simulations. To check that no two atoms or beads are too close to each other, the *Check Minimal Distance* option can be selected. The output contains the smallest distance between two atoms or beads.
+## Examples
+
+<img style="display: inline-block" src="/screenshots/raccoon_export.png">
+<img style="display: inline-block" src="/screenshots/raccoon_em.png">
+
+
+
 
 ## Limitations
 
