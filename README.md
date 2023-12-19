@@ -1,5 +1,7 @@
 # Project RACCOON
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
+<img style="display: inline-block" src="/screenshots/raccoon-logo-round" width="300" height="300">
+
 
 ## General Purpose & Scope
  <div align="justify">Project RACCOON (<i>Rapid Automated Construction of Conjugates using the Optimized OPLS Input</i>) is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion. It allows for the easy addition of new monomers, incorporation of polypeptide and polymer sequences in text form, and outputs PDB and XYZ files.
