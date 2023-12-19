@@ -1,6 +1,7 @@
-<img style="display: inline-block" src="/screenshots/raccoon_logo_round.png" width="100" height="100">
-
-<h1>Project RACCOON</h1> 
+<div>
+<img style="display: flex" src="/screenshots/raccoon_logo_round.png" width="100" height="100">
+<h1 style="float: right">Project RACCOON</h1> 
+</div>
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
 
 ## General Purpose & Scope
