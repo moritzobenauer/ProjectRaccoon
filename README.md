@@ -12,7 +12,7 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 
 ## How to use Project RACCOON
 
-## Installing for Standard Usage
+### Installing for Standard Usage
 
 The easiest way to use the Project RACCOON software is to clone the github repository.
 ```
