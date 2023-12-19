@@ -27,6 +27,10 @@ to add the new monomer unit to your library. Please enter the name of the new re
 
 ### Creating PDB Files from Sequence
 
+> HIS:AA:0:10
+> PHE:AA:0:10
+> HIS:AA:0:10
+
 | Residue Name | Resolution   | Inverted | Repeats |
 | :---         | :---         | :---     | :---    |
 | String       | {AA, UA, CG} | {0,1}    | Integer |
