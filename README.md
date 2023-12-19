@@ -13,6 +13,9 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 <img src="/screenshots/import1.png" width="800" height="600">
 <img src="/screenshots/import2.png" width="800" height="600">
 
+### Creating PDB Files from Sequence
+
+### Check PDB Files & Export XYZ Files
 
 ## Limitations
 
