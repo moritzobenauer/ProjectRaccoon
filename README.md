@@ -1,3 +1,16 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Style to make images display inline-block */
+    .image-container img {
+      display: inline-block;
+      max-width: 100%; /* Ensure images don't exceed container width */
+      height: auto; /* Maintain aspect ratio */
+    }
+  </style>
+</head>
+
 # Project RACCOON
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
 
@@ -12,8 +25,11 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 
 Open a graphical software to create three-dimensional molecular models and obtain the desired monomer structure. It is important to note that only the atoms or beads of the repeating units are used and not the entire molecule. The structure must be saved in .bs format, as the position of the atoms or beads and the neighboring atoms or beads are specified here. Run the command `python import_monomer -f newmonomer.bs -o monomers.dat` to add the new monomer unit to your library. Please enter the name of the new residue and some properties and give every atom a unique identifier according to the force field you plan to use. For amino acid residues, it is essential to specify the C- and N-terminus of the building block.
 
+<div class="image-container">
 <img src="/screenshots/import1.png" width="800" height="600">
 <img src="/screenshots/import2.png" width="800" height="600">
+</div>
+
 
 ### Creating PDB Files from Sequence
 
