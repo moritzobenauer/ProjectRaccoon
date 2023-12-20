@@ -68,8 +68,13 @@ To create the PDB file, select the first item that appears in the selection. The
 The successful creation of the PDB file can then be checked. The *Check PDB* file option is selected for this purpose. If the PDB file appears in tabular form in the terminal, it is correct and will be read correctly by all standard programs. Individual atoms or beads may be arranged too close to each other. In the worst case, this can lead to problems with energy minimization or simulations. To check that no two atoms or beads are too close to each other, the *Check Minimal Distance* option can be selected. The output contains the smallest distance between two atoms or beads.
 ## Examples
 
-<img style="display: inline-block" src="/screenshots/raccoon_export.png">
-<img style="display: inline-block" src="/screenshots/raccoon_em.png">
+The software was developed specifically for the telechelic polymer peptide conjugates, according to Otter et. al. 2018. The peptide sequence FHFHFXG-PEO-GXFHFHF (with X: 6-aminohexanoic acid) is an example. A corresponding seq.txt file can be found in the examples folder. A graphical representation of the PDB file is shown in the image below. However, it should be noted that the arrangement of the monomers here is in a parabolic form (with no loss of generality). 
+
+<img style="display: inline-block" src="/screenshots/raccoon_export.png" width="400" height=auto>
+
+After a brief energy minimization (performed here with GROMACS and the OPLS force field), the physically meaningful structure shown in the following image is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations.
+
+<img style="display: inline-block" src="/screenshots/raccoon_em.png" width="400" height=auto>
 
 
 
