@@ -72,7 +72,7 @@ The software was developed specifically for the telechelic polymer peptide conju
 
 <img style="display: inline-block" src="/screenshots/raccoon_export.png" width="400" height=auto>
 
-After a brief energy minimization (performed here with GROMACS and the OPLS force field), the physically meaningful structure shown in the following image is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations.
+After a brief energy minimization (performed here with GROMACS and the OPLS force field), the physically meaningful structure shown in the following image is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations. It is important to recognize here that different building blocks with atomistic and united atom resolution have been combined with each other. 
 
 <img style="display: inline-block" src="/screenshots/raccoon_em.png" width="400" height=auto>
 
