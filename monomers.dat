@@ -28,7 +28,7 @@ res=CAP
 resolution=united_atom
 polymer=0
 atoms=1
-links=[1]
+link=[1]
 1=["D", "D", 0, 0, 0, [], 1]
 
 res=PHE
