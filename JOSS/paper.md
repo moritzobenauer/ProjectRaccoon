@@ -32,7 +32,7 @@ affiliations:
  - name: Institute of Physics, Johannes Gutenberg University, Staudingerweg 9, 55128 Mainz, Germany
    index: 2
 date: 20 January 2024
-bibliography: JOSS/paper.bib
+bibliography: paper.bib
 
 # Summary
 
