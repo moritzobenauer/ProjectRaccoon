@@ -13,7 +13,7 @@ authors:
     corresponding: true 
   - name: Kai N. Spauszus
     orcid: 0009-0006-0650-2273
-    affiliation: 1 
+    affiliation: 1
   - name: Pol Besenius
     orcid: 0000-0001-7478-4459
     affiliation: 1 
@@ -21,9 +21,9 @@ authors:
     orcid: 0000-0002-5536-6718
     affiliation: 2 
 affiliations:
- - name: Department of Chemistry, Johannes Gutenberg-University Mainz, Duesbergweg 10-14, D-55128 Mainz, Germany
+  - name: Department of Chemistry, Johannes Gutenberg-University Mainz, Duesbergweg 10-14, D-55128 Mainz, Germany
    index: 1
- - name: Institute of Physics, Johannes Gutenberg University, Staudingerweg 9, 55128 Mainz, Germany
+  - name: Institute of Physics, Johannes Gutenberg University, Staudingerweg 9, 55128 Mainz, Germany
    index: 2
 date: 20 January 2024
 bibliography: paper.bib
