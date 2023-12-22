@@ -14,10 +14,10 @@ authors:
   - name: Kai N. Spauszus
     orcid: 0009-0006-0650-2273
     affiliation: 1 
-- name: Pol Besenius
+  - name: Pol Besenius
     orcid: 0000-0001-7478-4459
     affiliation: 1 
-- name: Friederike Schmid
+  - name: Friederike Schmid
     orcid: 0000-0002-5536-6718
     affiliation: 2 
 affiliations:
