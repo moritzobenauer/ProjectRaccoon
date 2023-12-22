@@ -1,4 +1,9 @@
-import numpy as np
+"""
+Beschreibung worum es geht. lizenz etc...
+
+"""
+
+import numpy as np              # erkläre wofür imports genutzt werden
 import os
 import pandas as pd
 import ast
@@ -27,7 +32,17 @@ explicitbondsbool = args.explicit
 removeduplicatesbool = args.removeduplicates
 
 
-def InitializeMonomers(file_name):
+def InitializeMonomers(file_name:str):
+
+    """Reads inputsfile and parses into results?
+        Frage: Was ist results? Wie sieht der Input aus? Wie ist die Struktur von Results?_> Ducktyping
+
+    Args:
+        file_name (str): _description_
+
+    Returns:
+        _type_: _description_
+    """
     result = [{}]
     with open(file_name) as inpt:
         for line in inpt:
@@ -54,9 +69,17 @@ def InitializeMonomers(file_name):
                 pass
     return result
 
-#  Normalization of Atom Positions
-
 def Normalization(monomer):
+
+    """Normalization of Atom Positions
+    Frage: Normalisierung aller Atome im Molekül??
+
+    Args:
+        monomer (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
 
     reference = [0] * 3
     for x in range(0,3):
@@ -67,9 +90,15 @@ def Normalization(monomer):
     return (monomer)
 
 
-# Updating the monomer position after each succesful monomer addition step.
-
 def UpdateMonomer(monomer, shift, shift_cartesian):
+
+    """Updating the monomer position after each succesful monomer addition step.
+
+    Args:
+        monomer (_type_): _description_
+        shift (_type_): _description_
+        shift_cartesian (_type_): _description_
+    """
     
     # Update the linking atoms / beads due to the renaming of the atoms / beads
     
@@ -99,10 +128,20 @@ def UpdateMonomer(monomer, shift, shift_cartesian):
         i += 1  
 
     
-# This function opens the PDB file and adds a polymer chain with a given repeating unit, chain length and resid_shift
-# Might be a useful function for long repeating chains
-
 def CreatePolymerChain(monomer, chain_length, filename, resid_shift):
+
+    """This function opens the PDB file and adds a polymer chain with a given repeating unit, chain length and resid_shift
+        Might be a useful function for long repeating chains.
+
+    Args:
+        monomer (_type_): _description_
+        chain_length (_type_): _description_
+        filename (_type_): _description_
+        resid_shift (_type_): _description_
+
+    Return:
+        noting
+    """
     
     global links
     global atom_counter
@@ -146,9 +185,17 @@ def CreatePolymerChain(monomer, chain_length, filename, resid_shift):
         UpdateMonomer(monomer, s, m)
         file.close()      
 
-# Main function of the script
-# adds monomers to a polymer peptide chain
 def AddMonomer(monomer, filename, resid, shift):
+
+    """
+    Central function of the modul: adds monomers to a polymer peptide chain.
+
+    Args:
+        monomer (_type_): _description_
+        filename (_type_): _description_
+        resid (_type_): _description_
+        shift (_type_): _description_
+    """
     
     global links
     global atom_counter
@@ -191,6 +238,7 @@ def AddMonomer(monomer, filename, resid, shift):
     # Adding linkage points of the monomer to a global list
         
     # Tries to add the C-Terminus links
+    # TODO: so wenig try expect wie möglich. Weshalb ist das hier nötig? Anderweitig abfangen 
     try:
         links.append(monomer["link"][1])
     except:
@@ -211,8 +259,10 @@ def AddMonomer(monomer, filename, resid, shift):
         file.close()      
 
 # Easy access to the r_min, r_max variables
+# TODO: Unschöner Stil: eher globale variablen definieren, müssen die global sein? reicht nicht beispielsweise auch ein struct, wie named tuple?
 
 def SetXMinMax(min, max):
+    
     global x_min
     global x_max
     x_min, x_max = min, max
@@ -226,27 +276,59 @@ def SetZMinMax(min, max):
     global z_min
     global z_max
     z_min, z_max = min, max
+              
+def Sorting(filename:str):
+    """This function is needed to sort the PDB file after adding the bonds 
 
-# This function is needed to sort the PDB file after adding the bonds               
-def Sorting(filename):
+    Args:
+        filename (str): _description_
+
+    Returns:
+        nothing
+    """
+
+    
+
     with open(f"{filename}.pdb", "r") as input_file, open(f"{filename}-copy.pdb", "w") as output_file:
         rows = input_file.readlines()
         sorted_rows = sorted(rows, key=lambda x: x.split()[0])
         output_file.writelines(sorted_rows)
 
-# Closes the PDB file. Needs the overall number of atoms / beads!
 def CloseFile(filename, number):
-     with open(f"{filename}.pdb", "a") as file:
+    """Closes the PDB file. Needs the overall number of atoms / beads!
+    # TODO: format schöner schreiben
+
+    Args:
+        filename (_type_): _description_
+        number (_type_): _description_
+    """
+    with open(f"{filename}.pdb", "a") as file:
         file.write("{:>0}{:<11}{:<5}{:<5}{:<4}{:<5}{:<5}{:<5}{:<5}{:<5}{:<5}{:<5}{:<5}{}\n".format("", "MASTER", 0, 0, 0, 0, 0, 0, 0, 0, number, 0, number, 0))
         file.write("END")
 
-# Creates the lines for the inter-monomer bonds / linkages. Needs a list of all links.
 def Bonds(links, filename):
+    """Creates the lines for the inter-monomer bonds / linkages. Needs a list of all links.
+
+    Args:
+        links (_type_): _description_
+        filename (_type_): _description_
+
+    Returns:
+        nothing
+    """
     for i in range(0, len(links)-1, 1):
         with open(f"{filename}.pdb", "a") as file:
             file.write("{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format("", "CONECT", links[i], links[i+1], "", "", "", "", "", "", "", "", "", ""))
 
-def Sequence(file_name):
+def Sequence(file_name:str):
+    """_summary_
+
+    Args:
+        file_name (str): _description_
+
+    Returns:
+        _type_: _description_
+    """
     
     result = []
     sequence = []
@@ -274,11 +356,21 @@ def Sequence(file_name):
 
     return result
 
-# Generates the pdb file based on a sequence (text file input)
-# Inputs: sequence file (e.g. sequence.txt), monomer file (e.g. monomers.dat), output file (e.g. my_pdb_file.pdb)
-
 def GenerateFile(sequence_file='seq.txt', monomer_file='monomers.dat', out_file='outfile', explicitbonds = False, remove_duplicates=True, debug=True):
-    
+    """Generates the pdb file based on a sequence (text file input)
+       Inputs: sequence file (e.g. sequence.txt), monomer file (e.g. monomers.dat), output file (e.g. my_pdb_file.pdb)
+
+       # TODO: globale Variablen 
+
+    Args:
+        sequence_file (str, optional): _description_. Defaults to 'seq.txt'.
+        monomer_file (str, optional): _description_. Defaults to 'monomers.dat'.
+        out_file (str, optional): _description_. Defaults to 'outfile'.
+        explicitbonds (bool, optional): _description_. Defaults to False.
+        remove_duplicates (bool, optional): _description_. Defaults to True.
+        debug (bool, optional): _description_. Defaults to True.
+    """
+        
     global debugging
 
     # Prevent data loss
@@ -334,9 +426,18 @@ def GenerateFile(sequence_file='seq.txt', monomer_file='monomers.dat', out_file=
 
 
 def GetCopy(x):
+    # TODO: Brauchst du hierfür eine Funktion?
     return copy.deepcopy(x)
 
 def InvertAminoAcid(monomer):
+    """_summary_
+
+    Args:
+        monomer (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     monomer_inverted = GetCopy(monomer)
     temp = GetCopy(monomer_inverted['link'])
     monomer_inverted['link'][0] = temp[1]
@@ -376,6 +477,7 @@ def WriteExplicitBonds(out_file):
 
 
 def Welcome():
+    # TODO: auslagern?
     console.print("""                                                                                                     
                                                                                                     
             ..            ..             ..            ..             ..            ..             .
