@@ -5,12 +5,6 @@ from raccoon.src.ui import start_racoon, welcome, tschau_kakao
 
 
 if __name__ == "__main__":
-    global SEQUENZEFILE
-    global OUTPUTFILE
-    global MONOMERFILE
-    global EXPLICITBONDS
-    global REMOVEDUPLICATES
-
     argParser = argparse.ArgumentParser()
     argParser.add_argument(
         "-s", "--sequence", help="Sequence File", type=str, default="seq.txt"
