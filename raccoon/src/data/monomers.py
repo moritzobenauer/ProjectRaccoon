@@ -234,7 +234,9 @@ class Monomers:
                     return False
             return True
 
-    def __index__(self, other: Union[Monomer, Dict]):
+    def __index__(self, other: Union[Monomer, Dict]) -> int:
+        c = 0
         for monomer in self.monomers:
+            c += 1
             if monomer == other:
-                return self.monomers.index(monomer)
+                return c
