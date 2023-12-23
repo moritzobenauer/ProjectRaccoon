@@ -130,34 +130,30 @@ class Monomer:
         return updated_monomer
 
     def __repr__(self):
-        return f"Monomer({self.name}, {self.atoms}, {self.link}, {self.polymer})"
+        return f"Monomer({self.name},# Atome {self.atom_count},Polymer:{self.polymer}, inv {self.inverted})"
 
-    def __str__(self):
-        return f"Monomer({self.name}, {self.atoms}, {self.link}, {self.polymer})"
-
-    def __eq__(self, other):
+    def __eq__(self, other: Union["Monomer", Dict]):
         if isinstance(other, Monomer):
-            return self.name == other.name
-        else:
-            return False
+            for attribute in self.__dict__:
+                if getattr(self, attribute) != getattr(other, attribute):
+                    return False
+            return True
+        elif isinstance(other, Dict):
+            for attribute in other.keys():
+                if not hasattr(self, attribute):
+                    print(f"Monomer does not have attribute {attribute}")
+                if getattr(self, attribute) != other[attribute]:
+                    return False
+            return True
 
     def __hash__(self):
         return hash(self.name)
-
-    def __getitem__(self, key):
-        if isinstance(key, str):
-            return self.atoms[self.atoms.index(key)]
-        else:
-            return self.atoms[key]
 
     def __len__(self):
         return len(self.atoms)
 
     def __iter__(self):
         return iter(self.atoms)
-
-    def __contains__(self, item):
-        return item in self.atoms
 
 
 class Monomers:
@@ -219,20 +215,6 @@ class Monomers:
 
     def __contains__(self, item):
         return item in self.monomers
-
-    def __eq__(self, other: Union[Monomer, Dict]):
-        if isinstance(other, Monomer):
-            for attribute in self.__dict__:
-                if getattr(self, attribute) != getattr(other, attribute):
-                    return False
-            return True
-        elif isinstance(other, Dict):
-            for attribute in other.keys():
-                if not hasattr(self, attribute):
-                    print(f"Monomer does not have attribute {attribute}")
-                if getattr(self, attribute) != other[attribute]:
-                    return False
-            return True
 
     def __index__(self, other: Union[Monomer, Dict]) -> int:
         c = 0
