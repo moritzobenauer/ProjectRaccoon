@@ -1,5 +1,8 @@
 <div>
 <img style="display: flex" src="/screenshots/raccoon_logo_round.png" width="100" height="100">
+<p align="center">
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+</p>
 <h1 style="float: right">Project RACCOON</h1> 
 </div>
 
