@@ -13,19 +13,13 @@ authors:
     corresponding: true 
   - name: Kai N. Spauszus
     orcid: 0009-0006-0650-2273
-    equal-contrib: false
-    affiliation: 1 
-    corresponding: false 
-- name: Pol Besenius
+    affiliation: 1
+  - name: Pol Besenius
     orcid: 0000-0001-7478-4459
-    equal-contrib: false
     affiliation: 1 
-    corresponding: false
-- name: Friederike Schmid
+  - name: Friederike Schmid
     orcid: 0000-0002-5536-6718
-    equal-contrib: false
     affiliation: 2 
-    corresponding: false  
 affiliations:
  - name: Department of Chemistry, Johannes Gutenberg-University Mainz, Duesbergweg 10-14, D-55128 Mainz, Germany
    index: 1
@@ -33,6 +27,7 @@ affiliations:
    index: 2
 date: 20 January 2024
 bibliography: paper.bib
+---
 
 # Summary
 
