@@ -84,7 +84,7 @@ class Monomer:
 
         return monomer.invert_amino_acid()
 
-    def invert_amino_acid(self):
+    def invert(self):
         """
         Inverts an amino acid by reversing the link list and changing the inverted flag.
 
