@@ -1,5 +1,5 @@
 from ..data.monomers import Monomers
-from ..functions.standard import generate_file
+from ..functions import generate_file
 
 
 def start_racoon(
