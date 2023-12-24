@@ -1,6 +1,13 @@
 from ..data.monomers import Monomer, Monomers
-from ..functions import generate_file, get_atoms_from_bs_file
+from ..functions import (
+    generate_file,
+    get_atoms_from_bs_file,
+    PDBtoXYZ,
+    CheckMinimalDistance,
+)
 
+from unittest import TestLoader, TextTestRunner, TestCase
+from ...tests.unit.test_pdb_file import TestPdbFile
 from questionary import text, select, confirm
 
 
@@ -72,22 +79,23 @@ def start_racoon(
 
             option = choose_option()
 
-        # elif options == 'Check PDB File':
-        #    #CheckPDB(outputfile)
-        #    #main()
-        # elif options == "Convert PDB to XYZ File":
-        #    #PDBtoXYZ(outputfile)
-        #    #main()
-        # elif options == 'Check Minimal Distance':
-        #    #CheckMinimalDistance(outputfile)
-        #    #main()
+        elif option == "Check PDB File":
+            suite = TestLoader().loadTestsFromTestCase(TestPdbFile)
+            TextTestRunner().run(suite)
+            option = choose_option()
+
+        elif option == "Convert PDB to XYZ File":
+            PDBtoXYZ(out_file)
+            option = choose_option()
+
+        elif option == "Check Minimal Distance":
+            CheckMinimalDistance(out_file)
+            option = choose_option()
 
         elif option == "Add Monomer":
-            # create empty monomer
-
             inputfile = text("Enter the path to the monomer file").ask()
-
             add_monomer(inputfile)
+            option = choose_option()
 
         elif option == "Exit":
             return
