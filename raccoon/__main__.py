@@ -14,7 +14,7 @@ if __name__ == "__main__":
         default="examples/seq_FHFHFXG_PEO_GXFHFHF.txt",  # "seq.txt"
     )
     argParser.add_argument(
-        "-o", "--output", help="Output File", type=str, default="out.txt"
+        "-o", "--output", help="Output File", type=str, default="out.pdb"
     )
     argParser.add_argument(
         "-m", "--monomers", help="Monomer File", type=str, default="monomers.dat"
