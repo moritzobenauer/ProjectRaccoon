@@ -10,7 +10,7 @@ setup(
     author="Moritz L. Obenauer",
     url="https://github.com/moritzobenauer/ProjectRaccoon",
     packages=["raccoon"],
-    package_dir={"raccoon": "src"},
+    # package_dir={"raccoon": "src"},
     entry_points={"console_scripts": ["raccoon=raccoon.__main__:main"]},
     install_requires=required,
     classifiers=[
