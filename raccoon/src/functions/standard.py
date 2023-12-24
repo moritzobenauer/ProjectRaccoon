@@ -1,12 +1,14 @@
 from raccoon.src.data.monomers import Monomer, Monomers
 
 from collections import namedtuple
-from raccoon.src.typing import List, Dict, Tuple
+from raccoon.src.typing import List, Dict, Tuple, NamedTuple
 
 import numpy as np
 
 
-def generate_sequence(monomers: Monomers, fpath: str) -> List[int]:
+def generate_sequence(
+    monomers: Monomers, fpath: str
+) -> NamedTuple("sequence", [("index", List), ("inverted", List), ("reps", List)]):
     """
     Generates a sequence from a inputfile.
 
@@ -18,7 +20,7 @@ def generate_sequence(monomers: Monomers, fpath: str) -> List[int]:
         namedtuple: Sequence which contains the index of the monomer, the information if it is inverted and the number of repetitions.
     """
 
-    sequence = namedtuple("sequence", ["index", "inverted", "repeat"])
+    sequence = namedtuple("sequence", ["index", "inverted", "reps"])
     sequence.index = list()
     sequence.inverted = list()
     sequence.reps = list()

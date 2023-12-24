@@ -1,4 +1,4 @@
-from .standard import generate_file
+from .standard import generate_file, generate_sequence
 from .util import (
     PDBtoXYZ,
     CheckPDB,
