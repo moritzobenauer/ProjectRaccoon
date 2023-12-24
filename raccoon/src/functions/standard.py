@@ -1,7 +1,7 @@
 from raccoon.src.data.monomers import Monomer, Monomers
 
 from collections import namedtuple
-from typing import List, Dict, Tuple
+from raccoon.src.typing import List, Dict, Tuple, float, int
 
 import numpy as np
 

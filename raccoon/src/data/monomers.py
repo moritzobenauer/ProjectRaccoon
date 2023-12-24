@@ -1,4 +1,7 @@
-from typing import List, Tuple, Union, Dict, Optional, Slice, Set
+from ..typing import List, Dict, Union, slice
+from ..typing import float, int
+
+from ..util import MONOMERFILE
 import copy
 import ast
 
@@ -16,7 +19,7 @@ class Monomer:
     """Resolution of the monomer."""
     atom_count: int
     """Number of atoms in the monomer."""
-    atoms: List[Tuple[str, str]]
+    atoms: List[str, str, float, float, float, List[int], int]
     """List of atoms in the monomer."""
     link: List[int]  # TODO: rename to links
     """List of atoms that are linked."""
@@ -30,7 +33,7 @@ class Monomer:
         name: str,
         resolution: str,
         atom_count: int,
-        atoms: List[List[Union[str, int]]],
+        atoms: List[str, str, float, float, float, List[int], int],
         link: List[int],
         polymer: bool = False,
         inverted: bool = False,
@@ -127,10 +130,47 @@ class Monomer:
 
         return updated_monomer
 
+    def add_to_file(self, fpath: str = MONOMERFILE):
+        """
+        Adds a monomer to a given file, default the monomers.dat file.
+
+        Args:
+            fpath (str, optional): Path to the monomer file. Defaults to MONOMERFILE.
+
+        """
+
+        monomer = [
+            "\n",
+            "res=" + self.name + "\n",
+            "resolution=" + self.resolution + "\n",
+            "polymer=" + str(int(self.polymer)) + "\n",
+            "atoms=" + str(self.atom_count) + "\n",
+            "links=" + str(self.link) + "\n",
+        ]
+
+        with open(fpath, "a") as f:
+            f.writelines(monomer)
+
+            for idx, atom in enumerate(self.atoms):
+                line = f"""{idx}=["{atom[0]}", "{atom[1]}", {atom[3]}, {atom[4]}, {atom[5]}, {atom[2]}, {idx}] \n"""
+                f.write(line)
+
+        print(f"Monomer added to {fpath}")
+
     def __repr__(self):
         return f"Monomer({self.name},# Atome {self.atom_count},Polymer:{self.polymer}, inv {self.inverted})"
 
     def __eq__(self, other: Union["Monomer", Dict]):
+        """
+        Defines the equality of two monomers by comparing all attributes or an monomer and a dictionary, that contains some of the attributes.
+        With this method, the '==' operator is implemented.
+
+        Args:
+            other (Union[Monomer, Dict]): Monomer or dictionary to compare with.
+
+        Returns:
+            bool: True if equal, False if not equal.
+        """
         if isinstance(other, Monomer):
             for attribute in self.__dict__:
                 if getattr(self, attribute) != getattr(other, attribute):
@@ -166,7 +206,7 @@ class Monomers:
         self.monomers = monomers
 
     @classmethod
-    def from_file(cls, fpath: str):
+    def from_file(cls, fpath: str = MONOMERFILE):
         """
         Creates a monomer from a file.
         """
