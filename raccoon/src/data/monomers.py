@@ -7,7 +7,7 @@ import numpy as np
 
 class Monomer:
     """
-    Contains the monomer classes for the raccoon model.
+    Contains the monomer class for the raccoon model.
     """
 
     name: str
@@ -54,8 +54,6 @@ class Monomer:
         data["polymer"] = bool(int(data["polymer"]))
         data["atom_count"] = int(data["atoms"])
         data["link"] = ast.literal_eval(data["link"])
-        for x in range(1, data["atoms"] + 1):
-            data[x] = ast.literal_eval(data.pop(f"{x}"))
         data["inverted"] = False
 
         # alle restlichen einträge, deren keys integer sind, in die atoms liste speichern
@@ -82,7 +80,7 @@ class Monomer:
             inverted=data["inverted"],
         )
 
-        return monomer.invert_amino_acid()
+        return monomer
 
     def invert(self):
         """
