@@ -1,1 +1,0 @@
-MONOMERFILE = "monomers.dat"
