@@ -66,12 +66,13 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
         cshifts = np.zeros(3)
         atom_count = 0
 
+        links = list()
+
         sequence = generate_sequence(monomers, spath)
         for index, inverted, reps in zip(
             sequence.index, sequence.inverted, sequence.reps
         ):
             monomer = monomers[index]
-            links = list()
 
             if inverted:
                 monomer = monomer.invert()
@@ -120,28 +121,29 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
 
                 # TODO: WriteExplicitBonds(out_file)
 
-            # write bonds in file
-            for i in range(0, len(links) - 1, 1):
-                f.write(
-                    "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
-                        "",
-                        "CONECT",
-                        links[i],
-                        links[i + 1],
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                    )
+        # write bonds in file
+        for i in range(0, len(links) - 1, 1):
+            f.write(
+                "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
+                    "",
+                    "CONECT",
+                    links[i],
+                    links[i + 1],
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                 )
-            links.clear()
-    sort_PDB(outpath)
+            )
+
+    # no need for sorting beacuse the atoms are already sorted ( consecutive numbering) and the bonds are written after all atoms
+    # sort_PDB(outpath)
     close_PDB(outpath, atom_count)
 
     print(
