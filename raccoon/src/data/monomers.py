@@ -47,17 +47,11 @@ class Monomer:
         self.inverted = inverted
 
     @classmethod
-    def from_dict(cls, data: Dict):
-        """
-        Creates a monomer from a dictionary.
-
-        """
-
+    def prepare_dict(cls, data: Dict):
         # convert data to correct types
         data["polymer"] = bool(int(data["polymer"]))
         data["atoms"] = int(data["atoms"])
         data["link"] = ast.literal_eval(data["link"])
-        data["inverted"] = False
 
         # alle restlichen einträge, deren keys integer sind, in die atoms liste speichern
         data["atoms_list"] = list()
@@ -68,10 +62,18 @@ class Monomer:
                 "atoms",
                 "link",
                 "polymer",
-                "inverted",
                 "atoms_list",
             ] and isinstance(eval(key), int):
                 data["atoms_list"].append(ast.literal_eval(data[key]))
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data: Dict):
+        """
+        Creates a monomer from a dictionary.
+
+        """
 
         monomer = cls(
             name=data["res"],
@@ -80,7 +82,6 @@ class Monomer:
             atoms=data["atoms_list"],
             link=data["link"],
             polymer=data["polymer"],
-            inverted=data["inverted"],
         )
 
         return monomer
@@ -221,6 +222,7 @@ class Monomers:
             for lnr, line in enumerate(lines):
                 if line.startswith("#") or not line.strip():
                     if monomer:
+                        monomer = Monomer.prepare_dict(monomer)
                         monomers.append(Monomer.from_dict(monomer))
                         monomer = dict()
                     continue
@@ -232,6 +234,7 @@ class Monomers:
                     monomer[key] = value
 
                     if lnr == fsize - 1:
+                        monomer = Monomer.prepare_dict(monomer)
                         monomers.append(Monomer.from_dict(monomer))
 
         return cls(monomers)
