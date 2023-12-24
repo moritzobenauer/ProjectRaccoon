@@ -35,8 +35,8 @@ class Monomer:
         atom_count: int,
         atoms: List,
         link: List[int],
-        polymer: bool = False,
-        inverted: bool = False,
+        polymer: bool,
+        inverted: bool,
     ):
         self.name = name
         self.resolution = resolution
@@ -49,22 +49,27 @@ class Monomer:
     @classmethod
     def prepare_dict(cls, data: Dict):
         # convert data to correct types
+        data["name"] = data["res"]
         data["polymer"] = bool(int(data["polymer"]))
-        data["atoms"] = int(data["atoms"])
+        data["atom_count"] = int(data["atoms"])
         data["link"] = ast.literal_eval(data["link"])
 
         # alle restlichen einträge, deren keys integer sind, in die atoms liste speichern
-        data["atoms_list"] = list()
+        data["atoms"] = list()
         for key in data.keys():
             if key not in [
                 "res",
+                "name",
                 "resolution",
                 "atoms",
+                "atom_count",
                 "link",
                 "polymer",
-                "atoms_list",
             ] and isinstance(eval(key), int):
-                data["atoms_list"].append(ast.literal_eval(data[key]))
+                data["atoms"].append(ast.literal_eval(data[key]))
+
+        if not "inverted" in data.keys():
+            data["inverted"] = False
 
         return data
 
@@ -76,17 +81,18 @@ class Monomer:
         """
 
         monomer = cls(
-            name=data["res"],
+            name=data["name"],
             resolution=data["resolution"],
-            atom_count=data["atoms"],
-            atoms=data["atoms_list"],
+            atom_count=data["atom_count"],
+            atoms=data["atoms"],
             link=data["link"],
             polymer=data["polymer"],
+            inverted=data["inverted"],
         )
 
         return monomer
 
-    def invert(self):
+    def invert(self) -> "Monomer":
         """
         Inverts an amino acid by reversing the link list and changing the inverted flag.
 
@@ -228,12 +234,10 @@ class Monomers:
                     continue
                 else:
                     key, value = line.split("=")
-                    key = key.strip()
-                    value = value.strip()
-
-                    monomer[key] = value
+                    monomer[key.strip()] = value.strip()
 
                     if lnr == fsize - 1:
+                        # TODO: gefällt mir nicht, andere lösung finden
                         monomer = Monomer.prepare_dict(monomer)
                         monomers.append(Monomer.from_dict(monomer))
 
@@ -244,14 +248,14 @@ class Monomers:
 
     def __getitem__(
         self, index: Union[int, List[int], slice]
-    ) -> Union[Monomer, List[Monomer]]:
+    ) -> Union[Monomer, "Monomers"]:
         if isinstance(index, int):
             return self.monomers[index]
         elif isinstance(index, list):
             assert all(isinstance(i, int) for i in index)
-            return [self.monomers[i] for i in index]
+            return Monomers([self.monomers[i] for i in index])
         elif isinstance(index, slice):
-            return self.monomers[index]
+            return Monomers(self.monomers[index])
         else:
             raise TypeError("Index must be int, list or slice.")
 

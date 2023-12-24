@@ -8,5 +8,6 @@
     ["O","O",-0.08,0.5,1.44,[4,8],3]
   ],
   "link":[3,1],
-  "polymer":true
+  "polymer":true,
+  "inverted":false
 }
