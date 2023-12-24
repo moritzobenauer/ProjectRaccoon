@@ -1,11 +1,11 @@
-from ..typing import List, Dict, Union, slice
-from ..typing import float, int
+from ..typing import List, Dict, Union
 
 from ..util import MONOMERFILE
 import copy
 import ast
 
 import numpy as np
+import os
 
 
 class Monomer:
@@ -19,7 +19,7 @@ class Monomer:
     """Resolution of the monomer."""
     atom_count: int
     """Number of atoms in the monomer."""
-    atoms: List[str, str, float, float, float, List[int], int]
+    atoms: List
     """List of atoms in the monomer."""
     link: List[int]  # TODO: rename to links
     """List of atoms that are linked."""
@@ -33,7 +33,7 @@ class Monomer:
         name: str,
         resolution: str,
         atom_count: int,
-        atoms: List[str, str, float, float, float, List[int], int],
+        atoms: List,
         link: List[int],
         polymer: bool = False,
         inverted: bool = False,
@@ -55,7 +55,7 @@ class Monomer:
 
         # convert data to correct types
         data["polymer"] = bool(int(data["polymer"]))
-        data["atom_count"] = int(data["atoms"])
+        data["atoms"] = int(data["atoms"])
         data["link"] = ast.literal_eval(data["link"])
         data["inverted"] = False
 
@@ -71,7 +71,7 @@ class Monomer:
                 "inverted",
                 "atoms_list",
             ] and isinstance(eval(key), int):
-                data["atoms_list"].append([ast.literal_eval(data[key])])
+                data["atoms_list"].append(ast.literal_eval(data[key]))
 
         monomer = cls(
             name=data["res"],
@@ -212,10 +212,14 @@ class Monomers:
         """
 
         monomers = []
-        with open(fpath) as inpt:
+
+        with open(fpath, "r") as f:
             monomer = dict()
-            for line in inpt:
-                if line.startswith("#") or line.strip() == "":
+
+            lines = f.readlines()
+            fsize = len(lines)
+            for lnr, line in enumerate(lines):
+                if line.startswith("#") or not line.strip():
                     if monomer:
                         monomers.append(Monomer.from_dict(monomer))
                         monomer = dict()
@@ -226,6 +230,9 @@ class Monomers:
                     value = value.strip()
 
                     monomer[key] = value
+
+                    if lnr == fsize - 1:
+                        monomers.append(Monomer.from_dict(monomer))
 
         return cls(monomers)
 
@@ -254,9 +261,11 @@ class Monomers:
     def __contains__(self, item):
         return item in self.monomers
 
-    def __index__(self, other: Union[Monomer, Dict]) -> int:
-        c = 0
-        for monomer in self.monomers:
-            c += 1
-            if monomer == other:
-                return c
+    def index(self, monomer: Monomer) -> int:
+        """
+        Return the index of an monomer in the monomers.
+        """
+        if monomer in self.monomers:
+            return self.monomers.index(monomer)
+        else:
+            raise ValueError(f"{monomer} not in list")

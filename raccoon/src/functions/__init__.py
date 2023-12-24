@@ -1,5 +1,5 @@
-from standard import generate_sequence
-from util import (
+from .standard import generate_file
+from .util import (
     PDBtoXYZ,
     CheckPDB,
     Visualize,

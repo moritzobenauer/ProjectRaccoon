@@ -43,14 +43,8 @@ def add_monomer(fpath: str):
     return
 
 
-def start_racoon(
-    sequenze_file: str,
-    monomer_file: str,
-    out_file: str,
-    explicitbonds: bool,
-    remove_duplicates: bool,
-):
-    options = select(
+def choose_option() -> str:
+    return select(
         "Choose Function",
         choices=[
             "Create PDB File",
@@ -61,10 +55,22 @@ def start_racoon(
         ],
     ).ask()
 
+
+def start_racoon(
+    sequence_file: str,
+    out_file: str,
+    monomer_file: str,
+    explicitbonds: bool,
+    remove_duplicates: bool,
+):
+    option = choose_option()
+
     while True:
-        if options == "Create PDB File":
+        if option == "Create PDB File":
             monomers = Monomers.from_file(monomer_file)
-            generate_file(monomers, explicitbonds, sequenze_file, out_file)
+            generate_file(monomers, explicitbonds, sequence_file, out_file)
+
+            option = choose_option()
 
         # elif options == 'Check PDB File':
         #    #CheckPDB(outputfile)
@@ -75,12 +81,13 @@ def start_racoon(
         # elif options == 'Check Minimal Distance':
         #    #CheckMinimalDistance(outputfile)
         #    #main()
-        elif options == "Add Monomer":
+
+        elif option == "Add Monomer":
             # create empty monomer
 
             inputfile = text("Enter the path to the monomer file").ask()
 
             add_monomer(inputfile)
 
-        elif options == "Exit":
+        elif option == "Exit":
             return

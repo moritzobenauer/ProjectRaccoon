@@ -1,7 +1,7 @@
 from raccoon.src.data.monomers import Monomer, Monomers
 
 from collections import namedtuple
-from raccoon.src.typing import List, Dict, Tuple, float, int
+from raccoon.src.typing import List, Dict, Tuple
 
 import numpy as np
 
@@ -23,8 +23,8 @@ def generate_sequence(monomers: Monomers, fpath: str) -> List[int]:
     sequence.inverted = list()
     sequence.reps = list()
 
-    with open(fpath, "r") as input:
-        for line in input:
+    with open(fpath, "r") as f:
+        for line in f.readlines():
             if line.startswith("#") or line.strip() == "":
                 continue
             else:
@@ -36,11 +36,11 @@ def generate_sequence(monomers: Monomers, fpath: str) -> List[int]:
                 elif resolution == "CG":
                     resolution_lookup = "coarse_grained"
 
-                index = monomers.index({"res": res, "resolution": resolution_lookup})
+                index = monomers.index({"name": res, "resolution": resolution_lookup})
 
-                sequence.index.append(index)
-                sequence.inverted.append(inverted)
-                sequence.reps.append(reps)
+                sequence.index.append(int(index))
+                sequence.inverted.append(bool(inverted))
+                sequence.reps.append(int(reps))
 
     return sequence
 
@@ -64,13 +64,16 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
 
         # cartesian shifts
         cshifts = np.zeros(3)
-        ashift = 0
+        atom_count = 0
 
-        links = list()
-
-        for index, inverted, reps in generate_sequence(monomers, spath):
+        sequence = generate_sequence(monomers, spath)
+        for index, inverted, reps in zip(
+            sequence.index, sequence.inverted, sequence.reps
+        ):
             monomer = monomers[index]
-            if inverted == "True":
+            links = list()
+
+            if inverted:
                 monomer = monomer.invert()
 
             # TODO: implement explicit bonds
@@ -82,7 +85,7 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
                     [
                         (np.random.uniform(x_min, x_max)),
                         (np.random.uniform(y_min, y_max)),
-                        (monomer.atom_count * np.random.uniform(z_min, z_max)),
+                        (float(monomer.atom_count) * np.random.uniform(z_min, z_max)),
                     ]
                 )
 
@@ -90,13 +93,11 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
 
                 updated_monomer = monomer.update(atom_count, cshifts)
 
-                atom_count += monomer.atom_count
+                atom_count += updated_monomer.atom_count
                 res_count += 1
 
-                # add the C-Terminus link
-                links.append(updated_monomer.link[1])
-                # add the N-Terminus link
-                links.append(updated_monomer.link[0])
+                # add the C-Terminus link and / or the N-Terminus link
+                links.extend(updated_monomer.link)
 
                 for atom in updated_monomer.atoms:
                     f.write(
@@ -105,7 +106,7 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
                             "ATOM",
                             atom[6],
                             atom[0],
-                            updated_monomer["res"],
+                            updated_monomer.name,
                             "A",
                             res_count,
                             atom[2],
@@ -119,30 +120,33 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
 
                 # TODO: WriteExplicitBonds(out_file)
 
-                # write bonds in file
-                for i in range(0, len(links), 1):
-                    f.write(
-                        "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
-                            "",
-                            "CONECT",
-                            links[i],
-                            links[i + 1],
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                        )
+            # write bonds in file
+            for i in range(0, len(links) - 1, 1):
+                f.write(
+                    "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
+                        "",
+                        "CONECT",
+                        links[i],
+                        links[i + 1],
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
                     )
+                )
+            links.clear()
     sort_PDB(outpath)
     close_PDB(outpath, atom_count)
 
-    print(f"Created PDB file with {res_count} residue and {atom_count} atoms.")
+    print(
+        f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}."
+    )
 
 
 def sort_PDB(fpath: str):
@@ -154,10 +158,17 @@ def sort_PDB(fpath: str):
 
     """
 
-    with open(fpath, "r") as f:
+    with open(fpath, "r+") as f:
         rows = f.readlines()
-        sorted_rows = sorted(rows, key=lambda x: x.split()[0])
-        f.writelines(sorted_rows)
+        atoms = [row for row in rows if row.startswith("ATOM")]
+        bonds = [row for row in rows if row.startswith("CONECT")]
+
+        sorted_atoms = sorted(atoms, key=lambda x: x[1])
+        sorted_bonds = sorted(bonds, key=lambda x: x[1])
+
+    with open(fpath, "w") as f:
+        f.writelines(sorted_atoms)
+        f.writelines(sorted_bonds)
 
 
 def close_PDB(fpath: str, atom_count: int):
