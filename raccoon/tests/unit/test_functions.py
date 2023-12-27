@@ -2,8 +2,9 @@ from unittest import TestCase
 
 from raccoon.src.functions import generate_file, generate_sequence
 
-from raccoon.src.typing import Monomers, List, Dict, Tuple, NamedTuple
+from raccoon.src.typing import List, Dict, Tuple, NamedTuple
 
+from raccoon.src.data import Monomer, Monomers, Sequence, Atom
 from collections import namedtuple
 
 from pathlib import Path
@@ -19,17 +20,17 @@ class TestFunctions(TestCase):
 
     def test_generate_sequence(
         self,
-        f1path: str = "raccoon/tests/unit/data/seq_FHFHFXG_PEO_GXFHFHF.txt",
+        spath: str = "raccoon/tests/unit/data/seq_FHFHFXG_PEO_GXFHFHF.txt",
     ) -> None:
-        with open(Path.joinpath(self.root, f1path), "r") as f:
-            s1 = generate_sequence(self.monomers, f1path)
+        s1 = generate_sequence(self.monomers, spath)
 
-        s2 = namedtuple("sequence", ["index", "inverted", "reps"])
-        s2.index = [6, 3, 4, 3, 4, 3, 9, 7, 1, 7, 9, 3, 4, 3, 4, 3, 6]
-        s2.inverted = [True] * len(s2.index)
-        s2.reps = [1, 1, 1, 1, 1, 1, 1, 1, 50, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        index = [6, 3, 4, 3, 4, 3, 9, 7, 1, 7, 9, 3, 4, 3, 4, 3, 6]
+        inverted = [True] * len(index)
+        reps = [1, 1, 1, 1, 1, 1, 1, 1, 50, 1, 1, 1, 1, 1, 1, 1, 1]
 
-        self.assertIsInstance(s1, NamedTuple)
+        s2 = Sequence(index, inverted, reps)
+
+        self.assertIsInstance(s1, Sequence)
 
         self.assertIsInstance(s1.index, List)
         self.assertIsInstance(s1.index[0], int)
@@ -39,7 +40,7 @@ class TestFunctions(TestCase):
 
         self.assertIsInstance(s1.reps, List)
         self.assertIsInstance(s1.reps[0], int)
-        self.assertEqual(s2, s2)
+        self.assertEqual(s1, s2)
 
     def test_generate_file(self):
         pass

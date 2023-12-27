@@ -17,7 +17,7 @@ if __name__ == "__main__":
         "-o", "--output", help="Output File", type=str, default="out.pdb"
     )
     argParser.add_argument(
-        "-m", "--monomers", help="Monomer File", type=str, default="monomers.dat"
+        "-m", "--monomers", help="Monomer File", type=str, default="monomers.json"
     )
     argParser.add_argument(
         "-e", "--explicit", help="Explicit Bonds", type=bool, default=False

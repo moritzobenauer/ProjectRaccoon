@@ -106,16 +106,23 @@ class TestMonomerClass(TestCase):
 
         self.assertTrue(inv_monomer.inverted)
 
-    def test_update(self) -> None:
+    def test_get_atoms_from_bs_file(self) -> None:
+        """Tests the get_atoms_from_bs_file method."""
         pass
 
-    def test_add_to_file(self, fpath: str = "out"):
+    def test_create_monomer(self) -> None:
+        """Tests the create_monomer method."""
+        pass
+
+    def test_update(self) -> None:
         pass
 
 
 class TestMonomersClass(TestCase):
 
     """Test the Monomers Class."""
+
+    root = Path(__file__).parents[3]
 
     def setUp(self) -> None:
         self.monomers = Monomers.from_file()
@@ -139,3 +146,51 @@ class TestMonomersClass(TestCase):
         """Tests the indexing of the monomers with an monomer and a dict."""
         self.assertEqual(self.monomers.index(self.monomers[0]), 0)
         self.assertEqual(self.monomers.index(self.monomers[1].__dict__), 1)
+
+    def test_to_dict(self) -> None:
+        """
+        Tests the to_dict method. Preliminary test with the original `monomers.dat` file,
+         which will be removed in the future. Only the `monomers.json` file will be used, tested and updated.
+        """
+
+        monomers = Monomers.from_file("monomers.dat")
+
+        self.assertIsInstance(self.monomers.to_dict(), Dict)
+
+        self.assertEqual(len(monomers), len(self.monomers))
+
+        self.assertEqual(self.monomers.to_dict(), monomers.to_dict())
+
+    def test_add_monomer(self) -> None:
+        """Tests the add_monomer method."""
+
+        name = "PEO"
+        resolution = "test_resolution"
+        link = [1, 2]
+        atom_count = 3
+        atoms = [
+            ["C1", "C", 0, 0, 0, [1, 2], 1],
+            ["C2", "C", 0, 0, 0, [2, 3], 2],
+            ["C3", "C", 0, 0, 0, [3, 1], 3],
+        ]
+        polymer = True
+        inverted = False
+
+        peo = Monomer(
+            name=name,
+            resolution=resolution,
+            link=link,
+            atom_count=atom_count,
+            atoms=atoms,
+            polymer=polymer,
+            inverted=inverted,
+        )
+
+        self.monomers.add_monomer(peo)
+
+        # identifier for monomer is name + resolution
+        self.assertTrue(
+            peo.name + "_" + peo.resolution in self.monomers.to_dict().keys()
+        )
+
+        self.assertTrue(peo in self.monomers)

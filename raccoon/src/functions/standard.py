@@ -1,4 +1,4 @@
-from raccoon.src.data.monomers import Monomer, Monomers
+from raccoon.src.data import Monomer, Monomers, Sequence, Atom
 
 from collections import namedtuple
 from raccoon.src.typing import List, Dict, Tuple, NamedTuple
@@ -6,9 +6,7 @@ from raccoon.src.typing import List, Dict, Tuple, NamedTuple
 import numpy as np
 
 
-def generate_sequence(
-    monomers: Monomers, fpath: str
-) -> NamedTuple("sequence", [("index", List), ("inverted", List), ("reps", List)]):
+def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
     """
     Generates a sequence from a inputfile.
 
@@ -20,17 +18,16 @@ def generate_sequence(
         namedtuple: Sequence which contains the index of the monomer, the information if it is inverted and the number of repetitions.
     """
 
-    sequence = namedtuple("sequence", ["index", "inverted", "reps"])
-    sequence.index = list()
-    sequence.inverted = list()
-    sequence.reps = list()
+    index = list()
+    inverted = list()
+    reps = list()
 
     with open(fpath, "r") as f:
         for line in f.readlines():
             if line.startswith("#") or line.strip() == "":
                 continue
             else:
-                res, resolution, inverted, reps = line.split(":")
+                res, resolution, inv, rep = line.split(":")
                 if resolution == "AA":
                     resolution_lookup = "atomistic"
                 elif resolution == "UA":
@@ -38,13 +35,13 @@ def generate_sequence(
                 elif resolution == "CG":
                     resolution_lookup = "coarse_grained"
 
-                index = monomers.index({"name": res, "resolution": resolution_lookup})
+                index.append(
+                    monomers.index({"name": res, "resolution": resolution_lookup})
+                )
+                inverted.append(bool(inv))
+                reps.append(int(rep))
 
-                sequence.index.append(int(index))
-                sequence.inverted.append(bool(inverted))
-                sequence.reps.append(int(reps))
-
-    return sequence
+    return Sequence(index, inverted, reps)
 
 
 def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath: str):
