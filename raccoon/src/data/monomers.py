@@ -52,6 +52,12 @@ class Monomer:
         self.polymer = polymer
         self.inverted = inverted
 
+    def coordinates_to_numpy(self):
+        return np.array([[atom.x, atom.y, atom.z] for atom in self.atoms])
+
+    def get_explicit_links(self):
+        return [atom.neighbours for atom in self.atoms]
+
     @classmethod
     def prepare_dict(cls, data: Dict):
         # convert data to correct types
