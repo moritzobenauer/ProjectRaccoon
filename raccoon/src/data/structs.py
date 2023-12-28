@@ -1,4 +1,4 @@
-from ..typing import NamedTuple, List, Optional
+from ..typing import NamedTuple, List, Optional, Union
 
 
 class Sequence(NamedTuple):
@@ -44,3 +44,30 @@ class Atom:
         self.z = z
         self.neighbours = neighbours
         self.index = index
+
+    def to_list(self):
+        """Returns the atom as a list."""
+        return [
+            self.ff_identifier,
+            self.element,
+            self.x,
+            self.y,
+            self.z,
+            self.neighbours,
+            self.index,
+        ]
+
+    def to_dict(self):
+        """Returns the atom as a dict."""
+        return {
+            "ff_identifier": self.ff_identifier,
+            "element": self.element,
+            "x": self.x,
+            "y": self.y,
+            "z": self.z,
+            "neighbours": self.neighbours,
+            "index": self.index,
+        }
+
+    def __repr__(self) -> str:
+        return f"Atom({self.ff_identifier}, {self.element}, {self.x}, {self.y}, {self.z}, {self.neighbours}, {self.index})"

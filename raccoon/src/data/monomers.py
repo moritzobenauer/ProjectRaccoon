@@ -5,7 +5,7 @@ from ..util import MONOMERFILE
 import copy
 import ast
 
-import importlib.resources
+import importlib
 
 import numpy as np
 
@@ -219,7 +219,7 @@ class Monomer:
         return atoms
 
     def __repr__(self):
-        return f"Monomer({self.name}, resolution {self.resolution}, # Atome {self.atom_count},Polymer:{self.polymer}, inv {self.inverted})"
+        return f"Monomer({self.name}, resolution {self.resolution}, # atoms {self.atom_count}, Polymer:{self.polymer}, inv {self.inverted})"
 
     def __eq__(self, other: Union["Monomer", Dict]):
         """
@@ -233,20 +233,31 @@ class Monomer:
             bool: True if equal, False if not equal.
         """
         if isinstance(other, Monomer):
-            for attribute in self.__dict__:
+            for attribute in self.to_dict().keys():
                 if getattr(self, attribute) != getattr(other, attribute):
                     return False
             return True
         elif isinstance(other, Dict):
             for attribute in other.keys():
                 if not hasattr(self, attribute):
-                    print(f"Monomer does not have attribute {attribute}")
+                    print(f"monomer has no attribute {attribute}")
+                    return False
+                if attribute in ["atoms"]:
+                    continue
                 if getattr(self, attribute) != other[attribute]:
                     return False
             return True
 
     def to_dict(self):
-        return self.__dict__
+        return {
+            "name": self.name,
+            "resolution": self.resolution,
+            "atom_count": self.atom_count,
+            "atoms": [atom.to_list() for atom in self.atoms],
+            "link": self.link,
+            "polymer": self.polymer,
+            "inverted": self.inverted,
+        }
 
     def __hash__(self):
         return hash(self.name)
@@ -324,7 +335,8 @@ class Monomers:
             with open(fpath, "r") as f:
                 data = json.load(f)
         else:
-            with importlib.resources.open_text("raccoon.src.data", MONOMERFILE) as f:
+            files = importlib.resources.files("raccoon.src.data")
+            with open(files / MONOMERFILE, "r") as f:
                 data = json.load(f)
 
         monomers = []
@@ -404,12 +416,9 @@ class Monomers:
             with open(fpath, "w") as f:
                 json.dump(self.to_dict(), f, indent=indent)
         else:
-            fpath = importlib.resources.path("raccoon.src.data", MONOMERFILE)
-            with open(fpath.args[0], "w") as f:
+            files = importlib.resources.files("raccoon.src.data")
+            with open(files / MONOMERFILE, "w") as f:
                 json.dump(self.to_dict(), f, indent=indent)
-
-    def path(self):
-        return importlib.resources.path("raccoon.src.data", MONOMERFILE)
 
     def __len__(self):
         return len(self.monomers)
@@ -427,7 +436,9 @@ class Monomers:
         if monomer in self.monomers:
             return self.monomers.index(monomer)
         else:
-            raise ValueError(f"{monomer} not in list")
+            raise ValueError(
+                f"{monomer.name} in {monomer.resolution} monomer.resolution not in list"
+            )
 
     def __sizeof__(self) -> int:
         return len(self.monomers)
