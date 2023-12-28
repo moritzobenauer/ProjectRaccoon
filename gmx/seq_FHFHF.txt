@@ -1,0 +1,7 @@
+# FHFHF test sequence for gmx testing
+# NH3+ and COO- termini are added by pdb2gmx
+PHE:AA:0:1
+HIS:AA:0:1
+PHE:AA:0:1
+HIS:AA:0:1
+PHE:AA:0:1
