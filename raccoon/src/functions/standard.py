@@ -183,8 +183,8 @@ def generate_file(
 
                 updated_monomer = monomer.update(atom_count, cshifts)
 
-                new_row = monomer.coordinates_to_numpy()
-                coordinates = np.vstack((coordinates, new_row))
+                new_coordinates = monomer.coordinates_to_numpy()
+                coordinates = np.vstack((coordinates, new_coordinates))
 
                 pairs = []
 
