@@ -1,8 +1,5 @@
 from setuptools import setup
 
-with open("requirements.txt") as f:
-    required = f.read().splitlines()
-
 setup(
     name="raccoon",
     version="1.0.0",
@@ -10,9 +7,11 @@ setup(
     author="Moritz L. Obenauer",
     url="https://github.com/moritzobenauer/ProjectRaccoon",
     packages=["raccoon"],
-    # package_dir={"raccoon": "src"},
+    package_data={"raccoon": ["src/data/*.json"]},
     entry_points={"console_scripts": ["raccoon=raccoon.__main__:main"]},
-    install_requires=required,
+    install_requires=[
+        "biopandas==0.4.1",
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",

@@ -1,14 +1,12 @@
 from ..data.monomers import Monomer, Monomers
 from ..functions import (
     generate_file,
-    get_atoms_from_bs_file,
     PDBtoXYZ,
     CheckMinimalDistance,
 )
 
-import copy
 
-from unittest import TestLoader, TextTestRunner, TestCase
+from unittest import TestLoader, TextTestRunner
 from ...tests.unit.test_pdb_file import TestPdbFile
 from questionary import text, select, confirm
 

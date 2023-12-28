@@ -1,8 +1,11 @@
 from ..typing import List, Dict, Union, Optional
+from .structs import Atom
 
 from ..util import MONOMERFILE
 import copy
 import ast
+
+import importlib.resources
 
 import questionary
 
@@ -20,7 +23,7 @@ class Monomer:
     """Resolution of the monomer."""
     atom_count: int
     """Number of atoms in the monomer."""
-    atoms: List
+    atoms: List[Atom]
     """
     List of atoms in the monomer.
     contains the following information:
@@ -38,7 +41,7 @@ class Monomer:
         name: str,
         resolution: str,
         atom_count: int,
-        atoms: List,
+        atoms: List[Atom],
         link: List[int],
         polymer: bool,
         inverted: bool,
@@ -71,7 +74,8 @@ class Monomer:
                 "link",
                 "polymer",
             ] and isinstance(eval(key), int):
-                data["atoms"].append(ast.literal_eval(data[key]))
+                atom_data = ast.literal_eval(data[key])
+                data["atoms"].append(atom_data)
 
         if not "inverted" in data.keys():
             data["inverted"] = False
@@ -89,7 +93,7 @@ class Monomer:
             name=data["name"],
             resolution=data["resolution"],
             atom_count=data["atom_count"],
-            atoms=data["atoms"],
+            atoms=[Atom(*atom) for atom in data["atoms"]],
             link=data["link"],
             polymer=data["polymer"],
             inverted=data["inverted"],
@@ -130,44 +134,18 @@ class Monomer:
 
         for atom in updated_monomer.atoms:
             # shifting the atom positions
-            for i in range(2, 5):
-                atom[i] = np.round(atom[i] + shift_cartesian[i - 3], 2)
+            atom.x = np.round(atom.x + shift_cartesian[0], 2)
+            atom.y = np.round(atom.y + shift_cartesian[1], 2)
+            atom.z = np.round(atom.z + shift_cartesian[2], 2)
 
             # shifting the atom index
-            atom[6] += shift
+            atom.index += shift
 
             # shifting the neighboring atoms
-            for i in range(len(atom[5])):
-                atom[5][i] += shift
+            for idx, _ in enumerate(atom.neighbours):
+                atom.neighbours[idx] += shift
 
         return updated_monomer
-
-    def add_to_file(self, fpath: str = MONOMERFILE):
-        """
-        Adds a monomer to a given file, default the monomers.dat file.
-
-        Args:
-            fpath (str, optional): Path to the monomer file. Defaults to MONOMERFILE.
-
-        """
-
-        monomer = [
-            "\n",
-            "res=" + self.name + "\n",
-            "resolution=" + self.resolution + "\n",
-            "polymer=" + str(int(self.polymer)) + "\n",
-            "atoms=" + str(self.atom_count) + "\n",
-            "links=" + str(self.link) + "\n",
-        ]
-
-        with open(fpath, "a") as f:
-            f.writelines(monomer)
-
-            for idx, atom in enumerate(self.atoms):
-                line = f"""{idx}=["{atom[0]}", "{atom[1]}", {atom[3]}, {atom[4]}, {atom[5]}, {atom[2]}, {idx}] \n"""
-                f.write(line)
-
-        print(f"Monomer added to {fpath}")
 
     @classmethod
     def create_monomer(
@@ -190,8 +168,6 @@ class Monomer:
             ff_identifier (Optional[List[int]], optional): List of atom indices that are used for the force field. Defaults to None.
         """
 
-        monomer = Monomer()
-
         if not monomer_name:
             monomer_name = questionary.text("Enter the name of the monomer").ask()
 
@@ -212,6 +188,11 @@ class Monomer:
                     f"Enter a force field Identifier for {atom[0]}' with the Number {atom[-1]}: "
                 ).ask()
                 atom.insert(0, ff_identifier)
+        else:
+            for atom, ff_identifier in zip(atoms, ff_identifiers):
+                atom.insert(0, ff_identifier)
+
+        atoms = [Atom(*atom) for atom in atoms]
 
         atom_count = len(atoms)
 
@@ -319,7 +300,7 @@ class Monomers:
         self.monomers = monomers
 
     @classmethod
-    def from_file(cls, fpath: str = MONOMERFILE):
+    def from_file(cls, fpath: str):
         """
         Creates a list of monomers from a `.dat` file. Is not longer supported and will be removed in the future.
 
@@ -356,18 +337,29 @@ class Monomers:
         return cls(monomers)
 
     @classmethod
-    def from_json(cls, fpath: str) -> "Monomers":
+    def from_json(cls, fpath: Optional[str] = None) -> "Monomers":
         """
-        Creates a list of monomers from a json file.
+        Creates a list of monomers from a json file. If no path is given the default monomers file is used,
+        which is located in the raccoon package under raccoon/src/data/monomers.json.
+
+        Args:
+            fpath (Optional[str]): Path to the monomers file. Defaults to None.
+
+        Returns:
+            Monomers: Monomers object.
         """
         import json
 
-        with open(fpath, "r") as f:
-            data = json.load(f)
+        if fpath is not None:
+            with open(fpath, "r") as f:
+                data = json.load(f)
+        else:
+            with importlib.resources.open_text("raccoon.src.data", MONOMERFILE) as f:
+                data = json.load(f)
 
         monomers = []
 
-        for name, monomer in data.items():
+        for _, monomer in data.items():
             monomers.append(Monomer.from_dict(monomer))
 
         return cls(monomers)
@@ -403,7 +395,7 @@ class Monomers:
         self.monomers.remove(monomer)
 
         if save:
-            self.to_json(MONOMERFILE)
+            self.to_json()
 
     def __repr__(self):
         return f"{len(self.monomers)} Monomers"
@@ -427,11 +419,27 @@ class Monomers:
             for monomer in self.monomers
         }
 
-    def to_json(self, fpath: str, indent: int = 2):
+    def to_json(self, fpath: Optional[str] = None, indent: Optional[int] = 2):
+        """Saves the monomers to a json file. If no path is given the default monomers file is used,
+           which is located in the raccoon package under raccoon/src/data/monomers.json.
+
+        Args:
+            fpath (Optional[str]): Path to the monomers file. Defaults to None.
+            indent (Optional[int], optional): Indentation of the json file. Defaults to 2.
+
+        """
         import json
 
-        with open(fpath, "w") as f:
-            json.dump(self.to_dict(), f, indent=indent)
+        if fpath is not None:
+            with open(fpath, "w") as f:
+                json.dump(self.to_dict(), f, indent=indent)
+        else:
+            fpath = importlib.resources.path("raccoon.src.data", MONOMERFILE)
+            with open(fpath.args[0], "w") as f:
+                json.dump(self.to_dict(), f, indent=indent)
+
+    def path(self):
+        return importlib.resources.path("raccoon.src.data", MONOMERFILE)
 
     def __len__(self):
         return len(self.monomers)

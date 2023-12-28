@@ -15,7 +15,7 @@ import numpy as np
 class TestFunctions(TestCase):
     def setUp(self) -> None:
         self.root = Path(__file__).parents[3]
-        self.monomers = Monomers.from_file()
+        self.monomers = Monomers.from_json()
         return super().setUp()
 
     def test_generate_sequence(
