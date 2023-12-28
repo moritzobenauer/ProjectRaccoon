@@ -38,9 +38,9 @@ if __name__ == "__main__":
         print("Sequence file does not exist!")
         exit(1)
 
-    if not os.path.isfile(MONOMERFILE):
-        print("Monomer file does not exist!")
-        exit(1)
+    # if not os.path.isfile(MONOMERFILE):
+    #    print("Monomer file does not exist!")
+    #    exit(1)
 
     welcome()
     start_racoon(
