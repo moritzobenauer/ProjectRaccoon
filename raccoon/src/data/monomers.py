@@ -7,8 +7,6 @@ import ast
 
 import importlib.resources
 
-import questionary
-
 import numpy as np
 
 
@@ -150,68 +148,40 @@ class Monomer:
     @classmethod
     def create_monomer(
         cls,
-        fpath: str,
-        monomer_name: Optional[str] = None,
-        monomer_resolution: Optional[str] = None,
-        monomer_polymer: Optional[bool] = None,
-        monomer_link: Optional[List[int]] = None,
-        ff_identifiers: Optional[List[int]] = None,
+        name: str,
+        resolution: str,
+        polymer: bool,
+        link: List[int],
+        atoms: List,
+        ff_identifiers: List[int],
     ) -> "Monomer":
         """
-        Creates a monomer. The function can be automated by passing the optional arguments and/or can be used interactively.
+        Creates a monomer.
         Args:
-            fpath (str): Path to the monomer file.
-            monomer_name (Optional[str], optional): Name of the monomer. Defaults to None.
-            monomer_resolution (Optional[str], optional): Resolution of the monomer. Defaults to None.
-            monomer_polymer (Optional[bool], optional): Polymer flag of the monomer. Defaults to None.
-            monomer_link (Optional[List[int]], optional): List of atoms that are linked. Defaults to None.
-            ff_identifier (Optional[List[int]], optional): List of atom indices that are used for the force field. Defaults to None.
+            name (str): Name of the monomer.
+            resolution (str): Resolution of the monomer.
+            polymer (bool): Polymer flag of the monomer.
+            link (List[int]): List of atoms that are linked.
+            atoms (List): List of atoms in the monomer from the function Monomer.get_atoms_from_bs_file.
+            ff_identifier (List[int]): List of atom indices that are used for the force field.
         """
 
-        if not monomer_name:
-            monomer_name = questionary.text("Enter the name of the monomer").ask()
-
-        if not monomer_resolution:
-            monomer_resolution = questionary.select(
-                "Choose resolution",
-                choices=["atomistic", "united_atom", "coarse_grained"],
-            ).ask()
-
-        if not monomer_polymer:
-            monomer_polymer = questionary.confirm("Is this a polymer?").ask()
-
-        atoms = Monomer.get_atoms_from_bs_file(fpath)
-
-        if not ff_identifiers:
-            for atom in atoms:
-                ff_identifier = questionary.text(
-                    f"Enter a force field Identifier for {atom[0]}' with the Number {atom[-1]}: "
-                ).ask()
-                atom.insert(0, ff_identifier)
-        else:
-            for atom, ff_identifier in zip(atoms, ff_identifiers):
-                atom.insert(0, ff_identifier)
+        for atom, ff_identifier in zip(atoms, ff_identifiers):
+            atom.insert(0, ff_identifier)
 
         atoms = [Atom(*atom) for atom in atoms]
 
         atom_count = len(atoms)
 
-        if not monomer_link:
-            linkC = questionary.text(f"Choose C-Terminus (1-{len(atoms)})").ask()
-            linkN = questionary.text(f"Choose N-Terminus (1-{len(atoms)})").ask()
-            monomer_link = [int(linkC), int(linkN)]
-
-        link = monomer_link
-
         inverted = False
 
         return cls(
-            name=monomer_name,
-            resolution=monomer_resolution,
+            name=name,
+            resolution=resolution,
             atom_count=atom_count,
             atoms=atoms,
             link=link,
-            polymer=monomer_polymer,
+            polymer=polymer,
             inverted=inverted,
         )
 

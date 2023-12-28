@@ -33,9 +33,10 @@ def start_racoon(
 ):
     option = choose_option()
 
+    monomers = Monomers.from_json(monomer_file)
+
     while True:
         if option == "Create PDB File":
-            monomers = Monomers.from_json(monomer_file)
             generate_file(monomers, explicitbonds, sequence_file, out_file)
 
             option = choose_option()
@@ -54,13 +55,40 @@ def start_racoon(
             option = choose_option()
 
         elif option == "Add Monomer":
-            monomers = Monomers.from_json(monomer_file)
+            name = text("Enter the name of the monomer").ask()
+            resolution = select(
+                "Choose resolution",
+                choices=["atomistic", "united_atom", "coarse_grained"],
+            ).ask()
+            polymer = confirm("Is this a polymer?").ask()
+
+            linkC = text(f"Choose C-Terminus (1-{len(atoms)})").ask()
+            linkN = text(f"Choose N-Terminus (1-{len(atoms)})").ask()
+            link = [int(linkC), int(linkN)]
+
             bs_file = text("Enter the name of the monomer's bs file: ").ask()
-            monmer = Monomer.create_monomer(bs_file)
+            atoms = Monomer.get_atoms_from_bs_file(bs_file)
+
+            ff_identifiers = list()
+            for atom in atoms:
+                ff_identifier = text(
+                    f"Enter a force field Identifier for {atom[0]}' with the Number {atom[-1]}: "
+                ).ask()
+                ff_identifiers.append(ff_identifier)
+
+            monmer = Monomer.create_monomer(
+                name,
+                resolution,
+                polymer,
+                link,
+                atoms,
+                ff_identifiers,
+            )
 
             save = confirm("Do you want to save the monomer?").ask()
 
             monomers.add_monomer(monmer, save=save)
+
             option = choose_option()
 
         elif option == "Exit":
