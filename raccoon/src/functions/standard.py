@@ -44,41 +44,101 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
     return Sequence(index, inverted, reps)
 
 
-# Creates a random shift in all directions with and without bias
-# Setting r_(min, _max) = 1 creates a linear shift for debugging
-# No default values needed
+def RandShift(
+    x_min: float,
+    x_max: float,
+    y_min: float,
+    y_max: float,
+    z_min: float,
+    z_max: float,
+    z_bias: float,
+):
+    """Creates a random shift in all directions with and without bias. Setting r_(min, _max) = 1 creates a linear shift for debugging. No default values needed.
 
-def RandShift(x_min, x_max, y_min, y_max, z_min, z_max, z_bias):
+    Args:
+        x_min (float): _description_
+        x_max (float): _description_
+        y_min (float): _description_
+        y_max (float): _description_
+        z_min (float): _description_
+        z_max (float): _description_
+        z_bias (float): _description_
+
+    Returns:
+        array (np.array): 3d vector with shape (3,)
+    """
     x = np.random.uniform(x_min, x_max)
     y = np.random.uniform(y_min, y_max)
     z = z_bias * np.random.uniform(z_min, z_max)
-    return np.array([x,y,z])
-    
-# Checks for the minimal distance between atoms / beads of the new monomer and all prior atoms / beads
-# Future revisions could use contacts matrix to adjust self-avoiding random walk
+    return np.array([x, y, z])
 
-def MinimalDistance(coordinates, new_monomer):
-    contacts = np.empty((coordinates.shape[0],new_monomer.shape[0]))
-    for i, r1 in enumerate(new_monomer):
-        for j, r2 in enumerate(coordinates):
-            contacts[j,i] = np.round(np.linalg.norm(r1 - r2),3)
+
+def MinimalDistance(
+    polypetide_coordinates: np.array, new_monomer_coordinates: np.array
+):
+    """Checks for the minimal distance between atoms / beads of the new monomer and all prior atoms / beads.
+       Future revisions could use contacts matrix to adjust self-avoiding random walk.
+
+    Args:
+        coordinates (np.array): Array of coordinates of the prior atoms / beads.
+        new_monomer (np.array): Array of coordinates of the new monomer.
+
+    Returns:
+        min (float): Minimal distance between atoms / beads.
+        contacts (np.array): Matrix of distances between atoms / beads.
+    """
+    contacts = np.empty(
+        (polypetide_coordinates.shape[0], new_monomer_coordinates.shape[0])
+    )
+    for i, r1 in enumerate(new_monomer_coordinates):
+        for j, r2 in enumerate(polypetide_coordinates):
+            contacts[j, i] = np.round(np.linalg.norm(r1 - r2), 3)
     min = np.min(contacts)
     return min, contacts
+
 
 # Self-Avoiding Random Walk to prevent infinite forces upon energy minimization
 # Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
 # Treshshold of trr=1 should be sufficient to prevent infinite forces
 
-def SemiRandomWalk(coordinates, monomer, trr, shift):
+
+def SemiRandomWalk(
+    polypeptide_coordinates: np.array, monomer: Monomer, trr: float, shift: List[float]
+):
+    """Self-Avoiding Random Walk to prevent infinite forces upon energy minimization.
+         Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
+            Treshshold of trr=1 should be sufficient to prevent infinite forces.
+
+    Args:
+        polypetide_coordinates (np.array): Array of all coordinates of the atoms in the previous monomers.
+        monomer (Monomer): Monomer from raccoon.src.data
+        trr (float): Threshold for minimal distance.
+        shift (list(float)): List of cartesian shifts.
+
+    Returns:
+        k (np.array): 3d vector with shape (3,)
+    """
+
     minimal_distance = 0
-    new_monomer = monomer.coordinates_to_numpy()
+    monomer_coordinates = monomer.coordinates_to_numpy()
     while minimal_distance < trr:
         k = RandShift(*shift)
-        updated_monomer = new_monomer + k[np.newaxis, :]
-        minimal_distance,contacts = MinimalDistance(coordinates, updated_monomer)
-    return (updated_monomer - new_monomer)[0]
+        updated_monomer_coordinates = monomer_coordinates + k[np.newaxis, :]
+        minimal_distance, _ = MinimalDistance(
+            polypeptide_coordinates, updated_monomer_coordinates
+        )
+    return (updated_monomer_coordinates - monomer_coordinates)[0]
 
-def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath: str, trr: float=1, shift_cartesian: List[float]=[-1,1,-1,1,-1,1,1], damping_factor: float=0.5):
+
+def generate_file(
+    monomers: Monomers,
+    explicit_bonds: bool,
+    spath: str,
+    outpath: str,
+    trr: float = 1,
+    shift_cartesian: List[float] = [-1, 1, -1, 1, -1, 1, 1],
+    damping_factor: float = 0.5,
+):
     """Central function of the modul: adds monomers to a polymer peptide chain and writes it to a PDB file.
 
     Args:
@@ -92,16 +152,15 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
     """
     atom_count = 0
     res_count = 0
-    
-    with open(outpath, "w") as f:
 
+    with open(outpath, "w") as f:
         # cartesian shifts
         cshifts = np.zeros(3)
         atom_count = 0
 
         links = list()
         links_explicit = list()
-        coordinates = np.zeros((1,3))
+        coordinates = np.zeros((1, 3))
 
         sequence = generate_sequence(monomers, spath)
         for index, inverted, reps in zip(
@@ -117,12 +176,10 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
             #    ExplicitBonds(monomers[monomer.index])
 
             for rep in range(reps):
-
-    
                 shift_cartesian[6] = float(monomer.atom_count) * damping_factor
-                m = SemiRandomWalk(coordinates,monomer, trr=1, shift=shift_cartesian)
+                m = SemiRandomWalk(coordinates, monomer, trr=1, shift=shift_cartesian)
 
-                cshifts += m 
+                cshifts += m
 
                 updated_monomer = monomer.update(atom_count, cshifts)
 
@@ -134,22 +191,26 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
                 # Probably not the most efficient method to get all the explicit links, it works however
                 # updated_monomer.get_explicit_links() gets a list of all links of every atom in a monomer
                 # iterate through that list and create pairs
-                
+
                 if explicit_bonds == True:
-                    for index,neighbor in enumerate(updated_monomer.get_explicit_links()):
+                    for index, neighbor in enumerate(
+                        updated_monomer.get_explicit_links()
+                    ):
                         for n in neighbor:
-                            pairs.append((index+1+atom_count, n))
+                            pairs.append((index + 1 + atom_count, n))
                     unique_pairs = set()
 
                     # search for duplicate touples and only keep the non-duplicates
-                    
+
                     for item in pairs:
-                        if (item not in unique_pairs) and (tuple(reversed(item)) not in unique_pairs):
+                        if (item not in unique_pairs) and (
+                            tuple(reversed(item)) not in unique_pairs
+                        ):
                             unique_pairs.add(item)
 
                     for items in unique_pairs:
                         links_explicit.extend(items)
-                    
+
                 else:
                     pass
 
@@ -178,9 +239,8 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
                         )
                     )
 
-
         # extra loop needed, since iterator has to be set to [::2] instead of [::1] for non-explicit bonds
-        
+
         if explicit_bonds == True:
             for i in range(0, len(links_explicit) - 1, 2):
                 f.write(
@@ -202,7 +262,6 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
                     )
                 )
 
-            
         # write bonds in file
         for i in range(0, len(links) - 1, 1):
             f.write(
