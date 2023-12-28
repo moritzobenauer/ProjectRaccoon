@@ -5,6 +5,12 @@ __pycache__/
 
 # TEXT
 *.txt
+
+# OUTPUT
+*.out
+*.pdb
+*.xyz
+
 # C extensions
 *.so
 
