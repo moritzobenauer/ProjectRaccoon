@@ -104,17 +104,17 @@ def generate_file(monomers: Monomers, explicit_bonds: bool, spath: str, outpath:
                         "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
                             "",
                             "ATOM",
-                            atom[6],
-                            atom[0],
+                            atom.index,
+                            atom.ff_identifier,
                             updated_monomer.name,
                             "A",
                             res_count,
-                            atom[2],
-                            atom[3],
-                            atom[4],
+                            atom.x,
+                            atom.y,
+                            atom.z,
                             1.0,
                             0.0,
-                            atom[1],
+                            atom.element,
                         )
                     )
 

@@ -17,51 +17,6 @@ def clear_terminal():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-def combine_columns(row):
-    values = [
-        int(value)
-        for value in [row["N1"], row["N2"], row["N3"], row["N4"]]
-        if not pd.isna(value)
-    ]
-    return values
-
-
-def update_column_hash(row):
-    return row.name + 1  # Adding 1 to the row index
-
-
-def get_atoms_from_bs_file(fpath: str):
-    """Reads a bs file and returns a list with informations about the atoms to contruct a "Monomer".
-
-    Args:
-        fpath (str): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    header = [
-        "Element",
-        "x",
-        "y",
-        "z",
-        "N1",
-        "N2",
-        "N3",
-        "N4",
-        "#",
-        "Neighbors",
-        "Identifier",
-    ]
-
-    atoms = pd.read_csv(fpath, sep="   ", skiprows=[0, 1], header=None, names=header)
-
-    atoms["Neighbors"] = atoms.apply(combine_columns, axis=1)
-    atoms["#"] = atoms.apply(update_column_hash, axis=1)
-    atoms = atoms[["Identifier", "Element", "Neighbors", "x", "y", "z"]]
-
-    return [row for index, row in atoms.iterrows()]
-
-
 def PDBtoXYZ(fpath: str):
     root = Path(__file__).parents[3]
 

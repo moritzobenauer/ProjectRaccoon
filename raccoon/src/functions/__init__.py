@@ -5,5 +5,4 @@ from .util import (
     Visualize,
     Distances,
     CheckMinimalDistance,
-    get_atoms_from_bs_file,
 )

@@ -125,7 +125,7 @@ class TestMonomersClass(TestCase):
     root = Path(__file__).parents[3]
 
     def setUp(self) -> None:
-        self.monomers = Monomers.from_file()
+        self.monomers = Monomers.from_json()
         return super().setUp()
 
     def test_get_item(self) -> None:

@@ -1,4 +1,4 @@
-from ..typing import NamedTuple, List
+from ..typing import NamedTuple, List, Optional
 
 
 class Sequence(NamedTuple):
@@ -12,10 +12,10 @@ class Sequence(NamedTuple):
 class Atom(NamedTuple):
     """A Namedtuple which contains the information about the atom."""
 
-    name: str
-    index: int
+    ff_identifier: Optional[str]
+    element: str
     x: float
     y: float
     z: float
-    ff_identifier: str
     neighbours: List[int]
+    index: int
