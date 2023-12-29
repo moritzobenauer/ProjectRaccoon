@@ -17,6 +17,9 @@ def clear_terminal():
     os.system("cls" if os.name == "nt" else "clear")
 
 
+## PDB2XYZ can cause problems
+## Use PDB format for visualization
+
 def PDBtoXYZ(fpath: str):
     root = Path(__file__).parents[3]
 
@@ -47,11 +50,9 @@ def CheckPDB(input):
 
 
 def Visualize(input):
-    with open(f"{input}.xyz") as ifile:
-        system = "".join([x for x in ifile])
-    view = py3Dmol.view(width=400, height=300)
-    view.addModelsAsFrames(system)
-    view.setStyle({"model": -1}, {"sphere": {"color": "spectrum"}})
+    view = py3Dmol.view(width=800, height=500, viewergrid=(1,1))
+    view.addModel(open(f"{input}",'r').read(),'pdb')
+    view.setStyle({'sphere': {}}, viewer=(0,0))
     view.zoomTo()
     view.show()
 
