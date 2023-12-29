@@ -38,7 +38,7 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
                 index.append(
                     monomers.index({"name": res, "resolution": resolution_lookup})
                 )
-                inverted.append(bool(inv))
+                inverted.append(bool(int(inv)))
                 reps.append(int(rep))
 
     return Sequence(index, inverted, reps)
