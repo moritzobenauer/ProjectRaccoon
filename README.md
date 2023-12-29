@@ -13,6 +13,26 @@
 The tool was specifically developed for the OPLS force field but is adaptable to any other force field. The tool's primary scope is to provide a straightforward method for creating starting structures for molecular dynamics simulations. It caters to the creation of linear polymer peptide conjugates with facing polypeptide strands. 
 The tool emphasizes user-friendliness, making it accessible to chemists and physicists, not just limited to theoretical chemists with extensive background knowledge. Additionally, users can modify the code for their specific projects. Early developments started in January 2023. The software was developed at the KOMET and Besenius' research groups at the Johannes Gutenberg University Mainz.</div>
 
+### Supported building blocks
+
+>[!NOTE]
+>We encourage users to share their updated *monomers.json* file. Upload the updated file to Github or contact the developers.
+
+| Residue Name | AA | UA | CG |
+| :---         | :- | :- | :- |
+| PEO          | :white_check_mark: | :white_check_mark: | :x: |
+| PHE          | :white_check_mark: | :soon: | :x: |
+| HIS          | :white_check_mark: | :soon: | :x: |
+| ACE          | :white_check_mark: | :soon: | :x: |
+| NME          | :soon: | :soon: | :x: |
+| DUM          |  |  | :white_check_mark: |
+| CSX          | :white_check_mark: | :white_check_mark: | :x: |
+| LNK          | :white_check_mark: | :white_check_mark: | :x: |
+
+For non-standard amino acids **CSX** and **LNK**, please refer to the following paper by [pending, 20xx](https://www.ak-besenius.chemie.uni-mainz.de/). Coarse-grained models have not been implemented yet.
+
+
+
 ## How to use Project RACCOON
 
 ### Installing for Standard Usage

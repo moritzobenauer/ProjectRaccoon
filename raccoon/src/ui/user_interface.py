@@ -4,8 +4,8 @@ from ..functions import (
     PDBtoXYZ,
     CheckMinimalDistance,
 )
-
-
+from biopandas.pdb import PandasPdb
+from rich.console import Console
 from unittest import TestLoader, TextTestRunner
 from ...tests.unit.test_pdb_file import TestPdbFile
 from questionary import text, select, confirm
@@ -37,17 +37,27 @@ def start_racoon(
 
     monomers = Monomers.from_json(monomer_file)
 
+    # Use rich terminal to make it look a bit nicer :)
+    console = Console()
+
+
     while True:
+
+
         if option == "Create PDB File":
             generate_file(monomers, explicitbonds, sequence_file, out_file)
 
             option = choose_option()
 
         elif option == "Check PDB File":
-            # Check Biopandas
-            # try excpet (error catchen und error ausgeben) 
-            suite = TestLoader().loadTestsFromTestCase(TestPdbFile)
-            TextTestRunner().run(suite)
+
+            try:
+                ppdb = PandasPdb().read_pdb(out_file)
+                console.print(ppdb.df["ATOM"], highlight=False)
+                console.print(f"Check Complete", style="bold green")
+            except Exception as e:
+                console.print(f"Error: {e}", style="bold red")
+            
             option = choose_option()
 
         elif option == "Convert PDB to XYZ File":
@@ -59,15 +69,19 @@ def start_racoon(
             option = choose_option()
         
         elif option == "Export JSON Monomer File":
+
             fpath = text("Enter JSON output filename").ask()
             if not fpath.split(".")[-1] == "json":
-                print("Please specify a JSON output file.")
+                console.print("Please specify a JSON output file.", style="bold red")
                 option = choose_option()
             monomers.to_json(fpath)
             option = choose_option()
 
         elif option == "Add Monomer":
             name = text("Enter the name of the monomer").ask()
+            while name == "":
+                console.print("Please enter a valid name.", style="bold red")
+                name = text("Enter the name of the monomer").ask()
             resolution = select(
                 "Choose resolution",
                 choices=["atomistic", "united_atom", "coarse_grained"],
@@ -75,12 +89,13 @@ def start_racoon(
             polymer = confirm("Is this a polymer?").ask()
 
             bs_file = text("Enter the name of the monomer's bs file: ").ask()
-            atoms = Monomer.get_atoms_from_bs_file(bs_file)
+            try:
+                atoms = Monomer.get_atoms_from_bs_file(bs_file)
+            except Exception as e:
+                console.print(f"Error: {e}", style="bold red")
+                option = choose_option()
 
-            # Print atom list to console
-            # Moritz muss das hier nochmal hübscher machen!
-
-            [print(atom) for atom in atoms]
+            [console.print(f"Index: {index+1} Element Symbol: {atom[0]} Neighbors: {atom[4]}") for index, atom in enumerate(atoms)]
 
             linkC = text(f"Choose C-Terminus (1-{len(atoms)})").ask()
             linkN = text(f"Choose N-Terminus (1-{len(atoms)})").ask()
@@ -107,6 +122,5 @@ def start_racoon(
             monomers.add_monomer(monmer, save=save)
 
             option = choose_option()
-
         elif option == "Exit":
             return

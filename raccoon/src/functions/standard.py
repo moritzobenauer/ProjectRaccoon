@@ -4,6 +4,7 @@ from collections import namedtuple
 from raccoon.src.typing import List, Dict, Tuple, NamedTuple
 
 import numpy as np
+from rich.console import Console
 
 
 def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
@@ -162,6 +163,9 @@ def generate_file(
         links_explicit = list()
         coordinates = np.zeros((1, 3))
 
+        console = Console()
+        console.print("Generating Coordinates")
+
         sequence = generate_sequence(monomers, spath)
         for index, inverted, reps in zip(
             sequence.index, sequence.inverted, sequence.reps
@@ -170,10 +174,6 @@ def generate_file(
 
             if inverted:
                 monomer = monomer.invert()
-
-            # TODO: implement explicit bonds
-            # if explicit_bonds:
-            #    ExplicitBonds(monomers[monomer.index])
 
             for rep in range(reps):
                 shift_cartesian[6] = float(monomer.atom_count) * damping_factor
@@ -193,6 +193,9 @@ def generate_file(
                 # iterate through that list and create pairs
 
                 if explicit_bonds == True:
+
+                    console.print("Generating Explicit Bonds")
+
                     for index, neighbor in enumerate(
                         updated_monomer.get_explicit_links()
                     ):
@@ -263,6 +266,7 @@ def generate_file(
                 )
 
         # write bonds in file
+        console.print("Writing to File")
         for i in range(0, len(links) - 1, 1):
             f.write(
                 "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
@@ -287,8 +291,8 @@ def generate_file(
     # sort_PDB(outpath)
     close_PDB(outpath, atom_count)
 
-    print(
-        f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}."
+    console.print(
+        f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}.", style="bold green"
     )
 
 
