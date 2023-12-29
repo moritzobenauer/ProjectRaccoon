@@ -19,6 +19,8 @@ def choose_option() -> str:
             "Check PDB File",
             "Convert PDB to XYZ File",
             "Check Minimal Distance",
+            "Add Monomer",
+            "Export JSON Monomer File",
             "Exit",
         ],
     ).ask()
@@ -42,6 +44,8 @@ def start_racoon(
             option = choose_option()
 
         elif option == "Check PDB File":
+            # Check Biopandas
+            # try excpet (error catchen und error ausgeben) 
             suite = TestLoader().loadTestsFromTestCase(TestPdbFile)
             TextTestRunner().run(suite)
             option = choose_option()
@@ -53,6 +57,14 @@ def start_racoon(
         elif option == "Check Minimal Distance":
             CheckMinimalDistance(out_file)
             option = choose_option()
+        
+        elif option == "Export JSON Monomer File":
+            fpath = text("Enter JSON output filename").ask()
+            if not fpath.split(".")[-1] == "json":
+                print("Please specify a JSON output file.")
+                option = choose_option()
+            monomers.to_json(fpath)
+            option = choose_option()
 
         elif option == "Add Monomer":
             name = text("Enter the name of the monomer").ask()
@@ -62,12 +74,17 @@ def start_racoon(
             ).ask()
             polymer = confirm("Is this a polymer?").ask()
 
+            bs_file = text("Enter the name of the monomer's bs file: ").ask()
+            atoms = Monomer.get_atoms_from_bs_file(bs_file)
+
+            # Print atom list to console
+            # Moritz muss das hier nochmal hübscher machen!
+
+            [print(atom) for atom in atoms]
+
             linkC = text(f"Choose C-Terminus (1-{len(atoms)})").ask()
             linkN = text(f"Choose N-Terminus (1-{len(atoms)})").ask()
             link = [int(linkC), int(linkN)]
-
-            bs_file = text("Enter the name of the monomer's bs file: ").ask()
-            atoms = Monomer.get_atoms_from_bs_file(bs_file)
 
             ff_identifiers = list()
             for atom in atoms:

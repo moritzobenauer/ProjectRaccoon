@@ -112,6 +112,9 @@ class Monomer:
         Returns:
             Monomer: Inverted monomer
         """
+        if self.polymer:
+            print(f"Inversion not possible for {self.name} (polymer building block).")
+            return
 
         inv_monomer = copy.deepcopy(self)
 
