@@ -25,7 +25,12 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 | HIS          | :white_check_mark: | :soon: | :x: |
 | ACE          | :white_check_mark: | :soon: | :x: |
 | NME          | :soon: | :soon: | :x: |
-| DUM          | :: | :: | :white_check_mark: |
+| DUM          |  |  | :white_check_mark: |
+| CSX          | :white_check_mark: | :white_check_mark: | :x: |
+| LNK          | :white_check_mark: | :white_check_mark: | :x: |
+
+For non-standard amino acids **CSX** and **LNK**, please refer to the following paper by [pending, 20xx](https://www.ak-besenius.chemie.uni-mainz.de/). Coarse-grained models have not been implemented yet.
+
 
 
 ## How to use Project RACCOON
