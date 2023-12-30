@@ -193,7 +193,6 @@ def generate_file(
                 # iterate through that list and create pairs
 
                 if explicit_bonds == True:
-
                     console.print("Generating Explicit Bonds")
 
                     for index, neighbor in enumerate(
@@ -224,6 +223,11 @@ def generate_file(
                 links.extend(updated_monomer.link)
 
                 for atom in updated_monomer.atoms:
+                    # formatting coordinates to 2
+                    x = np.round(atom.x, 2)
+                    y = np.round(atom.y, 2)
+                    z = np.round(atom.z, 2)
+
                     f.write(
                         "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
                             "",
@@ -233,9 +237,9 @@ def generate_file(
                             updated_monomer.name,
                             "A",
                             res_count,
-                            atom.x,
-                            atom.y,
-                            atom.z,
+                            x,
+                            y,
+                            z,
                             1.0,
                             0.0,
                             atom.element,
@@ -292,7 +296,8 @@ def generate_file(
     close_PDB(outpath, atom_count)
 
     console.print(
-        f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}.", style="bold green"
+        f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}.",
+        style="bold green",
     )
 
 
