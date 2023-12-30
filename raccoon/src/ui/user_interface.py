@@ -1,7 +1,7 @@
 from ..data.monomers import Monomer, Monomers
 from ..functions import (
     generate_file,
-    PDBtoXYZ,
+    pdb_to_xyz,
     CheckMinimalDistance,
 )
 from biopandas.pdb import PandasPdb
@@ -40,36 +40,31 @@ def start_racoon(
     # Use rich terminal to make it look a bit nicer :)
     console = Console()
 
-
     while True:
-
-
         if option == "Create PDB File":
             generate_file(monomers, explicitbonds, sequence_file, out_file)
 
             option = choose_option()
 
         elif option == "Check PDB File":
-
             try:
                 ppdb = PandasPdb().read_pdb(out_file)
                 console.print(ppdb.df["ATOM"], highlight=False)
                 console.print(f"Check Complete", style="bold green")
             except Exception as e:
                 console.print(f"Error: {e}", style="bold red")
-            
+
             option = choose_option()
 
         elif option == "Convert PDB to XYZ File":
-            PDBtoXYZ(out_file)
+            pdb_to_xyz(out_file)
             option = choose_option()
 
         elif option == "Check Minimal Distance":
             CheckMinimalDistance(out_file)
             option = choose_option()
-        
-        elif option == "Export JSON Monomer File":
 
+        elif option == "Export JSON Monomer File":
             fpath = text("Enter JSON output filename").ask()
             if not fpath.split(".")[-1] == "json":
                 console.print("Please specify a JSON output file.", style="bold red")
@@ -95,7 +90,12 @@ def start_racoon(
                 console.print(f"Error: {e}", style="bold red")
                 option = choose_option()
 
-            [console.print(f"Index: {index+1} Element Symbol: {atom[0]} Neighbors: {atom[4]}") for index, atom in enumerate(atoms)]
+            [
+                console.print(
+                    f"Index: {index+1} Element Symbol: {atom[0]} Neighbors: {atom[4]}"
+                )
+                for index, atom in enumerate(atoms)
+            ]
 
             linkC = text(f"Choose C-Terminus (1-{len(atoms)})").ask()
             linkN = text(f"Choose N-Terminus (1-{len(atoms)})").ask()
