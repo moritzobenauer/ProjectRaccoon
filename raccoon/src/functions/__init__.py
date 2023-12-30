@@ -3,6 +3,6 @@ from .util import (
     pdb_to_xyz,
     CheckPDB,
     Visualize,
-    Distances,
     CheckMinimalDistance,
+    calc_minimal_distance,
 )
