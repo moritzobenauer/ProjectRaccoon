@@ -1,10 +1,14 @@
 from raccoon.src.data import Monomer, Monomers, Sequence, Atom
 
 from collections import namedtuple
-from raccoon.src.typing import List, Dict, Tuple, NamedTuple
+from raccoon.src.typing import List, Dict, Optional
 
 import numpy as np
 from rich.console import Console
+
+from .util import calc_minimal_distance
+
+import sys
 
 
 def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
@@ -74,37 +78,16 @@ def RandShift(
     return np.array([x, y, z])
 
 
-def MinimalDistance(
-    polypetide_coordinates: np.array, new_monomer_coordinates: np.array
-):
-    """Checks for the minimal distance between atoms / beads of the new monomer and all prior atoms / beads.
-       Future revisions could use contacts matrix to adjust self-avoiding random walk.
-
-    Args:
-        coordinates (np.array): Array of coordinates of the prior atoms / beads.
-        new_monomer (np.array): Array of coordinates of the new monomer.
-
-    Returns:
-        min (float): Minimal distance between atoms / beads.
-        contacts (np.array): Matrix of distances between atoms / beads.
-    """
-    contacts = np.empty(
-        (polypetide_coordinates.shape[0], new_monomer_coordinates.shape[0])
-    )
-    for i, r1 in enumerate(new_monomer_coordinates):
-        for j, r2 in enumerate(polypetide_coordinates):
-            contacts[j, i] = np.round(np.linalg.norm(r1 - r2), 3)
-    min = np.min(contacts)
-    return min, contacts
-
-
 # Self-Avoiding Random Walk to prevent infinite forces upon energy minimization
 # Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
 # Treshshold of trr=1 should be sufficient to prevent infinite forces
 
 
 def SemiRandomWalk(
-    polypeptide_coordinates: np.array, monomer: Monomer, trr: float, shift: List[float]
+    polypeptide_coordinates: np.array,
+    monomer: Monomer,
+    trr: float,
+    shift: List[float],
 ):
     """Self-Avoiding Random Walk to prevent infinite forces upon energy minimization.
          Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
@@ -120,14 +103,16 @@ def SemiRandomWalk(
         k (np.array): 3d vector with shape (3,)
     """
 
-    minimal_distance = 0
     monomer_coordinates = monomer.coordinates_to_numpy()
+    minimal_distance = 0
     while minimal_distance < trr:
         k = RandShift(*shift)
         updated_monomer_coordinates = monomer_coordinates + k[np.newaxis, :]
-        minimal_distance, _ = MinimalDistance(
-            polypeptide_coordinates, updated_monomer_coordinates
+
+        minimal_distance = calc_minimal_distance(
+            coords1=polypeptide_coordinates, coords2=updated_monomer_coordinates
         )
+    print(minimal_distance)
     return (updated_monomer_coordinates - monomer_coordinates)[0]
 
 
@@ -177,13 +162,13 @@ def generate_file(
 
             for rep in range(reps):
                 shift_cartesian[6] = float(monomer.atom_count) * damping_factor
-                m = SemiRandomWalk(coordinates, monomer, trr=1, shift=shift_cartesian)
+                m = SemiRandomWalk(coordinates, monomer, trr=trr, shift=shift_cartesian)
 
                 cshifts += m
 
                 updated_monomer = monomer.update(atom_count, cshifts)
 
-                new_coordinates = monomer.coordinates_to_numpy()
+                new_coordinates = updated_monomer.coordinates_to_numpy()
                 coordinates = np.vstack((coordinates, new_coordinates))
 
                 pairs = []
