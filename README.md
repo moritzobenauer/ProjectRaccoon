@@ -20,7 +20,7 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 ### Supported building blocks
 
 >[!NOTE]
->We encourage users to share their updated *monomers.json* file. Upload the updated file to Github or contact the developers.
+>We encourage users to share their updated *monomers.json* file. Please submit a pull request, open an issue, or contact the developers.
 
 | Residue Name | AA | UA | CG |
 | :---         | :- | :- | :- |
