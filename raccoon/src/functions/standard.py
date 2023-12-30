@@ -112,7 +112,6 @@ def SemiRandomWalk(
         minimal_distance = calc_minimal_distance(
             coords1=polypeptide_coordinates, coords2=updated_monomer_coordinates
         )
-    print(minimal_distance)
     return (updated_monomer_coordinates - monomer_coordinates)[0]
 
 
