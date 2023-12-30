@@ -142,9 +142,9 @@ class Monomer:
 
         for atom in updated_monomer.atoms:
             # shifting the atom positions
-            atom.x = np.round(atom.x + shift_cartesian[0], 2)
-            atom.y = np.round(atom.y + shift_cartesian[1], 2)
-            atom.z = np.round(atom.z + shift_cartesian[2], 2)
+            atom.x = atom.x + shift_cartesian[0]
+            atom.y = atom.y + shift_cartesian[1]
+            atom.z = atom.z + shift_cartesian[2]
 
             # shifting the atom index
             atom.index += shift
@@ -163,7 +163,7 @@ class Monomer:
         polymer: bool,
         link: List[int],
         atoms: List,
-        ff_identifiers: List[int],
+        ff_identifiers: List[str],
     ) -> "Monomer":
         """
         Creates a monomer.
@@ -173,7 +173,7 @@ class Monomer:
             polymer (bool): Polymer flag of the monomer.
             link (List[int]): List of atoms that are linked.
             atoms (List): List of atoms in the monomer from the function Monomer.get_atoms_from_bs_file.
-            ff_identifier (List[int]): List of atom indices that are used for the force field.
+            ff_identifier (List[str]): List of atom names that are used for the force field.
         """
 
         for atom, ff_identifier in zip(atoms, ff_identifiers):

@@ -5,7 +5,7 @@ from raccoon.src.typing import List, Dict
 from raccoon.src.util import MONOMERFILE
 
 from raccoon.src.data import Monomer, Monomers, Atom
-import json
+import numpy as np
 
 from pathlib import Path
 
@@ -15,6 +15,12 @@ class TestMonomerClass(TestCase):
     """Test the Monomer class."""
 
     root = Path(__file__).parents[3]
+
+    def assertListAlmostEqual(self, list1: List, list2: List, places=5) -> None:
+        """Asserts that two lists are almost equal."""
+        self.assertEqual(len(list1), len(list2))
+        for a, b in zip(list1, list2):
+            self.assertAlmostEqual(a, b, places=places)
 
     def setUp(self) -> None:
         """Create a monomer object."""
@@ -160,11 +166,9 @@ class TestMonomerClass(TestCase):
         self.assertNotEqual(self.monomer, false_other_4)  # test name
         self.assertNotEqual(self.monomer, false_other_5)  # test atom_count
 
-    def test_invert(
-        self, other: str = "raccoon/tests/unit/data/test_invert_monomer.json"
-    ) -> None:
+    def test_invert(self) -> None:
         with self.assertRaises(ValueError) as context:
-            self.monomer.invert()  # polymer blocks (monomer.polymer == True) cannot be inverted
+            self.monomer.invert()  # polymer blocks (monomer.polymer == True) cannot be inverted, peo is polymer
 
         monomer = Monomer.from_dict(
             {
@@ -201,10 +205,75 @@ class TestMonomerClass(TestCase):
 
     def test_create_monomer(self) -> None:
         """Tests the create_monomer method."""
-        pass
+
+        name = "test"
+        resolution = "test_resolution"
+        polymer = False
+        link = [1, 2]
+        atoms = [
+            ["C", 0, 0, 0, [1, 2], 1],
+            ["C", 0, 0, 0, [2, 3], 2],
+            ["C", 0, 0, 0, [3, 1], 3],
+        ]
+
+        ff_identifier = "C1", "C2", "C3"
+
+        monomer = Monomer.create_monomer(
+            name=name,
+            resolution=resolution,
+            polymer=polymer,
+            link=link,
+            atoms=atoms,
+            ff_identifiers=ff_identifier,
+        )
+
+        self.assertIsInstance(monomer, Monomer)
 
     def test_update(self) -> None:
-        pass
+        shift = 5
+        shift_cartesian = [1.0, 1.0, 1.0]
+
+        updated_monomer = self.monomer.update(
+            shift=shift, shift_cartesian=shift_cartesian
+        )
+
+        self.assertIsInstance(updated_monomer, Monomer)
+        self.assertIsInstance(updated_monomer.atoms, List)
+        self.assertIsInstance(updated_monomer.atoms[0], Atom)
+
+        # test updating atom index
+        self.assertEqual(
+            self.monomer.atoms[0].index + shift, updated_monomer.atoms[0].index
+        )
+        self.assertListAlmostEqual(
+            [atom.index + shift for atom in self.monomer.atoms],
+            [atom.index for atom in updated_monomer.atoms],
+        )
+
+        # test updating cartesian coordinates
+
+        x = [atom.x + shift_cartesian[0] for atom in self.monomer.atoms]
+        x_ = [atom.x for atom in updated_monomer.atoms]
+
+        self.assertIsInstance(x, List)
+        self.assertIsInstance(x[0], float)
+        self.assertIsInstance(x_, List)
+        self.assertIsInstance(x_[0], float)
+
+        self.assertAlmostEqual(
+            self.monomer.atoms[0].x + shift_cartesian[0], updated_monomer.atoms[0].x
+        )
+
+        self.assertListAlmostEqual(x, x_)
+
+        # test updating neighbours
+        self.assertListAlmostEqual(
+            [
+                [neighbour + shift for neighbour in atom.neighbours]
+                for atom in self.monomer.atoms
+            ],
+            [atom.neighbours for atom in updated_monomer],
+        )
 
 
 class TestMonomersClass(TestCase):
