@@ -113,8 +113,9 @@ class Monomer:
             Monomer: Inverted monomer
         """
         if self.polymer:
-            print(f"Inversion not possible for {self.name} (polymer building block).")
-            return
+            raise ValueError(
+                f"Inversion not possible for {self.name} (polymer building block)."
+            )
 
         inv_monomer = copy.deepcopy(self)
 
@@ -243,7 +244,13 @@ class Monomer:
         """
         if isinstance(other, Monomer):
             for attribute in self.to_dict().keys():
-                if getattr(self, attribute) != getattr(other, attribute):
+                if attribute in [
+                    "name",
+                    "resolution",
+                    "atom_count",
+                    "inverted",
+                    "polymer",
+                ] and getattr(self, attribute) != getattr(other, attribute):
                     return False
             return True
         elif isinstance(other, Dict):
@@ -251,7 +258,7 @@ class Monomer:
                 if not hasattr(self, attribute):
                     print(f"monomer has no attribute {attribute}")
                     return False
-                if attribute in ["atoms"]:
+                if attribute in ["atoms", "link"]:
                     continue
                 if getattr(self, attribute) != other[attribute]:
                     return False

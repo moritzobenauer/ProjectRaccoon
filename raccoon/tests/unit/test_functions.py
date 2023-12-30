@@ -25,7 +25,25 @@ class TestFunctions(TestCase):
         s1 = generate_sequence(self.monomers, spath)
 
         index = [6, 3, 4, 3, 4, 3, 9, 7, 1, 7, 9, 3, 4, 3, 4, 3, 6]
-        inverted = [True] * len(index)
+        inverted = [
+            False,
+            False,
+            False,
+            False,
+            False,
+            False,
+            False,
+            False,
+            False,
+            True,
+            True,
+            True,
+            True,
+            True,
+            True,
+            True,
+            False,
+        ]
         reps = [1, 1, 1, 1, 1, 1, 1, 1, 50, 1, 1, 1, 1, 1, 1, 1, 1]
 
         s2 = Sequence(index, inverted, reps)
