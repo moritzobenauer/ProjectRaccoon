@@ -33,3 +33,9 @@ class TestMonomerJsonClass(TestCase):
 
         for _, monomer in self.monomers_json.items():
             self.assertEqual(monomer["name"], monomer["name"].upper())
+
+    def test_atom_count(self) -> None:
+        """Tests if the atom count ist equal to length of the atoms"""
+
+        for _, monomer in self.monomers_json.items():
+            self.assertEqual(monomer["atom_count"], len(monomer["atoms"]))
