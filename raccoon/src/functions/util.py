@@ -57,8 +57,6 @@ def CheckPDB(input):
 
 
 # This function is only available in a notebook format
-
-
 def Visualize(input):
     view = py3Dmol.view(width=800, height=500, viewergrid=(1, 1))
     view.addModel(open(f"{input}", "r").read(), "pdb")
@@ -75,10 +73,10 @@ def calculate_distance(point1, point2):
     )
 
 
-def calc_minimal_distance(coords: np.array) -> float:
+def calc_minimal_distance(coords1: np.array, coords2: np.array) -> float:
     """calculates the minimal distance between all points in a given vector"""
 
-    distance_matrix = cdist(coords, coords)
+    distance_matrix = cdist(coords1, coords2)
 
     np.fill_diagonal(distance_matrix, np.inf)
 
@@ -91,6 +89,6 @@ def CheckMinimalDistance(fpath: str):
 
     coords = np.array(coords)
 
-    min_dist = calc_minimal_distance(coords)
+    min_dist = calc_minimal_distance(coords, coords)
 
     print(f"Minimal distance: {min_dist:.4f} Å")
