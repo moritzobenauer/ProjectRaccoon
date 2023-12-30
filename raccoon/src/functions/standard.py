@@ -1,11 +1,15 @@
 from raccoon.src.data import Monomer, Monomers, Sequence, Atom
 
 from collections import namedtuple
-from raccoon.src.typing import List, Dict, Tuple, NamedTuple
+from raccoon.src.typing import List, Dict, Optional
 
 import numpy as np
 from rich.console import Console
 from tqdm import tqdm
+
+from .util import calc_minimal_distance
+
+import sys
 
 
 def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
@@ -75,37 +79,16 @@ def RandShift(
     return np.array([x, y, z])
 
 
-def MinimalDistance(
-    polypetide_coordinates: np.array, new_monomer_coordinates: np.array
-):
-    """Checks for the minimal distance between atoms / beads of the new monomer and all prior atoms / beads.
-       Future revisions could use contacts matrix to adjust self-avoiding random walk.
-
-    Args:
-        coordinates (np.array): Array of coordinates of the prior atoms / beads.
-        new_monomer (np.array): Array of coordinates of the new monomer.
-
-    Returns:
-        min (float): Minimal distance between atoms / beads.
-        contacts (np.array): Matrix of distances between atoms / beads.
-    """
-    contacts = np.empty(
-        (polypetide_coordinates.shape[0], new_monomer_coordinates.shape[0])
-    )
-    for i, r1 in enumerate(new_monomer_coordinates):
-        for j, r2 in enumerate(polypetide_coordinates):
-            contacts[j, i] = np.round(np.linalg.norm(r1 - r2), 3)
-    min = np.min(contacts)
-    return min, contacts
-
-
 # Self-Avoiding Random Walk to prevent infinite forces upon energy minimization
 # Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
 # Treshshold of trr=1 should be sufficient to prevent infinite forces
 
 
 def SemiRandomWalk(
-    polypeptide_coordinates: np.array, monomer: Monomer, trr: float, shift: List[float]
+    polypeptide_coordinates: np.array,
+    monomer: Monomer,
+    trr: float,
+    shift: List[float],
 ):
     """Self-Avoiding Random Walk to prevent infinite forces upon energy minimization.
          Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
@@ -121,13 +104,14 @@ def SemiRandomWalk(
         k (np.array): 3d vector with shape (3,)
     """
 
-    minimal_distance = 0
     monomer_coordinates = monomer.coordinates_to_numpy()
+    minimal_distance = 0
     while minimal_distance < trr:
         k = RandShift(*shift)
         updated_monomer_coordinates = monomer_coordinates + k[np.newaxis, :]
-        minimal_distance, _ = MinimalDistance(
-            polypeptide_coordinates, updated_monomer_coordinates
+
+        minimal_distance = calc_minimal_distance(
+            coords1=polypeptide_coordinates, coords2=updated_monomer_coordinates
         )
     return (updated_monomer_coordinates - monomer_coordinates)[0]
 
@@ -179,13 +163,13 @@ def generate_file(
 
             for rep in range(reps):
                 shift_cartesian[6] = float(monomer.atom_count) * damping_factor
-                m = SemiRandomWalk(coordinates, monomer, trr=1, shift=shift_cartesian)
+                m = SemiRandomWalk(coordinates, monomer, trr=trr, shift=shift_cartesian)
 
                 cshifts += m
 
                 updated_monomer = monomer.update(atom_count, cshifts)
 
-                new_coordinates = monomer.coordinates_to_numpy()
+                new_coordinates = updated_monomer.coordinates_to_numpy()
                 coordinates = np.vstack((coordinates, new_coordinates))
 
                 pairs = []
@@ -195,7 +179,6 @@ def generate_file(
                 # iterate through that list and create pairs
 
                 if explicit_bonds == True:
-
                     console.print("Generating Explicit Bonds")
 
                     for index, neighbor in enumerate(
@@ -226,6 +209,11 @@ def generate_file(
                 links.extend(updated_monomer.link)
 
                 for atom in updated_monomer.atoms:
+                    # formatting coordinates to 2
+                    x = np.round(atom.x, 2)
+                    y = np.round(atom.y, 2)
+                    z = np.round(atom.z, 2)
+
                     f.write(
                         "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
                             "",
@@ -235,9 +223,9 @@ def generate_file(
                             updated_monomer.name,
                             "A",
                             res_count,
-                            atom.x,
-                            atom.y,
-                            atom.z,
+                            x,
+                            y,
+                            z,
                             1.0,
                             0.0,
                             atom.element,
@@ -294,7 +282,8 @@ def generate_file(
     close_PDB(outpath, atom_count)
 
     console.print(
-        f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}.", style="bold green"
+        f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}.",
+        style="bold green",
     )
 
 

@@ -1,7 +1,7 @@
 from ..data.monomers import Monomer, Monomers
 from ..functions import (
     generate_file,
-    PDBtoXYZ,
+    pdb_to_xyz,
     CheckMinimalDistance,
 )
 from biopandas.pdb import PandasPdb
@@ -70,7 +70,7 @@ def start_racoon(
                 option = choose_option()
 
             elif option == "Convert PDB to XYZ File":
-                PDBtoXYZ(out_file)
+                pdb_to_xyz(out_file)
                 option = choose_option()
 
             elif option == "Check Minimal Distance":
