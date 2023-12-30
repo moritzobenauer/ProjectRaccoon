@@ -1,5 +1,5 @@
 <div>
-<img style="display: flex" src="/screenshots/raccoon_logo.png">
+<img style="display: flex" src="/screenshots/asset1.png">
 <p align="center">
 <p></p>
 </p>
