@@ -1,10 +1,14 @@
 <div>
 <img style="display: flex" src="/screenshots/raccoon_logo_round.png" width="100" height="100">
 <p align="center">
+<p></p>
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+<img alt="JGU Mainz" src="https://img.shields.io/badge/JGU%20Mainz%20-%20red.svg">
+
 </p>
 <h1 style="float: right">Project RACCOON</h1> 
 </div>
+
 
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
 
@@ -20,10 +24,11 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 
 | Residue Name | AA | UA | CG |
 | :---         | :- | :- | :- |
-| PEO          | :white_check_mark: | :white_check_mark: | :x: |
-| PHE          | :white_check_mark: | :soon: | :x: |
-| HIS          | :white_check_mark: | :soon: | :x: |
-| ACE          | :white_check_mark: | :soon: | :x: |
+| PEO          | :white_check_mark: | :white_check_mark: | :soon: |
+| GLY          | :white_check_mark: | :soon: | :soon: |
+| PHE          | :white_check_mark: | :white_check_mark: | :soon: |
+| HIS          | :white_check_mark: | :white_check_mark: | :soon: |
+| ACE          | :white_check_mark: | :white_check_mark: | :x: |
 | NME          | :soon: | :soon: | :x: |
 | DUM          |  |  | :white_check_mark: |
 | CSX          | :white_check_mark: | :white_check_mark: | :x: |

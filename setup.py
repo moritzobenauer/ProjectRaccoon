@@ -4,7 +4,7 @@ setup(
     name="raccoon",
     version="1.0.0",
     description="A Python program to generate 3D structures of linear polymers",
-    author="Moritz L. Obenauer",
+    author="Moritz L. Obenauer, Kai N. Spauszus.",
     url="https://github.com/moritzobenauer/ProjectRaccoon",
     packages=["raccoon"],
     package_data={"raccoon": ["src/data/*.json"]},
