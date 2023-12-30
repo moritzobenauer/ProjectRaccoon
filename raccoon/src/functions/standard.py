@@ -5,6 +5,7 @@ from raccoon.src.typing import List, Dict, Optional
 
 import numpy as np
 from rich.console import Console
+from tqdm import tqdm
 
 from .util import calc_minimal_distance
 
@@ -151,9 +152,10 @@ def generate_file(
         console.print("Generating Coordinates")
 
         sequence = generate_sequence(monomers, spath)
-        for index, inverted, reps in zip(
+
+        for index, inverted, reps in tqdm(zip(
             sequence.index, sequence.inverted, sequence.reps
-        ):
+        ), total=len(sequence.index)):
             monomer = monomers[index]
 
             if inverted:

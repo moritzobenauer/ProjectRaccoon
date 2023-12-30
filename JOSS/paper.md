@@ -32,7 +32,7 @@ bibliography: paper.bib
 
 # Summary
 
-The *Project RACCOON* software was developed to automatically generate PDB files for linear polymers, polypeptides and polymer peptide conjugates. Previously published software cannot easily represent two converging termini of polypeptide strands. *Project RACCOON* also offers the advantage of combining multiple modeling resolutions in one system. Although this software was explicitly developed for C2 symmetric polymer peptide conjugates introduced by @otter2018 with the OPLS-AA/M force field, its application is not limited to this molecule class. [@oplsaa2019; @oplsaa_proteins] PDB files can be created for all polymers, polypeptides with natural and non-natural amino acids, and other macromolecules combined with any force field.
+The *Project RACCOON* software was developed to automatically generate PDB files for linear polymers, polypeptides and polymer peptide conjugates. Previously published software cannot easily represent two converging termini of polypeptide strands within one molecule. *Project RACCOON* also offers the advantage of combining multiple modeling resolutions in one system. Although this software was explicitly developed for C2 symmetric polymer peptide conjugates introduced by @otter2018 with the OPLS-AA/M force field, its application is not limited to this molecule class. [@oplsaa2019; @oplsaa_proteins] PDB files can be created for all polymers, polypeptides with natural and non-natural amino acids, and other macromolecules combined with any force field.
 
 # Statement of need
 
