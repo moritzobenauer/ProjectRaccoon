@@ -5,6 +5,7 @@ from ..util import eps
 
 import numpy as np
 from rich.console import Console
+from tqdm import tqdm
 
 
 from scipy.spatial.distance import cdist
