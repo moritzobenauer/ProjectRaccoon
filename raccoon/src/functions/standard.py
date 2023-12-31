@@ -1,14 +1,13 @@
 from raccoon.src.data import Monomer, Monomers, Sequence, Atom
 
-from collections import namedtuple
 from raccoon.src.typing import List, Dict, Optional
 
 import numpy as np
 from rich.console import Console
 
-from .util import calc_minimal_distance
 
-import sys
+from ..util import eps
+from scipy.spatial.distance import cdist
 
 
 def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
@@ -49,6 +48,25 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
     return Sequence(index, inverted, reps)
 
 
+def calc_minimal_distance(coords1: np.array, coords2: np.array) -> float:
+    """calculates the minimal distance between all points in a given vector of shape (N,3) or the minimal distance between two vectors of shape (N,3) and (M,3)
+
+    Args:
+        coords1 (np.array): vector of shape (N,3)
+        coords2 (np.array): vector of shape (M,3)
+
+    Returns:
+        float: minimal distance between all points in the given vectors
+    """
+
+    distance_matrix = cdist(coords1, coords2)
+
+    # set distance of points to themselves to inf
+    distance_matrix[distance_matrix < 2 * eps] = np.inf
+
+    return np.min(distance_matrix)
+
+
 def RandShift(
     x_min: float,
     x_max: float,
@@ -87,7 +105,8 @@ def SemiRandomWalk(
     polypeptide_coordinates: np.array,
     monomer: Monomer,
     trr: float,
-    shift: List[float],
+    cshift: List[float],
+    shift_conf: List[float],
 ):
     """Self-Avoiding Random Walk to prevent infinite forces upon energy minimization.
          Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
@@ -97,22 +116,25 @@ def SemiRandomWalk(
         polypetide_coordinates (np.array): Array of all coordinates of the atoms in the previous monomers.
         monomer (Monomer): Monomer from raccoon.src.data
         trr (float): Threshold for minimal distance.
-        shift (list(float)): List of cartesian shifts.
+        cshift (list(float)): Cartesian shift.
+        shift_conf (list(float)): Shift configuration for RandShift().
 
     Returns:
         k (np.array): 3d vector with shape (3,)
     """
 
-    monomer_coordinates = monomer.coordinates_to_numpy()
+    monomer_coordinates = monomer.coordinates_to_numpy() + cshift
     minimal_distance = 0
+
     while minimal_distance < trr:
-        k = RandShift(*shift)
-        updated_monomer_coordinates = monomer_coordinates + k[np.newaxis, :]
+        k = RandShift(*shift_conf)
+        updated_monomer_coordinates = monomer_coordinates + k
 
         minimal_distance = calc_minimal_distance(
             coords1=polypeptide_coordinates, coords2=updated_monomer_coordinates
         )
-    return (updated_monomer_coordinates - monomer_coordinates)[0]
+
+    return k  # (updated_monomer_coordinates - monomer_coordinates)[0]
 
 
 def generate_file(
@@ -121,7 +143,7 @@ def generate_file(
     spath: str,
     outpath: str,
     trr: float = 1,
-    shift_cartesian: List[float] = [-1, 1, -1, 1, -1, 1, 1],
+    shift_conf: List[float] = [-1, 1, -1, 1, -1, 1, 1],
     damping_factor: float = 0.5,
 ):
     """Central function of the modul: adds monomers to a polymer peptide chain and writes it to a PDB file.
@@ -140,7 +162,7 @@ def generate_file(
 
     with open(outpath, "w") as f:
         # cartesian shifts
-        cshifts = np.zeros(3)
+        cshift = np.zeros(3)
         atom_count = 0
 
         links = list()
@@ -160,15 +182,23 @@ def generate_file(
                 monomer = monomer.invert()
 
             for rep in range(reps):
-                shift_cartesian[6] = float(monomer.atom_count) * damping_factor
-                m = SemiRandomWalk(coordinates, monomer, trr=trr, shift=shift_cartesian)
+                shift_conf[6] = float(monomer.atom_count) * damping_factor
 
-                cshifts += m
+                m = SemiRandomWalk(
+                    coordinates,
+                    monomer,
+                    trr=trr,
+                    cshift=cshift,
+                    shift_conf=shift_conf,
+                )
 
-                updated_monomer = monomer.update(atom_count, cshifts)
+                cshift += m
 
-                new_coordinates = updated_monomer.coordinates_to_numpy()
-                coordinates = np.vstack((coordinates, new_coordinates))
+                updated_monomer = monomer.update(atom_count, cshift)
+
+                coordinates = np.vstack(
+                    (coordinates, updated_monomer.coordinates_to_numpy())
+                )
 
                 pairs = []
 
@@ -207,10 +237,10 @@ def generate_file(
                 links.extend(updated_monomer.link)
 
                 for atom in updated_monomer.atoms:
-                    # formatting coordinates to 2
-                    x = np.round(atom.x, 2)
-                    y = np.round(atom.y, 2)
-                    z = np.round(atom.z, 2)
+                    # formatting coordinates to 3 decimal places
+                    x = f"{atom.x:.3f}"
+                    y = f"{atom.y:.3f}"
+                    z = f"{atom.z:.3f}"
 
                     f.write(
                         "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(

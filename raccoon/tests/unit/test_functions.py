@@ -69,14 +69,14 @@ class TestFunctions(TestCase):
         """Test the semi random walk shift with a random shift vector"""
 
         trr = 1
-        shift_cartesian = [-1, 1, -1, 1, -1, 1, 1]
+        shift_conf = [-1, 1, -1, 1, -1, 1, 1]
         damping_factor = 0.5
 
         atom_count = 0
         res_count = 0
 
         # cartesian shifts
-        cshifts = np.zeros(3)
+        cshift = np.zeros(3)
         atom_count = 0
 
         coordinates = np.zeros((1, 3))
@@ -86,22 +86,28 @@ class TestFunctions(TestCase):
             monomer = self.monomers[index]
 
             for rep in range(reps):
-                shift_cartesian[6] = float(monomer.atom_count) * damping_factor
-                m = SemiRandomWalk(coordinates, monomer, trr=trr, shift=shift_cartesian)
+                shift_conf[6] = float(monomer.atom_count) * damping_factor
+                m = SemiRandomWalk(
+                    coordinates,
+                    monomer,
+                    trr=trr,
+                    cshift=cshift,
+                    shift_conf=shift_conf,
+                )
 
-                cshifts += m
+                cshift += m
 
-                updated_monomer = monomer.update(atom_count, cshifts)
+                updated_monomer = monomer.update(atom_count, cshift)
 
-                new_coordinates = updated_monomer.coordinates_to_numpy()
-                coordinates = np.vstack((coordinates, new_coordinates))
+                coordinates = np.vstack(
+                    (coordinates, updated_monomer.coordinates_to_numpy())
+                )
 
                 atom_count += updated_monomer.atom_count
                 res_count += 1
 
         min_dist = calc_minimal_distance(coordinates, coordinates)
 
-        self.assertEqual(min_dist, trr)
         self.assertTrue(min_dist >= trr)
 
     def test_srw_nrs(self) -> None:

@@ -5,8 +5,9 @@ from itertools import combinations
 from tqdm import tqdm
 import os
 
-from scipy.spatial.distance import cdist
 import numpy as np
+
+from .standard import calc_minimal_distance
 
 
 from sys import float_info
@@ -73,21 +74,9 @@ def calculate_distance(point1, point2):
     )
 
 
-def calc_minimal_distance(coords1: np.array, coords2: np.array) -> float:
-    """calculates the minimal distance between all points in a given vector"""
-
-    distance_matrix = cdist(coords1, coords2)
-
-    np.fill_diagonal(distance_matrix, np.inf)
-
-    return np.min(distance_matrix)
-
-
 def CheckMinimalDistance(fpath: str):
     "calculates the minimal distance from a given pdb file"
     _, coords = get_elements_and_coords_from_pdb(fpath)
-
-    coords = np.array(coords)
 
     min_dist = calc_minimal_distance(coords, coords)
 
