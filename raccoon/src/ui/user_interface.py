@@ -44,6 +44,7 @@ def start_racoon(
     monomer_file: str,
     explicitbonds: bool,
     remove_duplicates: bool,
+    suppress_messages: bool = False,
 ):
     option = choose_option()
 
@@ -61,6 +62,7 @@ def start_racoon(
                     sequence=sequence,
                     explicit_bonds=explicitbonds,
                     outpath=out_file,
+                    suppress_messages=suppress_messages,
                 )
 
                 option = choose_option()
@@ -74,7 +76,7 @@ def start_racoon(
                 option = choose_option()
 
             elif option == "Convert PDB to XYZ File":
-                pdb_to_xyz(out_file)
+                pdb_to_xyz(out_file, suppress_messages=suppress_messages)
                 option = choose_option()
 
             elif option == "Check Minimal Distance":
@@ -183,6 +185,8 @@ def start_racoon(
                     option = choose_option()
 
             elif option == "Exit":
+                if not suppress_messages:
+                    console.print("Project RACCOON was successfully finished.")
                 return
 
     except KeyboardInterrupt:

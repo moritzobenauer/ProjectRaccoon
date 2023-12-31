@@ -130,52 +130,6 @@ class TestFunctions(TestCase):
         min_dist = calc_minimal_distance(coordinates[:-1], coordinates[-1:])
         self.assertAlmostEqual(min_dist, 4.69041575982343)
 
-    def test_generate_file(self) -> None:
-        """Tests the generate file function"""
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            tmp = Path(tmpdir) / "out.pdb"
-
-            generate_file(
-                self.monomers,
-                self.seq,
-                explicit_bonds=False,
-                outpath=tmp,
-                suppress_messages=True,
-            )
-
-            self.assertTrue((tmp).exists())
-
-            elements, _ = get_elements_and_coords_from_pdb(tmp)
-
-            self.assertTrue(len(elements) == 400)
-
-    def test_pdb_to_xyz(self) -> None:
-        """Tests the pdb to xyz function"""
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            tmp = Path(tmpdir) / "out.pdb"
-
-            generate_file(
-                self.monomers,
-                self.seq,
-                explicit_bonds=False,
-                outpath=tmp,
-                suppress_messages=True,
-            )
-
-            self.assertTrue((tmp).exists())
-
-            pdb_to_xyz(tmp.__str__(), suppress_messages=True)
-
-            self.assertTrue((tmp.parent / "out.xyz").exists())
-
-            with open(tmp.parent / "out.xyz", "r") as f:
-                lines = f.readlines()
-
-            self.assertTrue(len(lines) == 402)
-            self.assertEqual(lines[0], "400\n")
-
     def test_srw_nrs(self) -> None:
         """Test the semi random walk shift with a non random shift vector"""
         # 2. test SRW

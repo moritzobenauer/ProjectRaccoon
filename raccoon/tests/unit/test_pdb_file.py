@@ -1,11 +1,5 @@
 from unittest import TestCase
 
-# 1. teste allgemeine eigenschaften
-#   - anzahl der atome, gleich denen der sequenz sum atom_count*rep for atom in seq
-#   - file appropriately closed
-#   - sorted
-#   - links
-
 
 class TestPdbFile(TestCase):
 
