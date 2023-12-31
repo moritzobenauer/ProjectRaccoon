@@ -1,0 +1,20 @@
+# Sequence Generation for C2 symmetric linear polymer peptide conjugate according to Otter et. al. 2018
+# R. Otter, N. A. Henke, C. Berac, T. Bauer, M. Barz, S. Seiffert, P. Besenius, Macromol. Rapid Commun. 2018, 39, 1800459.
+# https://doi.org/10.1002/marc.201800459
+ACE:AA:0:1
+PHE:AA:0:1
+HIS:AA:0:1
+PHE:AA:0:1
+HIS:AA:0:1
+PHE:AA:0:1
+CSX:UA:0:1
+LNK:AA:0:1
+PEO:UA:0:50
+LNK:AA:1:1
+CSX:UA:1:1
+PHE:AA:1:1
+HIS:AA:1:1
+PHE:AA:1:1
+HIS:AA:1:1
+PHE:AA:1:1
+ACE:AA:0:1
