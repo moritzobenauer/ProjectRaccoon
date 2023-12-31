@@ -275,6 +275,29 @@ class TestMonomerClass(TestCase):
             [atom.neighbours for atom in updated_monomer],
         )
 
+    def test_coordinates_to_numpy(self) -> np.ndarray:
+        """Tests the coordinates_to_numpy method."""
+        coordinates = self.monomer.coordinates_to_numpy()
+        self.assertIsInstance(coordinates, np.ndarray)
+        self.assertEqual(coordinates.shape, (self.monomer.atom_count, 3))
+
+    def test_get_explicit_links(self) -> List[List[int]]:
+        """Tests the get_explicit_links method."""
+        links = self.monomer.get_explicit_links()
+
+        self.assertEqual(len(links), len(self.monomer.atoms))
+        self.assertIsInstance(links, List)
+        self.assertIsInstance(links[0], List)
+        self.assertIsInstance(links[0][0], int)
+
+    def test_repr(self) -> None:
+        """Tests the __repr__ method."""
+        self.assertIsInstance(self.monomer.__repr__(), str)
+
+    def test_len(self) -> None:
+        """Tests the __len__ method."""
+        self.assertEqual(len(self.monomer), self.monomer.atom_count)
+
 
 class TestMonomersClass(TestCase):
 

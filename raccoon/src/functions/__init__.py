@@ -4,4 +4,6 @@ from .util import (
     CheckPDB,
     Visualize,
     CheckMinimalDistance,
+    get_elements_and_coords_from_pdb,
+    get_links_from_pdb,
 )

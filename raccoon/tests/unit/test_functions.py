@@ -1,9 +1,14 @@
+from contextlib import AbstractContextManager
+from typing import Any
 from unittest import TestCase
 
 from raccoon.src.functions import (
     generate_file,
     generate_sequence,
     calc_minimal_distance,
+    get_elements_and_coords_from_pdb,
+    get_links_from_pdb,
+    pdb_to_xyz,
 )
 from raccoon.src.functions.standard import SemiRandomWalk
 
@@ -15,6 +20,8 @@ from collections import namedtuple
 from pathlib import Path
 
 import numpy as np
+
+import tempfile
 
 
 class TestFunctions(TestCase):
@@ -110,13 +117,78 @@ class TestFunctions(TestCase):
 
         self.assertTrue(min_dist >= trr)
 
+    def test_calc_minimal_distance(self) -> None:
+        """Tests the minimal distance function"""
+
+        coordinates = np.array([[0, 0, 0], [1, 1, 1], [2, 2, 3], [4, 5, 6]])
+
+        # test N,3 with N,3
+        min_dist = calc_minimal_distance(coordinates, coordinates)
+        self.assertAlmostEqual(min_dist, np.sqrt(3))
+
+        # test N,3 with 1,3
+        min_dist = calc_minimal_distance(coordinates[:-1], coordinates[-1:])
+        self.assertAlmostEqual(min_dist, 4.69041575982343)
+
+    def test_generate_file(self) -> None:
+        """Tests the generate file function"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir) / "out.pdb"
+
+            generate_file(
+                self.monomers,
+                self.seq,
+                explicit_bonds=False,
+                outpath=tmp,
+                suppress_messages=True,
+            )
+
+            self.assertTrue((tmp).exists())
+
+            elements, _ = get_elements_and_coords_from_pdb(tmp)
+
+            self.assertTrue(len(elements) == 400)
+
+    def test_pdb_to_xyz(self) -> None:
+        """Tests the pdb to xyz function"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir) / "out.pdb"
+
+            generate_file(
+                self.monomers,
+                self.seq,
+                explicit_bonds=False,
+                outpath=tmp,
+                suppress_messages=True,
+            )
+
+            self.assertTrue((tmp).exists())
+
+            pdb_to_xyz(tmp.__str__(), suppress_messages=True)
+
+            self.assertTrue((tmp.parent / "out.xyz").exists())
+
+            with open(tmp.parent / "out.xyz", "r") as f:
+                lines = f.readlines()
+
+            self.assertTrue(len(lines) == 402)
+            self.assertEqual(lines[0], "400\n")
+
     def test_srw_nrs(self) -> None:
         """Test the semi random walk shift with a non random shift vector"""
-        pass
         # 2. test SRW
         #   - random shift minmal distance > threshold
         #   - test non random shift cumsum np.arange(len(atoms))
+        pass
 
     def test_explicit_bonds(self) -> None:
         """Tests the explicit bond function"""
+        pass
+
+    def test_get_elements_and_coords_from_pdb(self) -> None:
+        pass
+
+    def test_get_links_from_pdb(self) -> None:
         pass

@@ -1,25 +1,20 @@
-import py3Dmol
-import pandas as pd
-from math import sqrt
-from itertools import combinations
-from tqdm import tqdm
+from py3Dmol import view as py3Dmol
 import os
-
 import numpy as np
 
+from ..typing import Tuple, List
 from .standard import calc_minimal_distance
 
 
-from sys import float_info
+def get_elements_and_coords_from_pdb(fpath: str) -> Tuple[List[str], np.ndarray]:
+    """Returns the elements and coordinates from a pdb file.
 
-from pathlib import Path
+    Args:
+        fpath (str): Path to pdb file.
 
-
-def clear_terminal():
-    os.system("cls" if os.name == "nt" else "clear")
-
-
-def get_elements_and_coords_from_pdb(fpath: str):
+    Returns:
+        Tuple[List[str], np.ndarray]: Elements and coordinates.
+    """
     coords = list()
     elements = list()
 
@@ -34,7 +29,28 @@ def get_elements_and_coords_from_pdb(fpath: str):
     return elements, np.array(coords)
 
 
-def pdb_to_xyz(fpath: str) -> None:
+def get_links_from_pdb(fpath: str) -> np.ndarray:
+    """Returns the links from a pdb file.
+
+    Args:
+        fpath (str): Path to pdb file.
+
+    Returns:
+        np.ndarray: Links.
+    """
+    links = list()
+
+    with open("out.pdb", "r") as f:
+        for line in f:
+            if line.startswith("CONECT"):
+                link = line.split(" ")[1:]
+                link = [l for l in link if l.strip() != ""]
+                links.append([int(l) for l in link])
+
+    return np.array(links)
+
+
+def pdb_to_xyz(fpath: str, suppress_messages=False) -> None:
     elements, coords = get_elements_and_coords_from_pdb(fpath)
 
     out_path = fpath.split(".")[0] + ".xyz"
@@ -46,35 +62,40 @@ def pdb_to_xyz(fpath: str) -> None:
         for element, coord in zip(elements, coords):
             f.write(f"{element}\t{coord[0]:.2f}\t{coord[1]:.2f}\t{coord[2]:.2f}\n")
 
+    if not suppress_messages:
         print(f"PDB file was converted to xyz file {out_path}.")
 
 
-def CheckPDB(input):
+def CheckPDB(fpath: str) -> None:
+    """Checks a pdb file for errors with the biopandas package.
+       If the file is valid, it prints the atom dataframe.
+
+    Args:
+        fpath (str): Path to pdb file.
+    """
+
     from biopandas.pdb import PandasPdb
 
     ppdb = PandasPdb().fetch_pdb("3eiy")
-    ppdb.read_pdb(f"{input}.pdb")
+    ppdb.read_pdb(fpath)
     print(ppdb.df["ATOM"])
 
 
 # This function is only available in a notebook format
-def Visualize(input):
-    view = py3Dmol.view(width=800, height=500, viewergrid=(1, 1))
-    view.addModel(open(f"{input}", "r").read(), "pdb")
+def Visualize(fpath: str) -> None:
+    """Visualizes a pdb file with py3Dmol.
+
+    Args:
+        fpath (str): Path to pdb file.
+    """
+    view = py3Dmol(width=800, height=500, viewergrid=(1, 1))
+    view.addModel(open(f"{fpath}", "r").read(), "pdb")
     view.setStyle({"sphere": {}}, viewer=(0, 0))
     view.zoomTo()
     view.show()
 
 
-def calculate_distance(point1, point2):
-    return sqrt(
-        (point1[0] - point2[0]) ** 2
-        + (point1[1] - point2[1]) ** 2
-        + (point1[2] - point2[2]) ** 2
-    )
-
-
-def CheckMinimalDistance(fpath: str):
+def CheckMinimalDistance(fpath: str) -> None:
     "calculates the minimal distance from a given pdb file"
     _, coords = get_elements_and_coords_from_pdb(fpath)
 

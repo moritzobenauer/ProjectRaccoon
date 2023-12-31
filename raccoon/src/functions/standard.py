@@ -1,12 +1,12 @@
-from raccoon.src.data import Monomer, Monomers, Sequence, Atom
+from ..data import Monomer, Monomers, Sequence, Atom
 
-from raccoon.src.typing import List, Dict, Optional
+from ..typing import List, Dict, Optional
+from ..util import eps
 
 import numpy as np
 from rich.console import Console
 
 
-from ..util import eps
 from scipy.spatial.distance import cdist
 
 
@@ -49,7 +49,7 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
 
 
 def calc_minimal_distance(coords1: np.array, coords2: np.array) -> float:
-    """calculates the minimal distance between all points in a given vector of shape (N,3) or the minimal distance between two vectors of shape (N,3) and (M,3)
+    """Calculates the minimal distance between all points in a given vector of shape (N,3) or the minimal distance between two vectors of shape (N,3) and (M,3)
 
     Args:
         coords1 (np.array): vector of shape (N,3)
@@ -139,20 +139,21 @@ def SemiRandomWalk(
 
 def generate_file(
     monomers: Monomers,
+    sequence: Sequence,
     explicit_bonds: bool,
-    spath: str,
     outpath: str,
     trr: float = 1,
     shift_conf: List[float] = [-1, 1, -1, 1, -1, 1, 1],
     damping_factor: float = 0.5,
+    suppress_messages: bool = False,
 ):
     """Central function of the modul: adds monomers to a polymer peptide chain and writes it to a PDB file.
 
     Args:
         monomers (Monomers):
+        sequence (Sequence):
         explicit_bonds (bool):
         outpath (str):
-        spath (str):
         trr (float):
         shift_cartesian (list(float)):
         damping_factor (float):
@@ -161,7 +162,6 @@ def generate_file(
     res_count = 0
 
     with open(outpath, "w") as f:
-        # cartesian shifts
         cshift = np.zeros(3)
         atom_count = 0
 
@@ -169,10 +169,10 @@ def generate_file(
         links_explicit = list()
         coordinates = np.zeros((1, 3))
 
-        console = Console()
-        console.print("Generating Coordinates")
+        if not suppress_messages:
+            console = Console()
+            console.print("Generating Coordinates")
 
-        sequence = generate_sequence(monomers, spath)
         for index, inverted, reps in zip(
             sequence.index, sequence.inverted, sequence.reps
         ):
@@ -207,7 +207,8 @@ def generate_file(
                 # iterate through that list and create pairs
 
                 if explicit_bonds == True:
-                    console.print("Generating Explicit Bonds")
+                    if not suppress_messages:
+                        console.print("Generating Explicit Bonds")
 
                     for index, neighbor in enumerate(
                         updated_monomer.get_explicit_links()
@@ -284,7 +285,8 @@ def generate_file(
                 )
 
         # write bonds in file
-        console.print("Writing to File")
+        if not suppress_messages:
+            console.print("Writing to File")
         for i in range(0, len(links) - 1, 1):
             f.write(
                 "{:>0}{:<7}{:<5}{:<5}{:<4}{:<3}{:<6}{:<8}{:<8}{:<10}{:<7}{:<14}{}\n".format(
@@ -309,10 +311,11 @@ def generate_file(
     # sort_PDB(outpath)
     close_PDB(outpath, atom_count)
 
-    console.print(
-        f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}.",
-        style="bold green",
-    )
+    if not suppress_messages:
+        console.print(
+            f"Created PDB file with {res_count} residue and {atom_count} atoms to {outpath}.",
+            style="bold green",
+        )
 
 
 def sort_PDB(fpath: str):
