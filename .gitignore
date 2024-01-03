@@ -11,6 +11,9 @@ __pycache__/
 *.pdb
 *.xyz
 
+# GROMACS files
+*.gro
+gmx/mdout.mdp
 # C extensions
 *.so
 
