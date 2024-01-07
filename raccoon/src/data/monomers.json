@@ -166,6 +166,27 @@
     "polymer": false,
     "inverted": false
   },
+  "HCA_atomistic": {
+    "name": "HCA",
+    "resolution": "atomistic",
+    "atom_count": 1,
+    "atoms": [
+      [
+        "H",
+        "H",
+        0,
+        0,
+        0,
+        [],
+        1
+      ]
+    ],
+    "link": [
+      1
+    ],
+    "polymer": false,
+    "inverted": false
+  },
   "PHE_atomistic": {
     "name": "PHE",
     "resolution": "atomistic",
