@@ -7,6 +7,7 @@
 #
 
 cd ..
+### Generating test sequences with different thresholds for geometry generation
 python3 seq_gen_gmx.py
 cd gmx
 
