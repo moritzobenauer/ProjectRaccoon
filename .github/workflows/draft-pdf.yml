@@ -1,7 +1,4 @@
-on: 
-  push:
-   paths:
-      - 'JOSS'
+on: [push]
 
 jobs:
   paper:
