@@ -11,8 +11,8 @@ docutils==0.20.1
 executing==2.0.1
 idna==3.6
 imagesize==1.4.1
-ipykernel==6.28.0
-ipython==8.19.0
+ipykernel
+ipython
 jedi==0.19.1
 Jinja2==3.1.2
 jupyter_client==8.6.0
@@ -28,7 +28,7 @@ pandas==2.1.4
 parso==0.8.3
 pexpect==4.9.0
 platformdirs==4.1.0
-prompt-toolkit==3.0.36
+prompt-toolkit
 psutil==5.9.7
 ptyprocess==0.7.0
 pure-eval==0.2.2

@@ -146,7 +146,7 @@ def generate_file(
     trr: float = 1,
     shift_conf: List[float] = [-1, 1, -1, 1, -1, 1, 1],
     damping_factor: float = 0.5,
-    suppress_messages: bool = False,
+    suppress_messages: bool = True,
 ):
     """Central function of the modul: adds monomers to a polymer peptide chain and writes it to a PDB file.
 
