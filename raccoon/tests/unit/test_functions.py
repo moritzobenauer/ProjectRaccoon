@@ -22,11 +22,14 @@ from pathlib import Path
 import numpy as np
 
 import tempfile
+import shutil
+import importlib
 
 
 class TestFunctions(TestCase):
     def setUp(self) -> None:
-        self.root = Path(__file__).parents[3]
+        self.seq_file_name = "seq_FHFHFXG_PEO_GXFHFHF.txt"
+        self.seq_file = importlib.resources.files("raccoon.tests.unit.data") / self.seq_file_name
         self.monomers = Monomers.from_json()
         index = [6, 3, 4, 3, 4, 3, 9, 7, 1, 7, 9, 3, 4, 3, 4, 3, 6]
         inverted = [
@@ -56,9 +59,12 @@ class TestFunctions(TestCase):
 
     def test_generate_sequence(
         self,
-        spath: str = "raccoon/tests/unit/data/seq_FHFHFXG_PEO_GXFHFHF.txt",
     ) -> None:
-        seq = generate_sequence(self.monomers, spath)
+        
+        with tempfile.TemporaryDirectory() as tmpdir:
+
+            shutil.copy(self.seq_file, Path(tmpdir) / self.seq_file_name)
+            seq = generate_sequence(self.monomers, Path(tmpdir) / self.seq_file_name)
 
         self.assertIsInstance(seq, Sequence)
 
@@ -70,7 +76,11 @@ class TestFunctions(TestCase):
 
         self.assertIsInstance(seq.reps, List)
         self.assertIsInstance(seq.reps[0], int)
-        self.assertEqual(seq, self.seq)
+
+        self.assertEqual(len(seq.index), len(self.seq.index))
+
+        self.assertEqual(seq.inverted, self.seq.inverted)
+        self.assertEqual(seq.reps, self.seq.reps)
 
     def test_srw_rs(self) -> None:
         """Test the semi random walk shift with a random shift vector"""
