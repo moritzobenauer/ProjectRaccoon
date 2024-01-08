@@ -4,14 +4,14 @@ import os
 from raccoon import start_racoon, welcome, tschau_kakao
 
 
-if __name__ == "__main__":
+def main():
     argParser = argparse.ArgumentParser()
     argParser.add_argument(
         "-s",
         "--sequence",
         help="Sequence File",
         type=str,
-        default="examples/seq_FHFHFXG_PEO_GXFHFHF.txt",  # "seq.txt"
+        default="seq.txt"
     )
     argParser.add_argument(
         "-o", "--output", help="Output File", type=str, default="out.pdb"
@@ -51,3 +51,6 @@ if __name__ == "__main__":
         remove_duplicates=REMOVEDUPLICATES,
     )
     tschau_kakao()
+
+if __name__ == "__main__":
+    main()
