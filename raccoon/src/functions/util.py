@@ -66,7 +66,7 @@ def pdb_to_xyz(fpath: str, suppress_messages=False) -> None:
         print(f"PDB file was converted to xyz file {out_path}.")
 
 
-def CheckPDB(fpath: str) -> None:
+def check_pdb_file(fpath: str, suppress_messages: bool = True) -> None:
     """Checks a pdb file for errors with the biopandas package.
        If the file is valid, it prints the atom dataframe.
 
@@ -78,7 +78,9 @@ def CheckPDB(fpath: str) -> None:
 
     ppdb = PandasPdb().fetch_pdb("3eiy")
     ppdb.read_pdb(fpath)
-    print(ppdb.df["ATOM"])
+
+    if not suppress_messages:
+        print(ppdb.df["ATOM"])
 
 
 def visualize_pdb_file(fpath: str) -> None:

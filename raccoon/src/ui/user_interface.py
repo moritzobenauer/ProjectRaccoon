@@ -4,7 +4,7 @@ from ..functions import (
     generate_file,
     pdb_to_xyz,
     check_minimal_distance,
-    CheckPDB,
+    check_pdb_file,
 )
 
 from rich.console import Console
@@ -69,7 +69,7 @@ def start_racoon(
 
             elif option == "Check PDB File":
                 try:
-                    CheckPDB(out_file)
+                    check_pdb_file(out_file, suppress_messages=suppress_messages)
                 except Exception as e:
                     console.print(f"Error: {e}", style="bold red")
 

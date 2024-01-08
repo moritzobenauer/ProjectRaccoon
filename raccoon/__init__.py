@@ -7,5 +7,6 @@ from .src.functions import (
     get_links_from_pdb,
     pdb_to_xyz,
     calc_minimal_distance,
+    check_pdb_file,
 )
 from .src.ui import start_racoon, welcome, tschau_kakao
