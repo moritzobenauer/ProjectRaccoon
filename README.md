@@ -46,8 +46,21 @@ For non-standard amino acids **CSX** and **LNK**, please refer to the following 
 ### Installing for Standard Usage
 
 The easiest way to use the Project RACCOON software is to clone the github repository.
-```
+
+```bash
 git clone https://github.com/moritzobenauer/ProjectRaccoon.git
+```
+
+and install **RACCOON** via
+
+```bash
+pip install -e .
+```
+
+To start the command-line interface run
+
+```bash
+raccoon
 ```
 
 ### Importing new Monomers
