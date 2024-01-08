@@ -7,7 +7,7 @@ from raccoon import start_racoon, welcome, tschau_kakao
 def main():
     argParser = argparse.ArgumentParser()
     argParser.add_argument(
-        "-s", "--sequence", help="Sequence File", type=str, default=None
+        "-s", "--sequence", help="Sequence File", type=str, default="seq.txt"
     )
     argParser.add_argument(
         "-o", "--output", help="Output File", type=str, default="out.pdb"
@@ -30,7 +30,7 @@ def main():
     EXPLICITBONDS = args.explicit
     REMOVEDUPLICATES = args.removeduplicates
 
-    if SEQUENCEFILE is not None and not os.path.isfile(SEQUENCEFILE):
+    if not os.path.isfile(SEQUENCEFILE):
         print("Sequence file does not exist!")
         exit(1)
 
