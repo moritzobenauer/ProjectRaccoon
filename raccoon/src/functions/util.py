@@ -81,7 +81,7 @@ def CheckPDB(fpath: str) -> None:
     print(ppdb.df["ATOM"])
 
 
-def Visualize(fpath: str) -> None:
+def visualize_pdb_file(fpath: str) -> None:
     """Visualizes a pdb file with py3Dmol. Only available in a notebook format.
 
     Args:

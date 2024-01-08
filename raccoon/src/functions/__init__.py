@@ -2,7 +2,7 @@ from .standard import generate_file, generate_sequence, calc_minimal_distance
 from .util import (
     pdb_to_xyz,
     CheckPDB,
-    Visualize,
+    visualize_pdb_file,
     CheckMinimalDistance,
     get_elements_and_coords_from_pdb,
     get_links_from_pdb,
