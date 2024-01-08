@@ -8,6 +8,9 @@
 <p align="left">
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 <img alt="JGU Mainz" src="https://img.shields.io/badge/JGU%20Mainz%20-%20red.svg">
+ <a href="https://codecov.io/gh/moritzobenauer/ProjectRaccoon?branch=master">
+<img alt="Coverage" src="https://codecov.io/gh/moritzobenauer/ProjectRaccoon/coverage.svg?branch=master">
+</a>
 </p>
 
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
