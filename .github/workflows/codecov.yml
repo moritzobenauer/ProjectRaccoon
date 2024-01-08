@@ -34,11 +34,10 @@ jobs:
     - name: Generate coverage report
       run: coverage xml
 
-    - name: Upload coverage to Codecov
+    - name: Show coverage file content
+      run: cat ./coverage.xml
+
+    - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: true
-        files: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
