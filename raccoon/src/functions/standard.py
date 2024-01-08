@@ -70,7 +70,7 @@ def calc_minimal_distance(coords1: np.array, coords2: np.array) -> float:
     return np.min(distance_matrix)
 
 
-def RandShift(
+def get_rand_shift(
     x_min: float,
     x_max: float,
     y_min: float,
@@ -99,7 +99,7 @@ def RandShift(
     return np.array([x, y, z])
 
 
-def SemiRandomWalk(
+def get_semi_random_walk_shift(
     polypeptide_coordinates: np.array,
     monomer: Monomer,
     trr: float,
@@ -125,7 +125,7 @@ def SemiRandomWalk(
     minimal_distance = 0
 
     while minimal_distance < trr:
-        k = RandShift(*shift_conf)
+        k = get_rand_shift(*shift_conf)
         updated_monomer_coordinates = monomer_coordinates + k
 
         minimal_distance = calc_minimal_distance(
@@ -182,7 +182,7 @@ def generate_file(
             for rep in range(reps):
                 shift_conf[6] = float(monomer.atom_count) * damping_factor
 
-                m = SemiRandomWalk(
+                m = get_semi_random_walk_shift(
                     coordinates,
                     monomer,
                     trr=trr,

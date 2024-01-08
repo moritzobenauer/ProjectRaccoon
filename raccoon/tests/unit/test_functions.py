@@ -10,7 +10,7 @@ from raccoon.src.functions import (
     get_links_from_pdb,
     pdb_to_xyz,
 )
-from raccoon.src.functions.standard import SemiRandomWalk
+from raccoon.src.functions.standard import get_semi_random_walk_shift
 
 from raccoon.src.typing import List, Dict, Tuple, NamedTuple
 
@@ -29,7 +29,9 @@ import importlib
 class TestFunctions(TestCase):
     def setUp(self) -> None:
         self.seq_file_name = "seq_FHFHFXG_PEO_GXFHFHF.txt"
-        self.seq_file = importlib.resources.files("raccoon.tests.unit.data") / self.seq_file_name
+        self.seq_file = (
+            importlib.resources.files("raccoon.tests.unit.data") / self.seq_file_name
+        )
         self.monomers = Monomers.from_json()
         index = [6, 3, 4, 3, 4, 3, 9, 7, 1, 7, 9, 3, 4, 3, 4, 3, 6]
         inverted = [
@@ -60,9 +62,7 @@ class TestFunctions(TestCase):
     def test_generate_sequence(
         self,
     ) -> None:
-        
         with tempfile.TemporaryDirectory() as tmpdir:
-
             shutil.copy(self.seq_file, Path(tmpdir) / self.seq_file_name)
             seq = generate_sequence(self.monomers, Path(tmpdir) / self.seq_file_name)
 
@@ -104,7 +104,7 @@ class TestFunctions(TestCase):
 
             for rep in range(reps):
                 shift_conf[6] = float(monomer.atom_count) * damping_factor
-                m = SemiRandomWalk(
+                m = get_semi_random_walk_shift(
                     coordinates,
                     monomer,
                     trr=trr,
