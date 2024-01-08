@@ -1,24 +1,16 @@
-<div>
-<img style="display: flex" src="/screenshots/asset1.png">
-<p align="center">
-<p></p>
-</p>
-<h1 style="float: right">Project RACCOON</h1> 
-</div>
-<p align="left">
-<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-<img alt="JGU Mainz" src="https://img.shields.io/badge/JGU%20Mainz%20-%20red.svg">
- <a href="https://codecov.io/gh/moritzobenauer/ProjectRaccoon?branch=master">
-<img alt="Coverage" src="https://codecov.io/gh/moritzobenauer/ProjectRaccoon/coverage.svg?branch=master">
-</a>
-</p>
+![raccoon](/screenshots/asset1.png)
+
+# Project RACCOON
+
+ [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) ![JGU Mainz](https://img.shields.io/badge/JGU%20Mainz%20-%20red.svg) [![Coverage](https://codecov.io/gh/moritzobenauer/ProjectRaccoon/coverage.svg?branch=master)](https://codecov.io/gh/moritzobenauer/ProjectRaccoon?branch=master)
+
 
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
 
 ## General Purpose & Scope
- <div align="justify">Project RACCOON (<i>Rapid Automated Construction of Conjugates using the Optimized OPLS Input</i>) is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion. It allows for the easy addition of new monomers, incorporation of polypeptide and polymer sequences in text form, and outputs PDB and XYZ files.
+ Project RACCOON (*Rapid Automated Construction of Conjugates using the Optimized OPLS Input*) is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion. It allows for the easy addition of new monomers, incorporation of polypeptide and polymer sequences in text form, and outputs PDB and XYZ files.
 The tool was specifically developed for the OPLS force field but is adaptable to any other force field. The tool's primary scope is to provide a straightforward method for creating starting structures for molecular dynamics simulations. It caters to the creation of linear polymer peptide conjugates with facing polypeptide strands. 
-The tool emphasizes user-friendliness, making it accessible to chemists and physicists, not just limited to theoretical chemists with extensive background knowledge. Additionally, users can modify the code for their specific projects. Early developments started in January 2023. The software was developed at the KOMET and Besenius' research groups at the Johannes Gutenberg University Mainz.</div>
+The tool emphasizes user-friendliness, making it accessible to chemists and physicists, not just limited to theoretical chemists with extensive background knowledge. Additionally, users can modify the code for their specific projects. Early developments started in January 2023. The software was developed at the KOMET and Besenius' research groups at the Johannes Gutenberg University Mainz.
 
 ### Supported building blocks
 
@@ -71,10 +63,9 @@ python import_monomer -f newmonomer.bs -o monomers.dat
 ```
 to add the new monomer unit to your library. Please enter the name of the new residue and some properties and give every atom a unique identifier according to the force field you plan to use. For amino acid residues, it is essential to specify the C- and N-terminus of the building block.
 
-<div>
-<img style="display: inline-block" src="/screenshots/import1.png" width="600" height="400">
-<img style="display: inline-block" src="/screenshots/import2.png" width="600" height="400">
-</div>
+![Bild1](/screenshots/import1.png)
+![Bild2](/screenshots/import2.png)
+
 
 
 ### Creating PDB Files from Sequence
@@ -96,7 +87,8 @@ python raccoon.py -s seq.txt -o resultingfile -m monomers.dat
 ```
 To create the PDB file, select the first item that appears in the selection. The PDB file is then generated automatically according to the selected parameters. For visualization or other purposes, creating an XYZ file from the PDB file may be desired. This XYZ file no longer contains any binding information. For this purpose, the option *Convert PDB to XYZ file* can be selected in the menu. A corresponding XYZ file with the same file name as the PDB file is created.
 
-<img style="display: inline-block" src="/screenshots/raccoon_main.png" width="400" height="400">
+
+![Bild3](/screenshots/raccoon_main.png)
 
 
 | Parameter | Default       |   Description |
@@ -114,13 +106,11 @@ The successful creation of the PDB file can then be checked. The *Check PDB* fil
 
 The software was developed specifically for the telechelic polymer peptide conjugates, according to Otter et. al. 2018. The peptide sequence FHFHFXG-PEO-GXFHFHF (with X: 6-aminohexanoic acid) is an example. A corresponding seq.txt file can be found in the examples folder. A graphical representation of the PDB file is shown in the image below. However, it should be noted that the arrangement of the monomers here is in a parabolic form (with no loss of generality). 
 
-<img style="display: inline-block" src="/screenshots/raccoon_export.png" width="400" height=auto>
+![Bild4](/screenshots/raccoon_export.png)
 
 After a brief energy minimization (performed here with GROMACS and the OPLS force field), the physically meaningful structure shown in the following image is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations. It is important to recognize here that different building blocks with atomistic and united atom resolution have been combined with each other. 
 
-<img style="display: inline-block" src="/screenshots/raccoon_em.png" width="400" height=auto>
-
-
+![Bild5](/screenshots/raccoon_em.png)
 
 
 ## Limitations
