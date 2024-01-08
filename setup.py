@@ -1,11 +1,5 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from pathlib import Path
-
-
-HERE = Path(__file__).parent
-
-with open(HERE / "requirements.txt") as f:
-    required = f.read().splitlines()
 
 setup(
     name="raccoon",
@@ -18,13 +12,25 @@ setup(
                  polymer sequences in text form, and outputs PDB and XYZ files.",
     author="Moritz L. Obenauer, Kai N. Spauszus.",
     url="https://github.com/moritzobenauer/ProjectRaccoon",
-    packages=["raccoon"],
+    packages=find_packages(),
     package_data={"raccoon": ["src/data/*.json"]},
     test_suite="raccoon/tests",
     entry_points={"console_scripts": ["raccoon=raccoon.__main__:main"]},
-    install_requires=required,
+    install_requires=[
+        "biopandas==0.4.1",
+        "numpy==1.26.3",
+        "pandas==2.1.4",
+        "py3Dmol==2.0.4",
+        "questionary==2.0.1",
+        "rich==13.7.0",
+        "scipy==1.11.4",
+        "setuptools==68.2.2",
+        "tqdm==4.66.1",
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU General Public License (GPL)",
         "Operating System :: OS Independent",
+        "Natural Language :: English",
     ],
 )
