@@ -3,7 +3,7 @@ from .util import (
     pdb_to_xyz,
     CheckPDB,
     visualize_pdb_file,
-    CheckMinimalDistance,
+    check_minimal_distance,
     get_elements_and_coords_from_pdb,
     get_links_from_pdb,
 )

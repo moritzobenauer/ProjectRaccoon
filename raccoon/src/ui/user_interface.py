@@ -3,7 +3,7 @@ from ..functions import (
     generate_sequence,
     generate_file,
     pdb_to_xyz,
-    CheckMinimalDistance,
+    check_minimal_distance,
     CheckPDB,
 )
 
@@ -80,7 +80,7 @@ def start_racoon(
                 option = choose_option()
 
             elif option == "Check Minimal Distance":
-                CheckMinimalDistance(out_file)
+                check_minimal_distance(out_file)
                 option = choose_option()
 
             elif option == "Manage Monomers":

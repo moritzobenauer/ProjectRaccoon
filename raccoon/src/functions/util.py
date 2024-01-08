@@ -94,7 +94,7 @@ def visualize_pdb_file(fpath: str) -> None:
     view.show()
 
 
-def CheckMinimalDistance(fpath: str) -> None:
+def check_minimal_distance(fpath: str) -> None:
     "Calculates the minimal distance from a given pdb file"
     _, coords = get_elements_and_coords_from_pdb(fpath)
 
