@@ -16,11 +16,11 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
     Generates a sequence from a inputfile.
 
     Args:
-        monomers (Monomers): Monomers object.
-        fpath (str): Path to the file.
+        - `monomers (Monomers)`: Monomers object.
+        - `fpath (str)`: Path to the file.
 
     Returns:
-        namedtuple: Sequence which contains the index of the monomer, the information if it is inverted and the number of repetitions.
+        - `sequence (Sequence)`: Sequence which contains the index of the monomer, the information if it is inverted and the number of repetitions.
     """
 
     index = list()
@@ -50,14 +50,16 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
 
 
 def calc_minimal_distance(coords1: np.array, coords2: np.array) -> float:
-    """Calculates the minimal distance between all points in a given vector of shape (N,3) or the minimal distance between two vectors of shape (N,3) and (M,3)
+    """Calculates the minimal distance between all points in a given vector of shape (N,3)
+       or the minimal distance between two vectors of shape (N,3) and (M,3). Optimized for speed with
+       scipy.spatial.distance.cdist, so that even for large vectors the calculation is fast.
 
     Args:
-        coords1 (np.array): vector of shape (N,3)
-        coords2 (np.array): vector of shape (M,3)
+        - `coords1 (np.array)`: vector of shape (N,3)
+        - `coords2 (np.array)`: vector of shape (M,3)
 
     Returns:
-        float: minimal distance between all points in the given vectors
+        - `(float)`: minimal distance between all points in the given vectors
     """
 
     distance_matrix = cdist(coords1, coords2)
@@ -80,26 +82,21 @@ def RandShift(
     """Creates a random shift in all directions with and without bias. Setting r_(min, _max) = 1 creates a linear shift for debugging. No default values needed.
 
     Args:
-        x_min (float): _description_
-        x_max (float): _description_
-        y_min (float): _description_
-        y_max (float): _description_
-        z_min (float): _description_
-        z_max (float): _description_
-        z_bias (float): _description_
+       - `x_min (float)`: Lower bound for the x direction.
+       - `x_max (float)`: Upper bound for the x direction.
+       - `y_min (float)`: Lower bound for the y direction.
+       - `y_max (float)`: Upper bound for the y direction.
+       - `z_min (float)`: Lower bound for the z direction.
+       - `z_max (float)`: Upper bound for the z direction.
+       - `z_bias (float)`: Bias for the z direction.
 
     Returns:
-        array (np.array): 3d vector with shape (3,)
+        - `(np.ndarray)`: 3d vector with shape (3,)
     """
     x = np.random.uniform(x_min, x_max)
     y = np.random.uniform(y_min, y_max)
     z = z_bias * np.random.uniform(z_min, z_max)
     return np.array([x, y, z])
-
-
-# Self-Avoiding Random Walk to prevent infinite forces upon energy minimization
-# Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
-# Treshshold of trr=1 should be sufficient to prevent infinite forces
 
 
 def SemiRandomWalk(
@@ -114,14 +111,14 @@ def SemiRandomWalk(
             Treshshold of trr=1 should be sufficient to prevent infinite forces.
 
     Args:
-        polypetide_coordinates (np.array): Array of all coordinates of the atoms in the previous monomers.
-        monomer (Monomer): Monomer from raccoon.src.data
-        trr (float): Threshold for minimal distance.
-        cshift (list(float)): Cartesian shift.
-        shift_conf (list(float)): Shift configuration for RandShift().
+        - `polypetide_coordinates (np.ndarray, (3,N))`: Array of all coordinates of the atoms in the previous monomers.
+        - `monomer (Monomer)`: Monomer from raccoon.src.data
+        - `trr (float)`: Threshold for minimal distance.
+        - `cshift (List(float))`: Cartesian shift.
+        - `shift_conf (List(float))`: Shift configuration for RandShift().
 
     Returns:
-        k (np.array): 3d vector with shape (3,)
+        - `k (np.ndarray)`: 3d vector with shape (3,)
     """
 
     monomer_coordinates = monomer.coordinates_to_numpy() + cshift
@@ -135,7 +132,7 @@ def SemiRandomWalk(
             coords1=polypeptide_coordinates, coords2=updated_monomer_coordinates
         )
 
-    return k  # (updated_monomer_coordinates - monomer_coordinates)[0]
+    return k
 
 
 def generate_file(
@@ -148,16 +145,16 @@ def generate_file(
     damping_factor: float = 0.5,
     suppress_messages: bool = True,
 ):
-    """Central function of the modul: adds monomers to a polymer peptide chain and writes it to a PDB file.
+    """Central function of the modul: adds monomers to a polymer peptide chain and writes it directly to a PDB file.
 
     Args:
-        monomers (Monomers):
-        sequence (Sequence):
-        explicit_bonds (bool):
-        outpath (str):
-        trr (float):
-        shift_cartesian (list(float)):
-        damping_factor (float):
+       - `monomers (Monomers)`: Monomers object.
+       - `sequence (Sequence)`: Sequence object.
+       - `explicit_bonds (bool)`: If True, explicit bonds are generated.
+       - `outpath (str)`: Path to the output file.
+       - `trr (float)`: Threshold for minimal distance.
+       - `shift_cartesian (list(float))`: Cartesian shift of dimensions x,y,z.
+       - `damping_factor (float)`: Damping factor for the shift.
     """
     atom_count = 0
     res_count = 0
@@ -321,10 +318,10 @@ def generate_file(
 
 def sort_PDB(fpath: str):
     """
-    Sorts a PDB file by the atom index.
+    Sorts a PDB file inplace by the atom index.
 
     Args:
-        file_path (str): Path to the file.
+       - `file_path (str)`: Path to the file.
 
     """
 
@@ -346,8 +343,8 @@ def close_PDB(fpath: str, atom_count: int):
     Closes a PDB file by adding the END statement and the number of atoms.
 
     Args:
-        file_path (str): Path to the file.
-        atom_count (int): Number of atoms.
+        - `file_path (str)`: Path to the file.
+        - `atom_count (int)`: Number of atoms.
 
     """
 

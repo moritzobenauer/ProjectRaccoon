@@ -53,13 +53,24 @@ class Monomer:
         self.inverted = inverted
 
     def coordinates_to_numpy(self):
+        """Returns a numpy array of the cartesian coordinates of all atoms."""
         return np.array([[atom.x, atom.y, atom.z] for atom in self.atoms])
 
     def get_explicit_links(self):
+        """Returns a list of lists of all explicit links within the monomer."""
         return [atom.neighbours for atom in self.atoms]
 
     @classmethod
     def prepare_dict(cls, data: Dict):
+        """Prepares a dictionary for the creation of a monomer, which is created by
+            the `Monomer.from_file()` function, which uses the `monomers.dat` file.
+
+        Args:
+            - `data (Dict)`: Dictionary to prepare.
+
+        Returns:
+            - `data (Dict)`: Prepared dictionary.
+        """
         # convert data to correct types
         data["name"] = data["res"]
         data["polymer"] = bool(int(data["polymer"]))
@@ -91,6 +102,12 @@ class Monomer:
         """
         Creates a monomer from a dictionary.
 
+        Args:
+            - `data (Dict)`: Cleaned dictionary to create the monomer from.
+
+        Returns:
+            Monomer: Monomer object.
+
         """
 
         monomer = cls(
@@ -110,7 +127,7 @@ class Monomer:
         Inverts an amino acid by reversing the link list and changing the inverted flag.
 
         Returns:
-            Monomer: Inverted monomer
+            - `inv_monomer (Monomer)`: Inverted monomer
         """
         if self.polymer:
             raise ValueError(
@@ -129,11 +146,11 @@ class Monomer:
         Updates the monomer by shifting the atom positions and indicies.
 
         Args:
-            shift (int): Shift value
-            shift_cartesian (function): Function to shift cartesian coordinates
+            - `shift (int)`: Shift value
+            - `shift_cartesian (function)`: Function to shift cartesian coordinates
 
         Returns:
-            Monomer: Updated monomer
+            - `updated_monomer (Monomer)`: Updated monomer
         """
 
         updated_monomer = copy.deepcopy(self)
@@ -168,12 +185,15 @@ class Monomer:
         """
         Creates a monomer.
         Args:
-            name (str): Name of the monomer.
-            resolution (str): Resolution of the monomer.
-            polymer (bool): Polymer flag of the monomer.
-            link (List[int]): List of atoms that are linked.
-            atoms (List): List of atoms in the monomer from the function Monomer.get_atoms_from_bs_file.
-            ff_identifier (List[str]): List of atom names that are used for the force field.
+            - `name (str)`: Name of the monomer.
+            - `resolution (str)`: Resolution of the monomer.
+            - `polymer (bool)`: Polymer flag of the monomer.
+            - `link (List[int])`: List of atoms that are linked.
+            - `atoms (List)`: List of atoms in the monomer from the function Monomer.get_atoms_from_bs_file.
+            - `ff_identifier (List[str])`: List of atom names that are used for the force field.
+
+        Returns:
+            - `monomer (Monomer)`: Monomer object.
         """
 
         for atom, ff_identifier in zip(atoms, ff_identifiers):
@@ -202,10 +222,10 @@ class Monomer:
            the Monomers.create_monomer function.
 
         Args:
-            fpath (str): File path to the bs file.
+            - `fpath (str)`: File path to the bs file.
 
         Returns:
-            List: List of atoms, which contains the following information: [element: str, x: float, y : float, z : float, neighbors : List[int], number of the atom : int]
+            - `atoms (List)`: List of atoms, which contains the following information: [element: str, x: float, y : float, z : float, neighbors : List[int], number of the atom : int]
 
         """
 
@@ -237,10 +257,10 @@ class Monomer:
         With this method, the '==' operator is implemented. For the monomers it is important to know, that the monomers are only compared by their name and resolution.
 
         Args:
-            other (Union[Monomer, Dict]): Monomer or dictionary to compare with.
+            - `other (Union[Monomer, Dict])`: Monomer or dictionary to compare with.
 
         Returns:
-            bool: True if equal, False if not equal.
+            - `bool`: True if equal, False if not equal.
         """
         if isinstance(other, Monomer):
             for attribute in self.to_dict().keys():
@@ -265,6 +285,7 @@ class Monomer:
             return True
 
     def to_dict(self):
+        """Returns a dictionary of the monomer."""
         return {
             "name": self.name,
             "resolution": self.resolution,
@@ -302,10 +323,10 @@ class Monomers:
         Creates a list of monomers from a `.dat` file. Is not longer supported and will be removed in the future.
 
         Args:
-            fpath (str, optional): Path to the monomer file. Defaults to MONOMERFILE.
+            - `fpath (str, optional)`: Path to the monomer file. Defaults to MONOMERFILE.
 
         Returns:
-            Monomers: Monomers object.
+            - ` monomers (Monomers)`: Monomers object.
         """
 
         monomers = []
@@ -340,10 +361,10 @@ class Monomers:
         which is located in the raccoon package under raccoon/src/data/monomers.json.
 
         Args:
-            fpath (Optional[str]): Path to the monomers file. Defaults to None.
+            - `fpath (Optional[str])`: Path to the monomers file. Defaults to None.
 
         Returns:
-            Monomers: Monomers object.
+            - `monomers (Monomers)`: Monomers object.
         """
         import json
 
@@ -369,8 +390,8 @@ class Monomers:
         After that, it is necessary to update the monomers file by calling the Monomers.to_json function.
 
         Args:
-            monomer (Monomer): Monomer to add.
-            save (Optional[bool], optional): Save the monomer to the monomers file. Defaults to False.
+            - `monomer (Monomer)`: Monomer to add.
+            - `save (Optional[bool], optional)`: Save the monomer to the monomers file. Defaults to False.
         """
 
         if {"name": monomer.name, "resolution": monomer.resolution} in self.monomers:
@@ -386,8 +407,8 @@ class Monomers:
         """Removes a monomer from the monomers list. After that, it is necessary to update the monomers file by calling the Monomers.to_json function.
 
         Args:
-            monomer (Monomer): Monomer to remove.
-            save (Optional[bool], optional): Save the monomer to the monomers file. Defaults to False.
+            - `monomer (Monomer)`: Monomer to remove.
+            - `save (Optional[bool], optional)`: Save the monomer to the monomers file. Defaults to False.
         """
 
         self.monomers.remove(monomer)
@@ -412,6 +433,7 @@ class Monomers:
             raise TypeError("Index must be int, list or slice.")
 
     def to_dict(self):
+        """Returns a dictionary of the monomers."""
         return {
             monomer.name + "_" + monomer.resolution: monomer.to_dict()
             for monomer in self.monomers
@@ -422,8 +444,8 @@ class Monomers:
            which is located in the raccoon package under raccoon/src/data/monomers.json.
 
         Args:
-            fpath (Optional[str]): Path to the monomers file. Defaults to None.
-            indent (Optional[int], optional): Indentation of the json file. Defaults to 2.
+            - `fpath (Optional[str])`: Path to the monomers file. Defaults to None.
+            - `indent (Optional[int], optional)`: Indentation of the json file. Defaults to 2.
 
         """
         import json
@@ -459,6 +481,5 @@ class Monomers:
     def __sizeof__(self) -> int:
         return len(self.monomers)
 
-    # define len(monomers) to len(self.monomers)
     def __len__(self):
         return len(self.monomers)

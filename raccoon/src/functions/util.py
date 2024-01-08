@@ -10,10 +10,10 @@ def get_elements_and_coords_from_pdb(fpath: str) -> Tuple[List[str], np.ndarray]
     """Returns the elements and coordinates from a pdb file.
 
     Args:
-        fpath (str): Path to pdb file.
+       - `fpath (str)`: Path to pdb file.
 
     Returns:
-        Tuple[List[str], np.ndarray]: Elements and coordinates.
+        - `(Tuple[List[str], np.ndarray])`: Elements and coordinates.
     """
     coords = list()
     elements = list()
@@ -33,10 +33,10 @@ def get_links_from_pdb(fpath: str) -> np.ndarray:
     """Returns the links from a pdb file.
 
     Args:
-        fpath (str): Path to pdb file.
+        - `fpath (str)`: Path to pdb file.
 
     Returns:
-        np.ndarray: Links.
+        - `(np.ndarray)`: Links.
     """
     links = list()
 
@@ -81,12 +81,11 @@ def CheckPDB(fpath: str) -> None:
     print(ppdb.df["ATOM"])
 
 
-# This function is only available in a notebook format
 def Visualize(fpath: str) -> None:
-    """Visualizes a pdb file with py3Dmol.
+    """Visualizes a pdb file with py3Dmol. Only available in a notebook format.
 
     Args:
-        fpath (str): Path to pdb file.
+        - `fpath (str)`: Path to pdb file.
     """
     view = py3Dmol(width=800, height=500, viewergrid=(1, 1))
     view.addModel(open(f"{fpath}", "r").read(), "pdb")
@@ -96,7 +95,7 @@ def Visualize(fpath: str) -> None:
 
 
 def CheckMinimalDistance(fpath: str) -> None:
-    "calculates the minimal distance from a given pdb file"
+    "Calculates the minimal distance from a given pdb file"
     _, coords = get_elements_and_coords_from_pdb(fpath)
 
     min_dist = calc_minimal_distance(coords, coords)
