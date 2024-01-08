@@ -17,6 +17,7 @@ __pycache__/
 # GROMACS files
 *.gro
 gmx/mdout.mdp
+.DS_Store
 # C extensions
 *.so
 
