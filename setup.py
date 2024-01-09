@@ -20,7 +20,6 @@ setup(
     packages=find_packages(),
     package_data={
         "raccoon": ["src/data/monomers.json"],
-        "": ["README.md", "requirements.txt"],
     },
     test_suite="raccoon/tests",
     entry_points={"console_scripts": ["raccoon=raccoon.__main__:main"]},
