@@ -1,10 +1,10 @@
 from unittest import TestCase
 
-from raccoon.src.typing import List, Dict
+from project_raccoon.src.typing import List, Dict
 
-from raccoon.src.util import MONOMERFILE
+from project_raccoon.src.util import MONOMERFILE
 
-from raccoon.src.data import Monomer, Monomers, Atom
+from project_raccoon.src.data import Monomer, Monomers, Atom
 
 import importlib
 
@@ -14,7 +14,7 @@ import json
 class TestMonomerJsonClass(TestCase):
     def setUp(self) -> None:
         with open(
-            importlib.resources.files("raccoon.src.data") / MONOMERFILE, "r"
+            importlib.resources.files("project_raccoon.src.data") / MONOMERFILE, "r"
         ) as f:
             self.monomers_json = json.load(f)
         return super().setUp()

@@ -2,7 +2,7 @@ from contextlib import AbstractContextManager
 from typing import Any
 from unittest import TestCase
 
-from raccoon.src.functions import (
+from project_raccoon.src.functions import (
     generate_file,
     generate_sequence,
     calc_minimal_distance,
@@ -10,11 +10,11 @@ from raccoon.src.functions import (
     get_links_from_pdb,
     pdb_to_xyz,
 )
-from raccoon.src.functions.standard import get_semi_random_walk_shift
+from project_raccoon.src.functions.standard import get_semi_random_walk_shift
 
-from raccoon.src.typing import List, Dict, Tuple, NamedTuple
+from project_raccoon.src.typing import List, Dict, Tuple, NamedTuple
 
-from raccoon.src.data import Monomer, Monomers, Sequence, Atom
+from project_raccoon.src.data import Monomer, Monomers, Sequence, Atom
 from collections import namedtuple
 
 from pathlib import Path
@@ -30,7 +30,8 @@ class TestFunctions(TestCase):
     def setUp(self) -> None:
         self.seq_file_name = "seq_FHFHFXG_PEO_GXFHFHF.txt"
         self.seq_file = (
-            importlib.resources.files("raccoon.tests.unit.data") / self.seq_file_name
+            importlib.resources.files("project_raccoon.tests.unit.data")
+            / self.seq_file_name
         )
         self.monomers = Monomers.from_json()
         index = [6, 3, 4, 3, 4, 3, 9, 7, 1, 7, 9, 3, 4, 3, 4, 3, 6]

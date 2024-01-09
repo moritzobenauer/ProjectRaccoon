@@ -5,22 +5,21 @@ from pathlib import Path
 parent = Path(__file__).parent.resolve()
 
 long_description = (parent / "README.md").read_text()
-# requirements = (parent / "requirements.txt").read_text().splitlines()
 
 setup(
-    name="raccoon",
+    name="project_raccoon",
     version="1.0.0",
-    description="Project RACCOON is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion.",
+    description="Project project_raccoon is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Moritz L. Obenauer, Kai N. Spauszus.",
     url="https://github.com/moritzobenauer/ProjectRaccoon",
     packages=find_packages(),
     package_data={
-        "raccoon": ["src/data/monomers.json"],
+        "project_raccoon": ["src/data/monomers.json"],
     },
-    test_suite="raccoon/tests",
-    entry_points={"console_scripts": ["raccoon=raccoon.__main__:main"]},
+    test_suite="project_raccoon/tests",
+    entry_points={"console_scripts": ["project_raccoon=project_raccoon.__main__:main"]},
     install_requires=[
         "biopandas==0.4.1",
         "numpy==1.26.3",

@@ -2,10 +2,10 @@ from unittest import TestCase
 
 from unittest.mock import patch
 
-from raccoon.src.data import Sequence
-from raccoon.src.ui import start_racoon
-from raccoon.src.ui.user_interface import choose_option, manage_monomers
-from raccoon.src.functions import get_elements_and_coords_from_pdb
+from project_raccoon.src.data import Sequence
+from project_raccoon.src.ui import start_racoon
+from project_raccoon.src.ui.user_interface import choose_option, manage_monomers
+from project_raccoon.src.functions import get_elements_and_coords_from_pdb
 
 
 import tempfile
@@ -17,18 +17,22 @@ from pathlib import Path
 class TestUserInterface(TestCase):
     def setUp(self) -> None:
         self.seq_file = (
-            importlib.resources.files("raccoon.tests.unit.data")
+            importlib.resources.files("project_raccoon.tests.unit.data")
             / "seq_FHFHFXG_PEO_GXFHFHF.txt"
         )
         self.seq_file_name = "seq_FHFHFXG_PEO_GXFHFHF.txt"
-        self.pdb_file = importlib.resources.files("raccoon.tests.unit.data") / "out.pdb"
+        self.pdb_file = (
+            importlib.resources.files("project_raccoon.tests.unit.data") / "out.pdb"
+        )
         self.pdb_file_name = "out.pdb"
-        self.xyz_file = importlib.resources.files("raccoon.tests.unit.data") / "out.xyz"
+        self.xyz_file = (
+            importlib.resources.files("project_raccoon.tests.unit.data") / "out.xyz"
+        )
         self.xyz_file_name = "out.xyz"
 
         return super().setUp()
 
-    @patch("raccoon.src.ui.user_interface.choose_option", side_effect=["Exit"])
+    @patch("project_raccoon.src.ui.user_interface.choose_option", side_effect=["Exit"])
     @patch("builtins.print")
     def test_exit_option(self, *args):
         """Test that the exit option works."""
@@ -39,10 +43,12 @@ class TestUserInterface(TestCase):
         self.assertIsNone(result)
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Manage Monomers", "Exit"],
     )
-    @patch("raccoon.src.ui.user_interface.manage_monomers", side_effect=["Return"])
+    @patch(
+        "project_raccoon.src.ui.user_interface.manage_monomers", side_effect=["Return"]
+    )
     @patch("builtins.print")
     def test_return_manage_monomers(self, *args):
         """Test that the manage monomers option works."""
@@ -53,7 +59,7 @@ class TestUserInterface(TestCase):
         self.assertIsNone(result)
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Create PDB File", "Exit"],
     )
     @patch("builtins.print")
@@ -83,7 +89,7 @@ class TestUserInterface(TestCase):
             self.assertTrue(len(elements) == 400)
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Check PDB File", "Exit"],
     )
     @patch("builtins.print")
@@ -106,7 +112,7 @@ class TestUserInterface(TestCase):
             self.assertIsNone(result)
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Convert PDB to XYZ File", "Exit"],
     )
     @patch("builtins.print")
@@ -141,7 +147,7 @@ class TestUserInterface(TestCase):
         pass
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Check Minimal Distance", "Exit"],
     )
     @patch("builtins.print")
@@ -164,11 +170,11 @@ class TestUserInterface(TestCase):
         self.assertIsNone(result)
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Manage Monomers", "Exit"],
     )
     @patch(
-        "raccoon.src.ui.user_interface.manage_monomers",
+        "project_raccoon.src.ui.user_interface.manage_monomers",
         side_effect=["Add Monomer", "Return"],
     )
     def test_add_monomer(self, mock_input, mock_input2):
@@ -176,11 +182,11 @@ class TestUserInterface(TestCase):
         pass
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Manage Monomers", "Exit"],
     )
     @patch(
-        "raccoon.src.ui.user_interface.manage_monomers",
+        "project_raccoon.src.ui.user_interface.manage_monomers",
         side_effect=["Delete Monomer", "Return"],
     )
     def test_delete_monomer(self, mock_input, mock_input2):
@@ -188,11 +194,11 @@ class TestUserInterface(TestCase):
         pass
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Manage Monomers", "Exit"],
     )
     @patch(
-        "raccoon.src.ui.user_interface.manage_monomers",
+        "project_raccoon.src.ui.user_interface.manage_monomers",
         side_effect=["Print Monomers", "Return"],
     )
     def test_print_monomers(self, mock_input, mock_input2):
@@ -200,11 +206,11 @@ class TestUserInterface(TestCase):
         pass
 
     @patch(
-        "raccoon.src.ui.user_interface.choose_option",
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Manage Monomers", "Exit"],
     )
     @patch(
-        "raccoon.src.ui.user_interface.manage_monomers",
+        "project_raccoon.src.ui.user_interface.manage_monomers",
         side_effect=["Export JSON Monomer File", "Return"],
     )
     def test_export_json_monomer_file(self, mock_input, mock_input2):

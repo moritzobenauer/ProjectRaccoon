@@ -1,10 +1,10 @@
 from unittest import TestCase
 
-from raccoon.src.typing import List, Dict
+from project_raccoon.src.typing import List, Dict
 
-from raccoon.src.util import MONOMERFILE
+from project_raccoon.src.util import MONOMERFILE
 
-from raccoon.src.data import Monomer, Monomers, Atom
+from project_raccoon.src.data import Monomer, Monomers, Atom
 import numpy as np
 
 from pathlib import Path

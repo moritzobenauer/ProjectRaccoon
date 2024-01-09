@@ -358,7 +358,7 @@ class Monomers:
     def from_json(cls, fpath: Optional[str] = None) -> "Monomers":
         """
         Creates a list of monomers from a json file. If no path is given the default monomers file is used,
-        which is located in the raccoon package under raccoon/src/data/monomers.json.
+        which is located in the project_raccoon package under project_raccoon/src/data/monomers.json.
 
         Args:
             - `fpath (Optional[str])`: Path to the monomers file. Defaults to None.
@@ -372,7 +372,7 @@ class Monomers:
             with open(fpath, "r") as f:
                 data = json.load(f)
         else:
-            files = importlib.resources.files("raccoon.src.data")
+            files = importlib.resources.files("project_raccoon.src.data")
             with open(files / MONOMERFILE, "r") as f:
                 data = json.load(f)
 
@@ -441,7 +441,7 @@ class Monomers:
 
     def to_json(self, fpath: Optional[str] = None, indent: Optional[int] = 2):
         """Saves the monomers to a json file. If no path is given the default monomers file is used,
-           which is located in the raccoon package under raccoon/src/data/monomers.json.
+           which is located in the project_raccoon package under project_raccoon/src/data/monomers.json.
 
         Args:
             - `fpath (Optional[str])`: Path to the monomers file. Defaults to None.
@@ -454,7 +454,7 @@ class Monomers:
             with open(fpath, "w") as f:
                 json.dump(self.to_dict(), f, indent=indent)
         else:
-            files = importlib.resources.files("raccoon.src.data")
+            files = importlib.resources.files("project_raccoon.src.data")
             with open(files / MONOMERFILE, "w") as f:
                 json.dump(self.to_dict(), f, indent=indent)
 

@@ -1,7 +1,7 @@
 import argparse
 import os
 
-from raccoon import start_racoon, welcome, tschau_kakao
+from project_raccoon import start_racoon, welcome, tschau_kakao
 
 
 def main():
