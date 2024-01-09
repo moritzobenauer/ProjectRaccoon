@@ -1,8 +1,13 @@
 from setuptools import setup, find_packages
+
+import importlib
 from pathlib import Path
 
-long_description = (Path(__file__).parent / "README.md").read_text()
-requirements = (Path(__file__).parent / "requirements.txt").read_text().splitlines()
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+with open("requirements.txt", "r") as fh:
+    requirements = fh.read().splitlines()
 
 setup(
     name="raccoon",
@@ -13,7 +18,10 @@ setup(
     author="Moritz L. Obenauer, Kai N. Spauszus.",
     url="https://github.com/moritzobenauer/ProjectRaccoon",
     packages=find_packages(),
-    include_package_data=True,
+    package_data={
+        "raccoon": ["src/data/monomers.json"],
+        "": ["README.md", "requirements.txt"],
+    },
     test_suite="raccoon/tests",
     entry_points={"console_scripts": ["raccoon=raccoon.__main__:main"]},
     install_requires=requirements,
