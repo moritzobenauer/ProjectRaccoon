@@ -5,7 +5,7 @@ from pathlib import Path
 parent = Path(__file__).parent.resolve()
 
 long_description = (parent / "README.md").read_text()
-requirements = (parent / "requirements.txt").read_text().splitlines()
+# requirements = (parent / "requirements.txt").read_text().splitlines()
 
 setup(
     name="raccoon",
@@ -21,7 +21,17 @@ setup(
     },
     test_suite="raccoon/tests",
     entry_points={"console_scripts": ["raccoon=raccoon.__main__:main"]},
-    install_requires=requirements,
+    install_requires=[
+        "biopandas==0.4.1",
+        "numpy==1.26.3",
+        "pandas==2.1.4",
+        "py3Dmol==2.0.4",
+        "questionary==2.0.1",
+        "rich==13.7.0",
+        "scipy==1.11.4",
+        "setuptools==68.2.2",
+        "tqdm==4.66.1",
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License (GPL)",
