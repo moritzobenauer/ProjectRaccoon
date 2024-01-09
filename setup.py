@@ -13,13 +13,7 @@ setup(
     author="Moritz L. Obenauer, Kai N. Spauszus.",
     url="https://github.com/moritzobenauer/ProjectRaccoon",
     packages=find_packages(),
-    package_data={
-        "raccoon": [
-            "src/data/*.json",
-            "README.md",
-            "requirements.txt",
-        ]
-    },
+    include_package_data=True,
     test_suite="raccoon/tests",
     entry_points={"console_scripts": ["raccoon=raccoon.__main__:main"]},
     install_requires=requirements,
