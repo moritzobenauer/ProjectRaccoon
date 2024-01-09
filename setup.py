@@ -1,13 +1,11 @@
 from setuptools import setup, find_packages
 
-import importlib
 from pathlib import Path
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+parent = Path(__file__).parent.resolve()
 
-with open("requirements.txt", "r") as fh:
-    requirements = fh.read().splitlines()
+long_description = (parent / "README.md").read_text()
+requirements = (parent / "requirements.txt").read_text().splitlines()
 
 setup(
     name="raccoon",
