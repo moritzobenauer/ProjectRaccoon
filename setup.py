@@ -8,7 +8,7 @@ long_description = (parent / "README.md").read_text()
 
 setup(
     name="project_raccoon",
-    version="1.0.0",
+    version="1.0.1",
     description="Project project_raccoon is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion.",
     long_description=long_description,
     long_description_content_type="text/markdown",
