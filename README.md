@@ -88,8 +88,8 @@ To create the PDB file, select the first item that appears in the selection. The
 | Parameter | Default       |   Description |
 | :---      | :---          | :---          |
 | -s        | seq.txt       | Filename with extension for the sequence.                            |
-| -o        | out           | Filename without extension for the resulting pdb file.               |
-| -m        | monomers.dat  | Filename with extension for the monomer library.                     |
+| -o        | out.pdb       | Filename without extension for the resulting pdb file.               |
+| -m        | None          | An internal json file is used                                        |
 | -e        | False         | Write all explicit bonds. It can be useful for nonstandard residues. |
 | -r        | True          | Remove duplicate bonds. Bond a --> b is equivalent to b --> a.       |
 
