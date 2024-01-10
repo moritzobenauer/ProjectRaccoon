@@ -1,0 +1,41 @@
+name: myenv
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - bzip2=1.0.8=h10d778d_5
+  - ca-certificates=2023.11.17=h8857fd0_0
+  - expat=2.5.0=hf0c8a7f_1
+  - libexpat=2.5.0=hf0c8a7f_1
+  - libffi=3.4.2=h0d85af4_5
+  - libsqlite=3.44.2=h92b6c6a_0
+  - libzlib=1.2.13=h8a1eda9_5
+  - ncurses=6.4=h93d8f39_2
+  - openssl=3.2.0=hd75f5a5_1
+  - pip=23.3.2=pyhd8ed1ab_0
+  - python=3.12.0=hd58486a_0
+  - readline=8.2=h9e318b2_1
+  - sqlite=3.44.2=h7461747_0
+  - tk=8.6.13=h1abcd95_1
+  - wheel=0.42.0=pyhd8ed1ab_0
+  - xz=5.4.5=h6c40b1e_0
+  - zlib=1.2.13=h8a1eda9_5
+  - pip:
+      - biopandas==0.4.1
+      - markdown-it-py==3.0.0
+      - mdurl==0.1.2
+      - numpy==1.26.3
+      - pandas==2.1.4
+      - prompt-toolkit==3.0.36
+      - py3dmol==2.0.4
+      - pygments==2.17.2
+      - python-dateutil==2.8.2
+      - pytz==2023.3.post1
+      - questionary==2.0.1
+      - rich==13.7.0
+      - scipy==1.11.4
+      - setuptools==68.2.2
+      - six==1.16.0
+      - tqdm==4.66.1
+      - tzdata==2023.4
+      - wcwidth==0.2.13
