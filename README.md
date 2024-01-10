@@ -40,7 +40,7 @@ For non-standard amino acids **CSX** and **LNK**, please refer to the following 
 The easiest way to use the Project RACCOON software is to install it via pip
 
 ```bash
-pip install project_raccoon
+pip install project-raccoon==1.0.1
 ```
 
 If you want to have access to the *GROMACS* test functions, you can alternatively clone the github repository and install the module via
