@@ -1,4 +1,4 @@
-![raccoon]([/screenshots/asset1.png](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/asset1.png?raw=true))
+![raccoon](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/asset1.png?raw=true)
 
 # Project RACCOON
 
