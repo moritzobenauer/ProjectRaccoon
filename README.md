@@ -43,14 +43,14 @@ The easiest way to use the Project RACCOON software is to install it via pip
 pip install project_raccoon
 ```
 
-If you want to have access to the *GROMACS* test functions, you can alternatively clone the github repository and install the modul via
+If you want to have access to the *GROMACS* test functions, you can alternatively clone the github repository and install the module via
 
 ```bash
 git clone https://github.com/moritzobenauer/ProjectRaccoon.git
 pip install -e .
 ```
 
-To start the command-line interface run
+To start the command-line interface, run
 
 ```bash
 project_raccoon -s {yoursequencefile}
