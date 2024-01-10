@@ -82,7 +82,7 @@ The example shown here corresponds to a polypeptide in which ten histidine units
 
 To create the PDB file, select the first item that appears in the selection. The PDB file is then generated automatically according to the selected parameters. Creating an XYZ file from the PDB file may be desired for visualization or other purposes. This XYZ file no longer contains any binding information. For this purpose, the option *Convert PDB to XYZ file* can be selected in the menu. A corresponding XYZ file with the same file name as the PDB file is created.
 
-<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/ui.png?raw=true" alt="ui" width="200" height="auto">
+<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/ui.png?raw=true" alt="ui" width="800" height="auto">
 
 
 
@@ -109,7 +109,7 @@ The successful creation of the PDB file can then be checked. The *Check PDB* fil
 
 The software was developed specifically for the telechelic polymer peptide conjugates, according to [Otter et al., 2018](https://doi.org/10.1002/marc.201800459). An example is the peptide sequence FHFHFXG-PEO(N)-GXFHFHF (with X: 6-aminohexanoic acid). A corresponding seq.txt file can be found in the examples folder. A graphical representation of the PDB file is shown in the image below.
 
-![out](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/output.png?raw=true | width=200)
+<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/out.png?raw=true" alt="out" width="800" height="auto">
 
 After a brief energy minimization (performed with e.g. *GROMACS* and the OPLS force field), the physically meaningful structure is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations. It is important to recognize here that different building blocks with atomistic and united atom resolution have been combined with each other. 
 
