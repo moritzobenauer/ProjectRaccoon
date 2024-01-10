@@ -43,7 +43,7 @@ The easiest way to use the Project RACCOON software is to install it via pip
 pip install project_raccoon
 ```
 
-If you want to have access to the gromax test functions, you can alternatively clone the github repository
+If you want to have access to the *gromacs* test functions, you can alternatively clone the github repository
 
 
 ```bash
@@ -60,6 +60,11 @@ To start the command-line interface run
 
 ```bash
 project_raccoon
+```
+In case you experience any errors, we recommend creating and using a virtual environment using *conda*. 
+
+```bash
+conda env create -f environment.yml
 ```
 
 ### Importing new Monomers
