@@ -82,7 +82,9 @@ The example shown here corresponds to a polypeptide in which ten histidine units
 
 To create the PDB file, select the first item that appears in the selection. The PDB file is then generated automatically according to the selected parameters. Creating an XYZ file from the PDB file may be desired for visualization or other purposes. This XYZ file no longer contains any binding information. For this purpose, the option *Convert PDB to XYZ file* can be selected in the menu. A corresponding XYZ file with the same file name as the PDB file is created.
 
-![ui](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/ui.png?raw=true | width=200)
+<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/ui.png?raw=true" alt="ui" width="200" height="auto">
+
+
 
 
 | Parameter | Default       |   Description |
