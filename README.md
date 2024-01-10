@@ -10,7 +10,7 @@
 ## General Purpose & Scope
  Project RACCOON (*Rapid Automated Construction of Conjugates using the Optimized OPLS Input*) is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion. It allows for the easy addition of new monomers, incorporation of polypeptide and polymer sequences in text form, and outputs PDB and XYZ files.
 The tool was specifically developed for the OPLS force field but is adaptable to any other force field. The tool's primary scope is to provide a straightforward method for creating starting structures for molecular dynamics simulations. It caters to creating linear polymer peptide conjugates with facing polypeptide strands. 
-The tool emphasizes user-friendliness, making it accessible to chemists and physicists, not just limited to theoretical chemists with extensive background knowledge. Additionally, users can modify the code for their specific projects. Early developments started in January 2023. The software was developed at the KOMET and Besenius' research groups at the Johannes Gutenberg University Mainz.
+The tool emphasizes user-friendliness, making it accessible to chemists and physicists, not just limited to theoretical chemists with extensive background knowledge. Additionally, users can modify the code for their specific projects. Early developments started in January 2023. The software was developed at the [KOMET](https://www.komet1.physik.uni-mainz.de/) and [Besenius](https://www.ak-besenius.chemie.uni-mainz.de/)' research groups at the Johannes Gutenberg University Mainz.
 
 ### Supported building blocks
 
@@ -85,8 +85,6 @@ To create the PDB file, select the first item that appears in the selection. The
 <img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/ui.png?raw=true" alt="ui" width="600" height="auto">
 
 
-
-
 | Parameter | Default       |   Description |
 | :---      | :---          | :---          |
 | -s        | seq.txt       | Filename with extension for the sequence.                            |
@@ -111,7 +109,7 @@ The software was developed specifically for the telechelic polymer peptide conju
 
 <img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/output.png?raw=true" alt="out" width="600" height="auto">
 
-After a brief energy minimization (performed with e.g. *GROMACS* and the OPLS force field), the physically meaningful structure is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations. It is important to recognize here that different building blocks with atomistic and united atom resolution have been combined with each other. 
+After a brief energy minimization (performed with e.g. *[GROMACS](https://doi.org/10.1016/j.softx.2015.06.001)* and the [OPLS force field](https://doi.org/10.1021/ja9621760)), the physically meaningful structure is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations. It is important to recognize here that different building blocks with atomistic and united atom resolution have been combined with each other. 
 
 ## Limitations
 
