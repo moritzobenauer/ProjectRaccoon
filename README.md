@@ -65,7 +65,7 @@ conda env create -f environment.yml
 
 Open a graphical software to create three-dimensional molecular models and obtain the desired monomer structure. It is important to note that only the atoms or beads of the repeating units are used and not the entire molecule. The structure must be saved in .bs format, as the position of the atoms or beads and the neighboring atoms or beads are specified here. Start the user interface and navigate to *Manage Monomers* and *Add Monomer* to add the new monomer unit to your library. Please enter the name of the new residue and some properties and give every atom a unique identifier according to the force field you plan to use. For amino acid residues, it is essential to specify the C- and N-terminus of the building block.
 
-![Bild1](/screenshots/monomer_import.png)
+![monomer_import](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/monomer_import.png?raw=true)
 
 ### Creating PDB Files from Sequence
 The basis for creating a PDB file is a seq.txt file containing the block sequence. The monomers are specified line by line with their name and resolution (this may be necessary if the same block is present in the library file with a different resolution). In addition, whether it is an inverted building block (this occurs with C2 symmetrical polymer peptide conjugates) and the number of repeating units must be specified. In this way, classical polymers with a fixed number of repeating units of a monomer can also be represented quickly.
@@ -82,7 +82,7 @@ The example shown here corresponds to a polypeptide in which ten histidine units
 
 To create the PDB file, select the first item that appears in the selection. The PDB file is then generated automatically according to the selected parameters. Creating an XYZ file from the PDB file may be desired for visualization or other purposes. This XYZ file no longer contains any binding information. For this purpose, the option *Convert PDB to XYZ file* can be selected in the menu. A corresponding XYZ file with the same file name as the PDB file is created.
 
-![Bild3](/screenshots/ui.png)
+![ui](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/ui.png?raw=true)
 
 
 | Parameter | Default       |   Description |
@@ -107,7 +107,7 @@ The successful creation of the PDB file can then be checked. The *Check PDB* fil
 
 The software was developed specifically for the telechelic polymer peptide conjugates, according to [Otter et al., 2018]([https://www.ak-besenius.chemie.uni-mainz.de/](https://doi.org/10.1002/marc.201800459)). An example is the peptide sequence FHFHFXG-PEO(N)-GXFHFHF (with X: 6-aminohexanoic acid). A corresponding seq.txt file can be found in the examples folder. A graphical representation of the PDB file is shown in the image below.
 
-![Bild4](/screenshots/output.png)
+![out](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/output.png?raw=true)
 
 After a brief energy minimization (performed with e.g. *GROMACS* and the OPLS force field), the physically meaningful structure is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations. It is important to recognize here that different building blocks with atomistic and united atom resolution have been combined with each other. 
 
