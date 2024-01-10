@@ -50,7 +50,7 @@ If you want to have access to the gromax test functions, you can alternatively c
 git clone https://github.com/moritzobenauer/ProjectRaccoon.git
 ```
 
-and install **RACCOON** via
+and install the modul via
 
 ```bash
 pip install -e .
