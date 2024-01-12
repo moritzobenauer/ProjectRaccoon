@@ -3,6 +3,7 @@
 # Project RACCOON
 
  [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) ![JGU Mainz](https://img.shields.io/badge/JGU%20Mainz%20-%20red.svg) [![Coverage](https://codecov.io/gh/moritzobenauer/ProjectRaccoon/coverage.svg?branch=master)](https://codecov.io/gh/moritzobenauer/ProjectRaccoon?branch=master)
+ [![status](https://joss.theoj.org/papers/a72d0ea4ef2c43b6384a5fff784aa1ba/status.svg)](https://joss.theoj.org/papers/a72d0ea4ef2c43b6384a5fff784aa1ba)
 
 
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
