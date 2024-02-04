@@ -10,7 +10,8 @@ authors:
   - name: Moritz L. Obenauer
     orcid: 0009-0003-8140-9907
     affiliation: 1 
-    corresponding: true 
+    corresponding: true
+    equal-contrib: true
   - name: Kai N. Spauszus
     orcid: 0009-0006-0650-2273
     affiliation: 1
