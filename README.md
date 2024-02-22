@@ -38,10 +38,12 @@ For non-standard amino acids **CSX** and **LNK**, please refer to the following 
 
 ### Installing for Standard Usage
 
-The easiest way to use the Project RACCOON software is to install it via pip
+The easiest way to use the Project RACCOON software is to install it via pip. **Python >=3.11** is required, therefore it is advisable to create a conda environment
 
 ```bash
-pip install project-raccoon==1.0.1
+conda create -n raccoon python=3.11
+conda activate racoon
+pip install project-raccoon
 ```
 
 If you want to have access to the *GROMACS* test functions, you can alternatively clone the github repository and install the module via
@@ -55,11 +57,6 @@ To start the command-line interface, run
 
 ```bash
 project_raccoon -s {yoursequencefile}
-```
-If you experience any errors, we recommend creating and using a virtual environment using *conda*. 
-
-```bash
-conda env create -f environment.yml
 ```
 
 ### Importing new Monomers
