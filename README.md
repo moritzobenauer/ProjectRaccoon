@@ -42,7 +42,7 @@ The easiest way to use the Project RACCOON software is to install it via pip. **
 
 ```bash
 conda create -n raccoon python=3.11
-conda activate racoon
+conda activate raccoon
 pip install project-raccoon
 ```
 
