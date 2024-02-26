@@ -28,23 +28,45 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
     reps = list()
 
     with open(fpath, "r") as f:
-        for line in f.readlines():
+        for i, line in enumerate(f.readlines()):
             if line.startswith("#") or line.strip() == "":
                 continue
             else:
-                res, resolution, inv, rep = line.split(":")
+                spl = line.split(":")
+
+                if len(spl) != 4:
+                    raise Exception(f"Sequence line {i}: expected 4 colon-separated values, found {len(spl)}")
+
+                res, resolution, inv, rep = spl
+
                 if resolution == "AA":
                     resolution_lookup = "atomistic"
                 elif resolution == "UA":
                     resolution_lookup = "united_atom"
                 elif resolution == "CG":
                     resolution_lookup = "coarse_grained"
+                else:
+                    raise Exception(f"Unsupported resolution {resolution}; only AA, UA and CG are currently supported")
 
                 index.append(
                     monomers.index({"name": res, "resolution": resolution_lookup})
                 )
-                inverted.append(bool(int(inv)))
-                reps.append(int(rep))
+
+                try:
+                    inverted.append(bool(int(inv)))
+                except ValueError:
+                    raise Exception(f"Sequence line {i}: cannot convert {inv} (Inverted field) to a boolean value")
+                
+                try:
+                    rep_int = int(rep)
+                except ValueError:
+                    raise Exception(f"Sequence line {i}: cannot convert {rep} (Repeats field) to an integer value")
+                
+                if rep_int < 0:
+                    raise Exception(f"Sequence line {i}: the Repeats field should contain a positive integer")
+
+                reps.append(rep_int)
+
 
     return Sequence(index, inverted, reps)
 
