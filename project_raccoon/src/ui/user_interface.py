@@ -56,14 +56,23 @@ def start_racoon(
     try:
         while True:
             if option == "Create PDB File":
-                sequence = generate_sequence(monomers=monomers, fpath=sequence_file)
-                generate_file(
-                    monomers=monomers,
-                    sequence=sequence,
-                    explicit_bonds=explicitbonds,
-                    outpath=out_file,
-                    suppress_messages=suppress_messages,
-                )
+                try:
+                    sequence = generate_sequence(monomers=monomers, fpath=sequence_file)
+                    generate_file(
+                        monomers=monomers,
+                        sequence=sequence,
+                        explicit_bonds=explicitbonds,
+                        outpath=out_file,
+                        suppress_messages=suppress_messages,
+                    )
+                except Exception as e:
+                    import sys
+                    print("Caught the following error while generating the PDB file:", file=sys.stderr)
+                    print("---------------------------------------------------------", file=sys.stderr)
+                    print(e, file=sys.stderr)
+                    print("---------------------------------------------------------", file=sys.stderr)
+                    print("Exiting", file=sys.stderr)
+                    exit(1)
 
                 option = choose_option()
 
