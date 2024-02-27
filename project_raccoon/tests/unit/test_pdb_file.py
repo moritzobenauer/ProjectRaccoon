@@ -2,7 +2,6 @@ from unittest import TestCase
 
 
 class TestPdbFile(TestCase):
-
     """
     läuft wenn in main check pdf_file aufgerufen wird
     """

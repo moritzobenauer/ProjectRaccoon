@@ -63,6 +63,7 @@ class TestFunctions(TestCase):
     def test_generate_sequence(
         self,
     ) -> None:
+        """Test the sequence generation function with a sequence file in the example folder."""
         with tempfile.TemporaryDirectory() as tmpdir:
             shutil.copy(self.seq_file, Path(tmpdir) / self.seq_file_name)
             seq = generate_sequence(self.monomers, Path(tmpdir) / self.seq_file_name)
@@ -84,7 +85,7 @@ class TestFunctions(TestCase):
         self.assertEqual(seq.reps, self.seq.reps)
 
     def test_srw_rs(self) -> None:
-        """Test the semi random walk shift with a random shift vector"""
+        """Test the semi random walk shift with the standard random shift configuration"""
 
         trr = 1
         shift_conf = [-1, 1, -1, 1, -1, 1, 1]
@@ -129,7 +130,7 @@ class TestFunctions(TestCase):
         self.assertTrue(min_dist >= trr)
 
     def test_calc_minimal_distance(self) -> None:
-        """Tests the minimal distance function"""
+        """Tests the minimal distance function with a known set of coordinates."""
 
         coordinates = np.array([[0, 0, 0], [1, 1, 1], [2, 2, 3], [4, 5, 6]])
 
@@ -140,13 +141,6 @@ class TestFunctions(TestCase):
         # test N,3 with 1,3
         min_dist = calc_minimal_distance(coordinates[:-1], coordinates[-1:])
         self.assertAlmostEqual(min_dist, 4.69041575982343)
-
-    def test_srw_nrs(self) -> None:
-        """Test the semi random walk shift with a non random shift vector"""
-        # 2. test SRW
-        #   - random shift minmal distance > threshold
-        #   - test non random shift cumsum np.arange(len(atoms))
-        pass
 
     def test_explicit_bonds(self) -> None:
         """Tests the explicit bond function"""

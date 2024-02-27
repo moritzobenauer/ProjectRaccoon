@@ -20,7 +20,7 @@ class TestMonomerJsonClass(TestCase):
         return super().setUp()
 
     def test_resolution(self) -> None:
-        """Test if all resolutions are valid."""
+        """Test if all resolutions are valid within the monomers.json file."""
 
         for _, monomer in self.monomers_json.items():
             self.assertIn(
@@ -29,13 +29,13 @@ class TestMonomerJsonClass(TestCase):
 
     # test if all resolutions are in atomisitc, united atomes or cg?
     def test_names(self) -> None:
-        """Test if all Names are valid."""
+        """Test if all Names are valid in the monomers.json file."""
 
         for _, monomer in self.monomers_json.items():
             self.assertEqual(monomer["name"], monomer["name"].upper())
 
     def test_atom_count(self) -> None:
-        """Tests if the atom count ist equal to length of the atoms"""
+        """Tests if the atom count ist equal to length of the atoms for every monomer in the monomers.json file"""
 
         for _, monomer in self.monomers_json.items():
             self.assertEqual(monomer["atom_count"], len(monomer["atoms"]))

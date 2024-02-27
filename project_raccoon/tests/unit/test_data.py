@@ -11,7 +11,6 @@ from pathlib import Path
 
 
 class TestMonomerClass(TestCase):
-
     """Test the Monomer class."""
 
     root = Path(__file__).parents[3]
@@ -79,7 +78,7 @@ class TestMonomerClass(TestCase):
         self.assertFalse(monomer.inverted)
 
     def test_monomer(self) -> None:
-        """Tests the containing datatypes."""
+        """Tests the containing datatypes in the monomer class."""
         self.assertIsInstance(self.monomer, Monomer)
 
         self.assertIsInstance(self.monomer.name, str)
@@ -103,6 +102,7 @@ class TestMonomerClass(TestCase):
 
     def test_equal(self) -> None:
         self.assertEqual(self.monomer, self.monomer)
+        """ Tests the __eq__ method of the Monomer class."""
 
         other = {
             "name": "PEO",
@@ -167,6 +167,7 @@ class TestMonomerClass(TestCase):
         self.assertNotEqual(self.monomer, false_other_5)  # test atom_count
 
     def test_invert(self) -> None:
+        """Tests the invert method of the Monomer class."""
         with self.assertRaises(ValueError) as context:
             self.monomer.invert()  # polymer blocks (monomer.polymer == True) cannot be inverted, peo is polymer
 
@@ -200,11 +201,11 @@ class TestMonomerClass(TestCase):
         self.assertTrue(inv_monomer.inverted)  # inverted == True
 
     def test_get_atoms_from_bs_file(self) -> None:
-        """Tests the get_atoms_from_bs_file method."""
+        """Tests the get_atoms_from_bs_file method of the monomer class."""
         pass
 
     def test_create_monomer(self) -> None:
-        """Tests the create_monomer method."""
+        """Tests the create_monomer method of the monomer class."""
 
         name = "test"
         resolution = "test_resolution"
@@ -230,6 +231,7 @@ class TestMonomerClass(TestCase):
         self.assertIsInstance(monomer, Monomer)
 
     def test_update(self) -> None:
+        """Tests the update method of the monomer class."""
         shift = 5
         shift_cartesian = [1.0, 1.0, 1.0]
 
@@ -276,13 +278,13 @@ class TestMonomerClass(TestCase):
         )
 
     def test_coordinates_to_numpy(self) -> np.ndarray:
-        """Tests the coordinates_to_numpy method."""
+        """Tests the coordinates_to_numpy method of the monomer class."""
         coordinates = self.monomer.coordinates_to_numpy()
         self.assertIsInstance(coordinates, np.ndarray)
         self.assertEqual(coordinates.shape, (self.monomer.atom_count, 3))
 
     def test_get_explicit_links(self) -> List[List[int]]:
-        """Tests the get_explicit_links method."""
+        """Tests the get_explicit_links method of the monomer class."""
         links = self.monomer.get_explicit_links()
 
         self.assertEqual(len(links), len(self.monomer.atoms))
@@ -291,16 +293,15 @@ class TestMonomerClass(TestCase):
         self.assertIsInstance(links[0][0], int)
 
     def test_repr(self) -> None:
-        """Tests the __repr__ method."""
+        """Tests the __repr__ method of the monomer class."""
         self.assertIsInstance(self.monomer.__repr__(), str)
 
     def test_len(self) -> None:
-        """Tests the __len__ method."""
+        """Tests the __len__ method of the monomer class."""
         self.assertEqual(len(self.monomer), self.monomer.atom_count)
 
 
 class TestMonomersClass(TestCase):
-
     """Test the Monomers Class."""
 
     root = Path(__file__).parents[3]
@@ -310,7 +311,7 @@ class TestMonomersClass(TestCase):
         return super().setUp()
 
     def test_get_item(self) -> None:
-        """Tests the get_item method with index, list of indices and a slice."""
+        """Tests the get_item method with index, list of indices and a slice of the monomers class."""
         self.assertIsInstance(self.monomers[0], Monomer)
 
         monomers_list = self.monomers[0:2]
@@ -324,7 +325,7 @@ class TestMonomersClass(TestCase):
         self.assertIsInstance(monomers_list[0], Monomer)
 
     def test_indexing(self) -> None:
-        """Tests the indexing of the monomers with an monomer and a dict."""
+        """Tests the indexing of the monomers with an monomer and a dict of the monomers class."""
         self.assertEqual(self.monomers.index(self.monomers[0]), 0)
         self.assertEqual(self.monomers.index(self.monomers[2].to_dict()), 2)
 
@@ -343,7 +344,7 @@ class TestMonomersClass(TestCase):
         self.assertEqual(self.monomers.to_dict(), monomers.to_dict())
 
     def test_add_monomer(self) -> None:
-        """Tests the add_monomer method."""
+        """Tests the add_monomer method of the monomers class."""
 
         name = "PEO"
         resolution = "test_resolution"
