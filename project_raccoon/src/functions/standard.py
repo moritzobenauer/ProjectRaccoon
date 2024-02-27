@@ -258,10 +258,6 @@ def generate_file(
                     # end the current function call and continue with the next one
                     return
 
-                print("cycle_cnt", cycle_cnt)
-                print("m", m)
-                print(type(m))
-
                 cshift = cshift + m
 
                 updated_monomer = monomer.update(atom_count, cshift)
