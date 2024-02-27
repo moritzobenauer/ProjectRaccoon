@@ -35,7 +35,9 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
                 spl = line.split(":")
 
                 if len(spl) != 4:
-                    raise Exception(f"Sequence line {i}: expected 4 colon-separated values, found {len(spl)}")
+                    raise Exception(
+                        f"Sequence line {i}: expected 4 colon-separated values, found {len(spl)}"
+                    )
 
                 res, resolution, inv, rep = spl
 
@@ -46,7 +48,9 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
                 elif resolution == "CG":
                     resolution_lookup = "coarse_grained"
                 else:
-                    raise Exception(f"Unsupported resolution {resolution}; only AA, UA and CG are currently supported")
+                    raise Exception(
+                        f"Unsupported resolution {resolution}; only AA, UA and CG are currently supported"
+                    )
 
                 index.append(
                     monomers.index({"name": res, "resolution": resolution_lookup})
@@ -55,18 +59,23 @@ def generate_sequence(monomers: Monomers, fpath: str) -> Sequence:
                 try:
                     inverted.append(bool(int(inv)))
                 except ValueError:
-                    raise Exception(f"Sequence line {i}: cannot convert {inv} (Inverted field) to a boolean value")
-                
+                    raise Exception(
+                        f"Sequence line {i}: cannot convert {inv} (Inverted field) to a boolean value"
+                    )
+
                 try:
                     rep_int = int(rep)
                 except ValueError:
-                    raise Exception(f"Sequence line {i}: cannot convert {rep} (Repeats field) to an integer value")
-                
+                    raise Exception(
+                        f"Sequence line {i}: cannot convert {rep} (Repeats field) to an integer value"
+                    )
+
                 if rep_int < 0:
-                    raise Exception(f"Sequence line {i}: the Repeats field should contain a positive integer")
+                    raise Exception(
+                        f"Sequence line {i}: the Repeats field should contain a positive integer"
+                    )
 
                 reps.append(rep_int)
-
 
     return Sequence(index, inverted, reps)
 
@@ -127,26 +136,29 @@ def get_semi_random_walk_shift(
     trr: float,
     cshift: List[float],
     shift_conf: List[float],
-):
+    max_iter: int = 1e3,
+) -> np.ndarray:
     """Self-Avoiding Random Walk to prevent infinite forces upon energy minimization.
-         Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
-            Treshshold of trr=1 should be sufficient to prevent infinite forces.
+        Combines RandShift() and MinimalDistance(). Returns k, which can be used to add onto the new monomer.
+        Treshshold of trr=1 should be sufficient to prevent infinite forces. If the function fails to find a valid shift, it will return None.
 
     Args:
         - `polypetide_coordinates (np.ndarray, (3,N))`: Array of all coordinates of the atoms in the previous monomers.
         - `monomer (Monomer)`: Monomer from raccoon.src.data
         - `trr (float)`: Threshold for minimal distance.
         - `cshift (List(float))`: Cartesian shift.
-        - `shift_conf (List(float))`: Shift configuration for RandShift().
+        - `shift_conf (List(float))`: Shift configuration for RandShift()
+        - `max_iter (int)`: Maximum number of iterations.
 
     Returns:
-        - `k (np.ndarray)`: 3d vector with shape (3,)
+        - `k (np.ndarray)`: 3d vector with shape (3,) if successful, else False.
     """
 
     monomer_coordinates = monomer.coordinates_to_numpy() + cshift
     minimal_distance = 0
+    cnt = 0
 
-    while minimal_distance < trr:
+    while minimal_distance < trr and cnt < max_iter:
         k = get_rand_shift(*shift_conf)
         updated_monomer_coordinates = monomer_coordinates + k
 
@@ -154,7 +166,9 @@ def get_semi_random_walk_shift(
             coords1=polypeptide_coordinates, coords2=updated_monomer_coordinates
         )
 
-    return k
+        cnt += 1
+
+    return k if cnt < max_iter else False
 
 
 def generate_file(
@@ -166,8 +180,11 @@ def generate_file(
     shift_conf: List[float] = [-1, 1, -1, 1, -1, 1, 1],
     damping_factor: float = 0.5,
     suppress_messages: bool = True,
+    cycle_cnt: int = 0,
+    max_cycles: int = 100,
 ):
     """Central function of the modul: adds monomers to a polymer peptide chain and writes it directly to a PDB file.
+    If more than 10 cycles are needed to generate a valid structure, the function will raise an error.
 
     Args:
        - `monomers (Monomers)`: Monomers object.
@@ -177,7 +194,19 @@ def generate_file(
        - `trr (float)`: Threshold for minimal distance.
        - `shift_cartesian (list(float))`: Cartesian shift of dimensions x,y,z.
        - `damping_factor (float)`: Damping factor for the shift.
+       - `suppress_messages (bool)`: If True, messages are suppressed.
+       - `cycle_cnt (int)`: Current cycle count.
+       - `max_cycles (int)`: Maximum number of cycles.
     """
+
+    if cycle_cnt >= max_cycles:
+        raise Exception(
+            f"""Exceeded maximum number of cycles ({max_cycles}) to generate a valid structure.\n
+                Please reparameterize the semi random walk. You can increase the treshold `trr`,\n
+                reduce the damping factor `damping_factor`, play with the parameters in to generate\n
+                the random shift vector `shift_conf`, or increase `max_cycles`."""
+        )
+
     atom_count = 0
     res_count = 0
 
@@ -212,7 +241,28 @@ def generate_file(
                     shift_conf=shift_conf,
                 )
 
-                cshift += m
+                if not np.all(m):
+                    generate_file(
+                        monomers,
+                        sequence,
+                        explicit_bonds,
+                        outpath,
+                        trr,
+                        shift_conf,
+                        damping_factor,
+                        suppress_messages,
+                        cycle_cnt + 1,
+                        max_cycles,
+                    )
+
+                    # end the current function call and continue with the next one
+                    return
+
+                print("cycle_cnt", cycle_cnt)
+                print("m", m)
+                print(type(m))
+
+                cshift = cshift + m
 
                 updated_monomer = monomer.update(atom_count, cshift)
 
