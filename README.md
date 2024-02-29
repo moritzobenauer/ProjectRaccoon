@@ -12,7 +12,7 @@
 
 For quick navigation throughout the documentation, please use the Table of Contents.
 
-1. [General Purpose \& Scope](#general-purpose--scope)
+  1. [General Purpose \& Scope](#general-purpose--scope)
        1. [Supported building blocks](#supported-building-blocks)
   2. [How to use Project RACCOON](#how-to-use-project-raccoon)
        1. [Installing for Standard Usage](#installing-for-standard-usage)
@@ -77,9 +77,11 @@ project_raccoon -s {yoursequencefile}
 
 ### Importing new Monomers
 
-Open a graphical software to create three-dimensional molecular models and obtain the desired monomer structure. It is important to note that only the atoms or beads of the repeating units are used and not the entire molecule. The structure must be saved in .bs format, as the position of the atoms or beads and the neighboring atoms or beads are specified here. Start the user interface and navigate to *Manage Monomers* and *Add Monomer* to add the new monomer unit to your library. Please enter the name of the new residue and some properties and give every atom a unique identifier according to the force field you plan to use. For amino acid residues, it is essential to specify the C- and N-terminus of the building block.
+Open a graphical software to create three-dimensional molecular models and obtain the desired monomer structure. It is important to note that only the atoms or beads of the repeating units are used and not the entire molecule. The structure must be saved in .bs format, as the position of the atoms or beads and the neighboring atoms or beads are specified here. An example alanine.bs file is provided in the examples folder. Start the user interface and navigate to *Manage Monomers* and *Add Monomer* to add the new monomer unit to your library. Please enter the name of the new residue and some properties and give every atom a unique identifier according to the force field you plan to use. For amino acid residues, it is essential to specify the C- and N-terminus of the building block.
 
-![monomer_import](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/monomer_import.png?raw=true)
+<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/monomer_import.png?raw=true" alt="ui" width="450" height="auto">
+
+Monomer building blocks need to be given a name (no restrictions, will be treated as a string), the resolution (atomistic, united_atom, coarse_grained), and the propery polymer which can be either `True` or `False`. The software will read the element type and bonded neighbors from the .bs file. The user has to set the forcefield identifiers for every single atom/bead and specifiy the C- and N-termini of the building block. After the completion of these steps, the newly added monomer is added to the monomers.json file.  
 
 ### Creating PDB Files from Sequence
 The basis for creating a PDB file is a seq.txt file containing the block sequence. The monomers are specified line by line with their name and resolution (this may be necessary if the same block is present in the library file with a different resolution). In addition, whether it is an inverted building block (this occurs with C2 symmetrical polymer peptide conjugates) and the number of repeating units must be specified. In this way, classical polymers with a fixed number of repeating units of a monomer can also be represented quickly.
@@ -96,7 +98,7 @@ The example shown here corresponds to a polypeptide in which ten histidine units
 
 To create the PDB file, select the first item that appears in the selection. The PDB file is then generated automatically according to the selected parameters. Creating an XYZ file from the PDB file may be desired for visualization or other purposes. This XYZ file no longer contains any binding information. For this purpose, the option *Convert PDB to XYZ file* can be selected in the menu. A corresponding XYZ file with the same file name as the PDB file is created.
 
-<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/ui.png?raw=true" alt="ui" width="600" height="auto">
+<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/ui.png?raw=true" alt="ui" width="300" height="auto">
 
 
 | Parameter | Default       |   Description |
