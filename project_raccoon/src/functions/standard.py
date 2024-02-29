@@ -384,28 +384,6 @@ def generate_file(
         )
 
 
-def sort_PDB(fpath: str):
-    """
-    Sorts a PDB file inplace by the atom index.
-
-    Args:
-       - `file_path (str)`: Path to the file.
-
-    """
-
-    with open(fpath, "r+") as f:
-        rows = f.readlines()
-        atoms = [row for row in rows if row.startswith("ATOM")]
-        bonds = [row for row in rows if row.startswith("CONECT")]
-
-        sorted_atoms = sorted(atoms, key=lambda x: x[1])
-        sorted_bonds = sorted(bonds, key=lambda x: x[1])
-
-    with open(fpath, "w") as f:
-        f.writelines(sorted_atoms)
-        f.writelines(sorted_bonds)
-
-
 def close_PDB(fpath: str, atom_count: int):
     """
     Closes a PDB file by adding the END statement and the number of atoms.
