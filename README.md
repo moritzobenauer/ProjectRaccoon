@@ -137,7 +137,7 @@ Over 80% of the code presented here is covered by unit tests. These can be run w
 python -m unittest -v
 ```
 
-If the resulting output creates no errors and prints `OK`, the software was correctly installed,and all features can be used. We are continuously working on improving the code coverage of the unit tests. Feel free to contribute by contacting the authors or forking them project. 
+If the resulting output creates no errors and prints `OK`, the software was correctly installed, and all features can be used. We are continuously working on improving the code coverage of the unit tests. Feel free to contribute by contacting the authors or forking the project. 
 
 
 ### GROMACS Testing
