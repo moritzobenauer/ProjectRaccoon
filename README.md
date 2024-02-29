@@ -81,7 +81,7 @@ Open a graphical software to create three-dimensional molecular models and obtai
 
 <img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/monomer_import.png?raw=true" alt="ui" width="450" height="auto">
 
-Monomer building blocks need to be given a name (no restrictions, will be treated as a string), the resolution (atomistic, united_atom, coarse_grained), and the propery polymer which can be either `True` or `False`. The software will read the element type and bonded neighbors from the .bs file. The user has to set the forcefield identifiers for every single atom/bead and specifiy the C- and N-termini of the building block. After the completion of these steps, the newly added monomer is added to the available monomers list.  
+Monomer building blocks need to be given a *name* (no restrictions, will be treated as a string), the *resolution* (atomistic, united_atom, coarse_grained), and the property *polymer* which can be either `True` or `False`. The software will read the element type and bonded neighbors from the .bs file. The user has to set the forcefield identifiers for every single atom/bead and specifiy the C- and N-termini of the building block. After the completion of these steps, the newly added monomer is added to the available monomers list.  
 
 ### Creating PDB Files from Sequence
 The basis for creating a PDB file is a seq.txt file containing the block sequence. The monomers are specified line by line with their name and resolution (this may be necessary if the same block is present in the library file with a different resolution). In addition, whether it is an inverted building block (this occurs with C2 symmetrical polymer peptide conjugates) and the number of repeating units must be specified. In this way, classical polymers with a fixed number of repeating units of a monomer can also be represented quickly.
@@ -142,7 +142,7 @@ If the resulting output creates no errors and prints `OK`, the software was corr
 
 ### GROMACS Testing
 
-To ensure seamless integration with *GROMACS*, we prepared a *GROMACS* testing script, which can be found as `gmx/automated_testing.sh`. This script creates a polypeptide test structure and runs the `gmx pdb2gmx`, `gmx grompp`, and `gmx mdrun` commands to ensure that the created pdb files can be read by *GROMACS*. By also running an energy minimization, we guarantee the creation of geometries that do not lead to infinite forces.
+To ensure seamless integration with *GROMACS*, we prepared a *GROMACS* testing script, which can be found as `gmx/automated_testing.sh`. This script creates a polypeptide test structure and runs the `gmx pdb2gmx`, `gmx grompp`, and `gmx mdrun` commands to ensure that the created pdb files can be read by *GROMACS*. By also running an energy minimization, we guarantee the creation of geometries that do not lead to infinite forces. The folder contains the necessary *GROMACS* input files and the *FHFHF* test sequence as a text file.
 
 ## Limitations
 

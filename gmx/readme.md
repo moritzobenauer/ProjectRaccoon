@@ -1,1 +1,0 @@
-## Gromacs Testing Procedure ##
