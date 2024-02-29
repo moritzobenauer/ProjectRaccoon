@@ -40,7 +40,7 @@ def get_links_from_pdb(fpath: str) -> np.ndarray:
     """
     links = list()
 
-    with open("out.pdb", "r") as f:
+    with open(fpath, "r") as f:
         for line in f:
             if line.startswith("CONECT"):
                 link = line.split(" ")[1:]
