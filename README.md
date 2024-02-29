@@ -10,18 +10,17 @@
 
 **Table of Contents**
 
-- [Project RACCOON](#project-raccoon)
-  - [General Purpose \& Scope](#general-purpose--scope)
-    - [Supported building blocks](#supported-building-blocks)
-  - [How to use Project RACCOON](#how-to-use-project-raccoon)
-    - [Installing for Standard Usage](#installing-for-standard-usage)
-    - [Importing new Monomers](#importing-new-monomers)
-    - [Creating PDB Files from Sequence](#creating-pdb-files-from-sequence)
-    - [Check PDB Files](#check-pdb-files)
-  - [Examples and Testing](#examples-and-testing)
-    - [Unit Testing](#unit-testing)
-    - [GROMACS Testing](#gromacs-testing)
-  - [Limitations](#limitations)
+  1. [General Purpose \& Scope](#general-purpose--scope)
+    1. [Supported building blocks](#supported-building-blocks)
+  2. [How to use Project RACCOON](#how-to-use-project-raccoon)
+    1. [Installing for Standard Usage](#installing-for-standard-usage)
+    2. [Importing new Monomers](#importing-new-monomers)
+    3. [Creating PDB Files from Sequence](#creating-pdb-files-from-sequence)
+    4. [Check PDB Files](#check-pdb-files)
+  3. [Examples and Testing](#examples-and-testing)
+    1. [Unit Testing](#unit-testing)
+    2. [GROMACS Testing](#gromacs-testing)
+  4. [Limitations](#limitations)
 
 
 ## General Purpose & Scope
