@@ -67,10 +67,20 @@ def start_racoon(
                     )
                 except Exception as e:
                     import sys
-                    print("Caught the following error while generating the PDB file:", file=sys.stderr)
-                    print("---------------------------------------------------------", file=sys.stderr)
+
+                    print(
+                        "Caught the following error while generating the PDB file:",
+                        file=sys.stderr,
+                    )
+                    print(
+                        "---------------------------------------------------------",
+                        file=sys.stderr,
+                    )
                     print(e, file=sys.stderr)
-                    print("---------------------------------------------------------", file=sys.stderr)
+                    print(
+                        "---------------------------------------------------------",
+                        file=sys.stderr,
+                    )
                     print("Exiting", file=sys.stderr)
                     exit(1)
 

@@ -7,6 +7,10 @@ from project_raccoon.src.util import MONOMERFILE
 from project_raccoon.src.data import Monomer, Monomers, Atom
 import numpy as np
 
+import importlib
+import shutil
+import tempfile
+
 from pathlib import Path
 
 
@@ -23,6 +27,12 @@ class TestMonomerClass(TestCase):
 
     def setUp(self) -> None:
         """Create a monomer object."""
+
+        self.bs_file_name = "alanine.bs"
+        self.bs_file = (
+            importlib.resources.files("project_raccoon.tests.unit.data")
+            / self.bs_file_name
+        )
         monomer_dict = {
             "name": "PEO",
             "resolution": "united_atom",
@@ -202,7 +212,22 @@ class TestMonomerClass(TestCase):
 
     def test_get_atoms_from_bs_file(self) -> None:
         """Tests the get_atoms_from_bs_file method of the monomer class."""
-        pass
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            shutil.copy(self.bs_file, Path(tmpdir) / self.bs_file_name)
+            atoms = self.monomer.get_atoms_from_bs_file(
+                Path(tmpdir) / self.bs_file_name
+            )
+
+        self.assertIsInstance(atoms, List)
+        self.assertEqual(len(atoms), 10)
+        self.assertIsInstance(atoms[0], List)
+
+        atom = atoms[0]
+
+        self.assertIsInstance(atom[0], str)
+        self.assertIsInstance(atom[1], float)
+        self.assertIsInstance(atom[4], list)
 
     def test_create_monomer(self) -> None:
         """Tests the create_monomer method of the monomer class."""

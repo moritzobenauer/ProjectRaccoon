@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from project_raccoon.src.data import Sequence
-from project_raccoon.src.ui import start_racoon
+from project_raccoon.src.ui import start_racoon, welcome, tschau_kakao
 from project_raccoon.src.ui.user_interface import choose_option, manage_monomers
 from project_raccoon.src.functions import get_elements_and_coords_from_pdb
 
@@ -29,6 +29,12 @@ class TestUserInterface(TestCase):
             importlib.resources.files("project_raccoon.tests.unit.data") / "out.xyz"
         )
         self.xyz_file_name = "out.xyz"
+
+        self.false_seq_file_name = "seq_failure.txt"
+        self.false_seq_file = (
+            importlib.resources.files("project_raccoon.tests.unit.data")
+            / self.false_seq_file_name
+        )
 
         return super().setUp()
 
@@ -90,11 +96,34 @@ class TestUserInterface(TestCase):
 
     @patch(
         "project_raccoon.src.ui.user_interface.choose_option",
+        side_effect=["Create PDB File", "Exit"],
+    )
+    @patch("builtins.print")
+    def test_create_pdb_file_failure(self, *args):
+        """Tests if the "Create PDB File" option failes properly with false input."""
+        with tempfile.TemporaryDirectory() as tmpdir, self.assertRaises(SystemExit):
+            shutil.copy(self.false_seq_file, tmpdir)
+
+            stmp = Path(tmpdir) / self.false_seq_file_name
+
+            otmp = Path(tmpdir) / self.pdb_file_name
+            result = start_racoon(
+                stmp,
+                otmp.__str__(),
+                None,
+                True,
+                False,
+                suppress_messages=True,
+            )
+
+    @patch(
+        "project_raccoon.src.ui.user_interface.choose_option",
         side_effect=["Check PDB File", "Exit"],
     )
     @patch("builtins.print")
     def test_check_pdb_file(self, *args):
         """Test that the check pdb file option works. Should return None"""
+
         with tempfile.TemporaryDirectory() as tmpdir:
             shutil.copy(self.pdb_file, tmpdir)
 
@@ -177,7 +206,7 @@ class TestUserInterface(TestCase):
         "project_raccoon.src.ui.user_interface.manage_monomers",
         side_effect=["Add Monomer", "Return"],
     )
-    def test_add_monomer(self, mock_input, mock_input2):
+    def test_add_monomer(self, *args):
         """Test that the add monomer option works."""
         pass
 
@@ -189,7 +218,7 @@ class TestUserInterface(TestCase):
         "project_raccoon.src.ui.user_interface.manage_monomers",
         side_effect=["Delete Monomer", "Return"],
     )
-    def test_delete_monomer(self, mock_input, mock_input2):
+    def test_delete_monomer(self, *args):
         """Test that the delete monomer option works."""
         pass
 
@@ -199,11 +228,25 @@ class TestUserInterface(TestCase):
     )
     @patch(
         "project_raccoon.src.ui.user_interface.manage_monomers",
-        side_effect=["Print Monomers", "Return"],
+        side_effect=["Print Monomers", "Return", "Return"],
     )
-    def test_print_monomers(self, mock_input, mock_input2):
+    def test_print_monomers(self, *args):
         """Test that the print monomers option works."""
-        pass
+
+        with tempfile.TemporaryDirectory() as tmpdir, patch("sys.stdout", None):
+            shutil.copy(self.pdb_file, tmpdir)
+
+            otmp = Path(tmpdir) / self.pdb_file_name
+
+            result = start_racoon(
+                self.seq_file,
+                otmp.__str__(),
+                None,
+                True,
+                False,
+                suppress_messages=True,
+            )
+        self.assertIsNone(result)
 
     @patch(
         "project_raccoon.src.ui.user_interface.choose_option",
@@ -213,6 +256,18 @@ class TestUserInterface(TestCase):
         "project_raccoon.src.ui.user_interface.manage_monomers",
         side_effect=["Export JSON Monomer File", "Return"],
     )
-    def test_export_json_monomer_file(self, mock_input, mock_input2):
+    def test_export_json_monomer_file(self, *args):
         """Test that the export json monomer file option works."""
         pass
+
+    def test_welcome(self):
+        """Test the welcome message."""
+
+        with patch("sys.stdout", None):
+            self.assertIsNone(welcome())
+
+    def test_tschau_kakao(self):
+        """Test the exit message."""
+
+        with patch("sys.stdout", None):
+            self.assertIsNone(tschau_kakao())

@@ -16,11 +16,11 @@ setup(
     url="https://github.com/moritzobenauer/ProjectRaccoon",
     packages=find_packages(),
     package_data={
-        "project_raccoon": ["src/data/monomers.json"],
+        "project_raccoon": ["src/data/monomers.json", "tests/unit/data/*"],
     },
     test_suite="project_raccoon/tests",
     entry_points={"console_scripts": ["project_raccoon=project_raccoon.__main__:main"]},
-    python_requires='>=3.11',
+    python_requires=">=3.11",
     install_requires=[
         "biopandas==0.4.1",
         "numpy==1.26.3",

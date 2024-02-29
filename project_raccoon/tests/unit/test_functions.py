@@ -33,6 +33,12 @@ class TestFunctions(TestCase):
             importlib.resources.files("project_raccoon.tests.unit.data")
             / self.seq_file_name
         )
+        self.out_file_name = "out.pdb"
+        self.out_file = (
+            importlib.resources.files("project_raccoon.tests.unit.data")
+            / self.out_file_name
+        )
+
         self.monomers = Monomers.from_json()
         index = [6, 3, 4, 3, 4, 3, 9, 7, 1, 7, 9, 3, 4, 3, 4, 3, 6]
         inverted = [
@@ -147,7 +153,24 @@ class TestFunctions(TestCase):
         pass
 
     def test_get_elements_and_coords_from_pdb(self) -> None:
-        pass
+        """Tests the get elements and coordinates from pdb function"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            shutil.copy(self.out_file, Path(tmpdir) / self.out_file_name)
+            elements, coords = get_elements_and_coords_from_pdb(
+                Path(tmpdir) / self.out_file_name
+            )
+
+        self.assertIsInstance(elements, List)
+        self.assertIsInstance(elements[0], str)
+
+        self.assertIsInstance(coords, np.ndarray)
 
     def test_get_links_from_pdb(self) -> None:
-        pass
+        """Tests the get links from pdb function"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            shutil.copy(self.out_file, Path(tmpdir) / self.out_file_name)
+            links = get_links_from_pdb(Path(tmpdir) / self.out_file_name)
+
+        self.assertIsInstance(links, np.ndarray)
