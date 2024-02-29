@@ -6,11 +6,9 @@
  [![status](https://joss.theoj.org/papers/a72d0ea4ef2c43b6384a5fff784aa1ba/status.svg)](https://joss.theoj.org/papers/a72d0ea4ef2c43b6384a5fff784aa1ba)
 
 
-**Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
+### Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.
 
 **Table of Contents**
-
-For quick navigation throughout the documentation, please use the Table of Contents.
 
   1. [General Purpose \& Scope](#general-purpose--scope)
        1. [Supported building blocks](#supported-building-blocks)
@@ -46,7 +44,7 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 | CSX          | :white_check_mark: | :white_check_mark: | :x: |
 | LNK          | :white_check_mark: | :white_check_mark: | :x: |
 
-For non-standard amino acids **CSX** and **LNK**, please refer to the following paper by [pending, 20xx](https://www.ak-besenius.chemie.uni-mainz.de/). Coarse-grained models have not been implemented yet.
+For non-standard amino acids **CSX** and **LNK**, please refer to the following paper by [pending, 20xx](https://www.ak-besenius.chemie.uni-mainz.de/). Coarse-grained models have not been implemented yet. The **DUM** building block is a dummy bead with an unspecified mass sometimes used in polymer modeling. Therefore, only the CG resolution is available.
 
 
 
@@ -105,7 +103,7 @@ To create the PDB file, select the first item that appears in the selection. The
 | :---      | :---          | :---          |
 | -s        | seq.txt       | Filename with extension for the sequence.                            |
 | -o        | out.pdb       | Filename without extension for the resulting pdb file.               |
-| -m        | None          | An internal json file is used                                        |
+| -m        | if None          | An internal json file is used                                        |
 | -e        | False         | Write all explicit bonds. It can be useful for nonstandard residues. |
 | -r        | True          | Remove duplicate bonds. Bond a --> b is equivalent to b --> a.       |
 
