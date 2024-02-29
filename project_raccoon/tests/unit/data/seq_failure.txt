@@ -1,0 +1,3 @@
+ACe:AA:0:1
+PHE:AA:0:1
+HIS:AA:0:1
