@@ -6,9 +6,9 @@
  [![status](https://joss.theoj.org/papers/a72d0ea4ef2c43b6384a5fff784aa1ba/status.svg)](https://joss.theoj.org/papers/a72d0ea4ef2c43b6384a5fff784aa1ba)
 
 
-### Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.
+**Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
 
-**Table of Contents**
+ ## Table of Contents
 
   1. [General Purpose \& Scope](#general-purpose--scope)
        1. [Supported building blocks](#supported-building-blocks)
@@ -129,7 +129,7 @@ After a brief energy minimization (performed with e.g. *[GROMACS](https://doi.or
 
 ### Unit Testing
 
-Over 80% of the code presented here is covered by unit tests. These can be run with the following command:
+Over 90% of the code presented here is covered by unit tests. These can be run with the following command:
 
 ```
 python -m unittest -v
