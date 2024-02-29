@@ -10,18 +10,19 @@
 
 **Table of Contents**
 
-  1. [General Purpose \& Scope](#general-purpose--scope)
-    1. [Supported building blocks](#supported-building-blocks)
-  2. [How to use Project RACCOON](#how-to-use-project-raccoon)
-    1. [Installing for Standard Usage](#installing-for-standard-usage)
-    2. [Importing new Monomers](#importing-new-monomers)
-    3. [Creating PDB Files from Sequence](#creating-pdb-files-from-sequence)
-    4. [Check PDB Files](#check-pdb-files)
-  3. [Examples and Testing](#examples-and-testing)
-    1. [Unit Testing](#unit-testing)
-    2. [GROMACS Testing](#gromacs-testing)
-  4. [Limitations](#limitations)
+For quick navigation throughout the documentation, please use the Table of Contents.
 
+1. [General Purpose \& Scope](#general-purpose--scope)
+       1. [Supported building blocks](#supported-building-blocks)
+  2. [How to use Project RACCOON](#how-to-use-project-raccoon)
+       1. [Installing for Standard Usage](#installing-for-standard-usage)
+       2. [Importing new Monomers](#importing-new-monomers)
+       3. [Creating PDB Files from Sequence](#creating-pdb-files-from-sequence)
+       4. [Check PDB Files](#check-pdb-files)
+  3. [Examples and Testing](#examples-and-testing)
+       1. [Unit Testing](#unit-testing)
+       2. [GROMACS Testing](#gromacs-testing)
+  4. [Limitations](#limitations)
 
 ## General Purpose & Scope
  Project RACCOON (*Rapid Automated Construction of Conjugates using the Optimized OPLS Input*) is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion. It allows for the easy addition of new monomers and incorporation of polypeptide and polymer sequences in text form and outputs PDB and XYZ files.
