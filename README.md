@@ -8,6 +8,8 @@
 
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
 
+**Table of Contents**
+
 - [Project RACCOON](#project-raccoon)
   - [General Purpose \& Scope](#general-purpose--scope)
     - [Supported building blocks](#supported-building-blocks)
@@ -133,12 +135,12 @@ Over 80% of the code presented here is covered by unit tests. These can be run w
 python -m unittest -v
 ```
 
-If the resulting output creates no errors and prints `OK`, the software was correctly installed,and all features can be used. 
-
-
+If the resulting output creates no errors and prints `OK`, the software was correctly installed,and all features can be used. We are continuously working on improving the code coverage of the unit tests. Feel free to contribute by contacting the authors or forking them project. 
 
 
 ### GROMACS Testing
+
+To ensure seamless integration with GROMACS, we prepared a GROMACS testing script, which can be found as `gmx/automated_testing.sh`. This script creates a polypeptide test structure and runs the `gmx pdb2gmx`, `gmx grompp`, and `gmx mdrun` commands to ensure that the created pdb files can be read by GROMACS. By also running an energy minimization, we guarantee the creation of geometries that do not lead to infinite forces.
 
 ## Limitations
 
