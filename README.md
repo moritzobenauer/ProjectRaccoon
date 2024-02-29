@@ -8,6 +8,20 @@
 
 **Automated construction of atomistic and coarse-grained models in the PDB format for linear polymer peptide conjugates.**
 
+- [Project RACCOON](#project-raccoon)
+  - [General Purpose \& Scope](#general-purpose--scope)
+    - [Supported building blocks](#supported-building-blocks)
+  - [How to use Project RACCOON](#how-to-use-project-raccoon)
+    - [Installing for Standard Usage](#installing-for-standard-usage)
+    - [Importing new Monomers](#importing-new-monomers)
+    - [Creating PDB Files from Sequence](#creating-pdb-files-from-sequence)
+    - [Check PDB Files](#check-pdb-files)
+  - [Examples and Testing](#examples-and-testing)
+    - [Unit Testing](#unit-testing)
+    - [GROMACS Testing](#gromacs-testing)
+  - [Limitations](#limitations)
+
+
 ## General Purpose & Scope
  Project RACCOON (*Rapid Automated Construction of Conjugates using the Optimized OPLS Input*) is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion. It allows for the easy addition of new monomers and incorporation of polypeptide and polymer sequences in text form and outputs PDB and XYZ files.
 The tool was specifically developed for the [OPLS force field](https://doi.org/10.1021/ja9621760) but is adaptable to any other force field. The tool's primary scope is to provide a straightforward method for creating starting structures for molecular dynamics simulations. It caters to creating linear polymer peptide conjugates with facing polypeptide strands. 
@@ -101,13 +115,30 @@ rc.generate_file(monomers, seq, False, "out.pdb", trr=1, shift_cartesian=[-1, 1,
 
 The successful creation of the PDB file can then be checked. The *Check PDB* file option is selected for this purpose. If the PDB file appears in tabular form in the terminal, it is correct and will be read correctly by all standard programs. Individual atoms or beads may be arranged too close to each other. In the worst case, this can lead to problems with energy minimization or simulations. To check that no two atoms or beads are too close to each other, the *Check Minimal Distance* option can be selected. The output contains the smallest distance between two atoms or beads.
 
-## Examples
+## Examples and Testing
 
-The software was developed specifically for the telechelic polymer peptide conjugates, according to [Otter et al., 2018](https://doi.org/10.1002/marc.201800459). An example is the peptide sequence FHFHFXG-PEO(N)-GXFHFHF (with X: 6-aminohexanoic acid). A corresponding seq.txt file can be found in the examples folder. A graphical representation of the PDB file is shown in the image below.
+The software was developed specifically for the telechelic polymer peptide conjugates, according to [Otter et al., 2018](https://doi.org/10.1002/marc.201800459). An example is the peptide sequence FHFHFXG-PEO(N)-GXFHFHF (with X: 6-aminohexanoic acid). A corresponding seq.txt file can be found in the examples folder. A graphical representation of the PDB file FHFHFXG_PEO_XGFHFHF.pdb (also in the examples folder) is shown in the image below.
 
-<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/output.png?raw=true" alt="out" width="600" height="auto">
+<img src="https://github.com/moritzobenauer/ProjectRaccoon/blob/main/screenshots/output.png?raw=true" alt="out" width="300" height="auto">
+
+Please consider that the geometry shown here is not necessarily the geometry you will create when running this example. The geometry generation is partly random, yielding different structures with every run. 
 
 After a brief energy minimization (performed with e.g. *[GROMACS](https://doi.org/10.1016/j.softx.2015.06.001)* and the [OPLS force field](https://doi.org/10.1021/ja9621760)), the physically meaningful structure is obtained. The PDB file created with Project RACCOON is an excellent starting point for such molecular dynamics simulations. It is important to recognize here that different building blocks with atomistic and united atom resolution have been combined with each other. 
+
+### Unit Testing
+
+Over 80% of the code presented here is covered by unit tests. These can be run with the following command:
+
+```
+python -m unittest -v
+```
+
+If the resulting output creates no errors and prints `OK`, the software was correctly installed,and all features can be used. 
+
+
+
+
+### GROMACS Testing
 
 ## Limitations
 
