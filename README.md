@@ -30,7 +30,7 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 ### Supported building blocks
 
 >[!NOTE]
->We encourage users to share their updated *monomers.json* file. Please submit a pull request, open an issue, or contact the developers.
+>We encourage users to share their updated *monomers.json* file. Please submit a pull request, open an issue, or contact the developers Please refer to our [contributing guidelines](https://github.com/moritzobenauer/ProjectRaccoon/blob/main/contributing/contributing.md) for further information.
 
 | Residue Name | AA | UA | CG |
 | :---         | :- | :- | :- |
