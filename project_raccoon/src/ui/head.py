@@ -49,10 +49,11 @@ raccoon = """
 """
 
 creator = "Project RACCOON by Obenauer, Spauszus @ JGU Mainz 2023"
-doi     = "DOI pending" 
+doi = "https://doi.org/10.21105/joss.06293"
 
 
 def welcome():
+
     console = Console()
     console.print(raccoon + "\n")
     console.print(creator + "\n")

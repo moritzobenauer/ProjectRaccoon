@@ -8,12 +8,13 @@ long_description = (parent / "README.md").read_text()
 
 setup(
     name="project_raccoon",
-    version="1.0.1",
+    version="1.1.0",
     description="ProjectRaccoon is a Python tool designed for the generation of PDB (Protein Data Bank) files for polymer peptide conjugates, polypeptides, and polymers in a building block fashion.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Moritz L. Obenauer, Kai N. Spauszus.",
     url="https://github.com/moritzobenauer/ProjectRaccoon",
+    doi="10.21105/joss.06293",
     packages=find_packages(),
     package_data={
         "project_raccoon": ["src/data/monomers.json", "tests/unit/data/*"],
