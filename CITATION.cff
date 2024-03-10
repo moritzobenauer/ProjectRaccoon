@@ -1,0 +1,50 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Obenauer
+  given-names: Moritz L.
+  orcid: "https://orcid.org/0009-0003-8140-9907"
+- family-names: Spauszus
+  given-names: Kai N.
+  orcid: "https://orcid.org/0009-0006-0650-2273"
+- family-names: Besenius
+  given-names: Pol
+  orcid: "https://orcid.org/0000-0001-7478-4459"
+- family-names: Schmid
+  given-names: Friederike
+  orcid: "https://orcid.org/0000-0002-5536-6718"
+contact:
+- family-names: Obenauer
+  given-names: Moritz L.
+  orcid: "https://orcid.org/0009-0003-8140-9907"
+doi: 10.5281/zenodo.10776652
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Obenauer
+    given-names: Moritz L.
+    orcid: "https://orcid.org/0009-0003-8140-9907"
+  - family-names: Spauszus
+    given-names: Kai N.
+    orcid: "https://orcid.org/0009-0006-0650-2273"
+  - family-names: Besenius
+    given-names: Pol
+    orcid: "https://orcid.org/0000-0001-7478-4459"
+  - family-names: Schmid
+    given-names: Friederike
+    orcid: "https://orcid.org/0000-0002-5536-6718"
+  date-published: 2024-03-10
+  doi: 10.21105/joss.06293
+  issn: 2475-9066
+  issue: 95
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 6293
+  title: "Project RACCOON: Automated construction of PDB files for
+    polymers and polymer peptide conjugates"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.06293"
+  volume: 9
+title: "Project RACCOON: Automated construction of PDB files for
+  polymers and polymer peptide conjugates"
