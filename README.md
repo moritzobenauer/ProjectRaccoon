@@ -39,6 +39,11 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 | GLY          | :white_check_mark: | :soon: | :soon: |
 | PHE          | :white_check_mark: | :white_check_mark: | :soon: |
 | HIS          | :white_check_mark: | :white_check_mark: | :soon: |
+| GLU(H)       | :white_check_mark: | :soon: | :soon: |
+| ARG          | :white_check_mark: | :soon: | :soon: |
+| SER          | :white_check_mark: | :soon: | :soon: |
+| LYS          | :white_check_mark: | :soon: | :soon: |
+| ALA          | :white_check_mark: | :soon: | :soon: |
 | ACE          | :white_check_mark: | :white_check_mark: | :x: |
 | NME          | :soon: | :soon: | :x: |
 | DUM          |  |  | :white_check_mark: |
@@ -156,7 +161,7 @@ To ensure seamless integration with *GROMACS*, we prepared a *GROMACS* testing s
 
 After generating different macromolecules with **Project RACCOON** it can be necessary to align and combine different molecules e.g. to simulate protein-ligand systems. We provide an interactive geometry builder that takes *pdb* files as an input, visualizes them using [**py3Dmol**](https://github.com/avirshup/py3dmol) and lets the user translate and rotate the molecules. After the desired geometry is achieved, the updated *pdb* files can be saved.  
 
-During this development stage the main **Project RACCOON* and *Project RACCOON* Geometry Builder dependencies are not harmonized yet. Therefore, we recommend to use a seperate python environment to run *geometry_builder.py*. Installing the necessary dependencies using [mamba](https://github.com/mamba-org/mamba):
+During this development stage the main *Project RACCOON* and *Project RACCOON* Geometry Builder dependencies are not harmonized yet. Therefore, we recommend to use a seperate python environment to run *geometry_builder.py*. Installing the necessary dependencies using [mamba](https://github.com/mamba-org/mamba):
 
 ```bash
 mamba create --name prdev --file requirements.txt
