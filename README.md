@@ -87,6 +87,9 @@ Open a graphical software to create three-dimensional molecular models and obtai
 
 Monomer building blocks need to be given a *name* (no restrictions, will be treated as a string), the *resolution* (atomistic, united_atom, coarse_grained), and the property *polymer* which can be either `True` or `False`. The software will read the element type and bonded neighbors from the .bs file. The user has to set the forcefield identifiers for every single atom/bead and specifiy the C- and N-termini of the building block. After the completion of these steps, the newly added monomer is added to the available monomers list.  
 
+>[!NOTE]
+>We added an alternative import method for PDB files. Please read our [importer readme file](/importer/readme.md) for further information.
+
 ### Creating PDB Files from Sequence
 The basis for creating a PDB file is a seq.txt file containing the block sequence. The monomers are specified line by line with their name and resolution (this may be necessary if the same block is present in the library file with a different resolution). In addition, whether it is an inverted building block (this occurs with C2 symmetrical polymer peptide conjugates) and the number of repeating units must be specified. In this way, classical polymers with a fixed number of repeating units of a monomer can also be represented quickly.
 ```
