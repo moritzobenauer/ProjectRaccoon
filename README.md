@@ -39,9 +39,12 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 | GLY          | :white_check_mark: | :soon: | :soon: |
 | PHE          | :white_check_mark: | :white_check_mark: | :soon: |
 | HIS          | :white_check_mark: | :white_check_mark: | :soon: |
+| GLU          | :white_check_mark: | :soon: | :soon: |
 | GLU(H)       | :white_check_mark: | :soon: | :soon: |
 | ARG          | :white_check_mark: | :soon: | :soon: |
 | SER          | :white_check_mark: | :soon: | :soon: |
+| SERP         | :white_check_mark: | :soon: | :soon: |
+| SERQ         | :white_check_mark: | :soon: | :soon: |
 | LYS          | :white_check_mark: | :soon: | :soon: |
 | ALA          | :white_check_mark: | :soon: | :soon: |
 | ACE          | :white_check_mark: | :white_check_mark: | :x: |
@@ -50,8 +53,7 @@ The tool emphasizes user-friendliness, making it accessible to chemists and phys
 | CSX          | :white_check_mark: | :white_check_mark: | :x: |
 | LNK          | :white_check_mark: | :white_check_mark: | :x: |
 
-For non-standard amino acids **CSX** and **LNK**, please refer to the following paper by [pending, 20xx](https://www.ak-besenius.chemie.uni-mainz.de/). Coarse-grained models have not been implemented yet. The **DUM** building block is a dummy bead with an unspecified mass sometimes used in polymer modeling. Therefore, only the CG resolution is available.
-
+For non-standard amino acids **CSX** and **LNK**, please refer to the following paper by [pending, 20xx](https://www.ak-besenius.chemie.uni-mainz.de/). Coarse-grained models have not been implemented yet. The **DUM** building block is a dummy bead with an unspecified mass sometimes used in polymer modeling. Therefore, only the CG resolution is available. **SERP** stands for Ser-O-Gly-Phe-NH<sub>2</sub> and **SERQ** for Ser-O-Gly-Phe-NH<sub>3</sub>.
 
 
 ## How to use Project RACCOON
